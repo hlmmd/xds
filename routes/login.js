@@ -10,8 +10,24 @@ function cryptPwd(password) {
     return md5.update(password).digest('hex');
 }
 
+var user_type = {
+    admin: 0,
+    assist: 1,
+    student: 2
+};
 
-router.route('/login')
+function user_type_string(type) {
+    if (type == user_type.admin)
+        return '管理员';
+    else if (type == user_type.assist)
+        return '助管';
+    else if (type == user_type.student)
+        return '学生';
+    else
+        return null;
+}
+
+router.route('/')
     .get(function (req, res) {
         if (req.session.islogin) {
             res.locals.islogin = req.session.islogin;
@@ -33,6 +49,7 @@ router.route('/login')
                     req.session.islogin = req.body.username;
                     res.locals.islogin = req.session.islogin;
                     res.cookie('islogin', res.locals.islogin, { maxAge: 60000 });
+                    res.cookie('type', result[0].type);
                     res.redirect('/home');
                 } else {
                     res.redirect('/login');
@@ -41,10 +58,21 @@ router.route('/login')
         });
     });
 
+
 router.get('/logout', function (req, res) {
     res.clearCookie('islogin');
     req.session.destroy();
     res.redirect('/');
+});
+
+router.get('/home', function (req, res) {
+    if (req.session.islogin) {
+        res.locals.islogin = req.session.islogin;
+    }
+    if (req.cookies.islogin) {
+        req.session.islogin = req.cookies.islogin;
+    }
+    res.render('home', { title: '选调生管理系统', user: res.locals.islogin, type: user_type_string(req.cookies.type)   });
 });
 
 module.exports = router;

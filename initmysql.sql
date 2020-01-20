@@ -10,13 +10,13 @@ drop table if exists xds_users;
 CREATE TABLE xds_users
 (
   id        int NOT NULL auto_increment,
-  level     smallint DEFAULT '0' NOT NULL,  
+  type     smallint DEFAULT '0' NOT NULL,  
   username      varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci unique, 
   password  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO xds_users (level, username, password ) VALUES ( '2', 'tj91', 'e0de3c61693cfeeb39da703c657be46c');
+-- 0 admin ,1 assist ,2
+INSERT INTO xds_users (type, username, password ) VALUES ( '0', 'tj91', 'e0de3c61693cfeeb39da703c657be46c');
 
 CREATE TABLE xds_student
 (

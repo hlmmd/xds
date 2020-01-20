@@ -14,7 +14,7 @@ function connectServer() {
 
 function loginFun(client, username, callback) {
     //client为一个mysql连接对象
-    client.query('select password from xds_users where username="' + username + '"', function (err, results, fields) {
+    client.query('select password,type from xds_users where username="' + username + '"', function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
             //throw err;
