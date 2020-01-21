@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var usr = require('../db/dbConnect');
-
-
+var usr = require('../common/dbConnect');
+var util = require('../common/util');
 
 var crypto = require('crypto');
 
@@ -13,7 +12,8 @@ function cryptPwd(password) {
 
 router.route('/reg')
     .get(function (req, res) {
-        res.render('reg', { title: '注册' });
+        if(util.checklogin(req,res)==false)
+            res.render('reg', { title: '注册' });
     })
     .post(function (req, res) {
         client = usr.connect();

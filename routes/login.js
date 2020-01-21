@@ -1,8 +1,8 @@
 
 var express = require('express');
 var router = express.Router();
-var usr = require('../db/dbConnect');
-
+var usr = require('../common/dbConnect');
+var util = require('../common/util');
 var crypto = require('crypto');
 
 function cryptPwd(password) {
@@ -29,16 +29,14 @@ function user_type_string(type) {
 
 router.route('/')
     .get(function (req, res) {
-        if (req.session.islogin) {
-            res.locals.islogin = req.session.islogin;
+        if (util.checklogin(req, res) == true) {
+            res.render('home', { title: '选调生管理系统', user: res.locals.islogin, type: user_type_string(req.cookies.type) });
         }
-        if (req.cookies.islogin) {
-            req.session.islogin = req.cookies.islogin;
-        }
-        // res.send('登录');
-        res.render('login', { title: '用户登录', test: res.locals.islogin });
+        else
+            res.render('login', { title: '用户登录', test: res.locals.islogin });
     })
     .post(function (req, res) {
+
         client = usr.connect();
         result = null;
         usr.loginFun(client, req.body.username, function (result) {
@@ -52,7 +50,7 @@ router.route('/')
                     res.cookie('type', result[0].type);
                     res.redirect('/home');
                 } else {
-                    res.redirect('/login');
+                    res.redirect('/');
                 }
             }
         });
@@ -66,13 +64,12 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/home', function (req, res) {
-    if (req.session.islogin) {
-        res.locals.islogin = req.session.islogin;
+
+    if (util.checklogin(req, res) == false) {
+        res.send("未登录");
     }
-    if (req.cookies.islogin) {
-        req.session.islogin = req.cookies.islogin;
-    }
-    res.render('home', { title: '选调生管理系统', user: res.locals.islogin, type: user_type_string(req.cookies.type)   });
+    else
+        res.render('home', { title: '选调生管理系统', user: res.locals.islogin, type: user_type_string(req.cookies.type) });
 });
 
 module.exports = router;
