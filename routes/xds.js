@@ -7,16 +7,16 @@ var util = require('../common/util');
 router.get('/xds', function (req, res) {
 
     if (util.checklogin(req, res) == false) {
-        res.send("未登录");
+        res.redirect('/');
     }
     else
-        res.render('xds', { title: '选调生管理系统' });
+        res.render('xds', { title: global.systemtitle });
 
 });
 
 router.post('/xds', function (req, res) {
     if (util.checklogin(req, res) == false) {
-        res.send("未登录");
+        res.redirect('/');
     }
     else {
 
@@ -24,7 +24,7 @@ router.post('/xds', function (req, res) {
         result = null;
         usr.xdsFun(client, req.body.year, req.body.province, function (result) {
             
-            res.render('xds', { title: '选调生管理系统', students: result });
+            res.render('xds', { title: global.systemtitle, students: result });
 
         });
     }

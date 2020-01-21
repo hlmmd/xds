@@ -84,10 +84,9 @@ function xdsFun(client, year, province, callback) {
 }
 
 
-//按年份和省份查询选调生信息
+//按学号查询选调生信息
 function studentFun(client, student_id, callback) {
     //client为一个mysql连接对象
-    //province =100 表示全部省份
     if (student_id == undefined || student_id == '') {
         callback(null);
     }
@@ -106,8 +105,28 @@ function studentFun(client, student_id, callback) {
 }
 
 
+//按学号删除选调生
+function delstudentFun(client, student_id, callback) {
+    if (student_id == undefined || student_id == '') {
+        callback(null);
+    }
+    else {
+        var sqlstr = 'delete from xds_student where student_id = "' + student_id + '"';
+
+        client.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+                //throw err;
+            }
+            callback(results);
+        });
+    }
+
+}
+
 exports.connect = connectServer;
 exports.regFun = regFun;
 exports.loginFun = loginFun;
 exports.xdsFun = xdsFun;
 exports.studentFun = studentFun;
+exports.delstudentFun = delstudentFun;

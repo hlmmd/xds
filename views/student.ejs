@@ -2,24 +2,52 @@
 
 <h1> 学生信息</h1>
 
-<form method="get" id="studentform">
-    <table>
-        <tr>
-            <th>学号</th>
-            <td><input type="text" name="student_id" id="student_id"> </td>
+<div>
+    <form method="get" id="studentform">
+        <table>
+            <tr>
+                <th>学号</th>
+                <td><input type="text" name="student_id" id="student_id"> </td>
 
-            <th> <input type="submit" value="查询"></th>
-        </tr>
-    </table>
-</form>
-
+                <th> <input type="submit" value="查询"></th>
+            </tr>
+        </table>
+    </form>
+</div>
 <% if ( locals.stu_info) { %>
-<ul class="col_3_1">
-    <label> <%= stu_info.student_id %> </label>
-    <label> <%= stu_info.name %> </label>
-    <label> <%= stu_info.year %> </label>
-    <label> <%= stu_info.province %> </label>
-</ul>
+
+<br>
+<div>
+    <form method="post" id="studentinfo">
+        <table>
+            <tr>
+                <th>学号</th>
+                <td><input type="text" name="info_student_id" id="info_student_id" value ="<%= stu_info.student_id %>" disabled></td>
+
+                <th>姓名</th>
+                <td><input type="text" name="info_name" id="info_name"  value ="<%= stu_info.name %>" >  </td>
+
+                <th>年份</th>
+                <td><input type="text" name="info_year" id="info_year" value="<%= stu_info.year %>">  </td>
+            </tr>
+
+            <tr>
+                <th>省份</th>
+                <td><input type="text" name="info_province" id="info_province" disabled value="<%= stu_info.province %>">  </td>
+            </tr>
+
+            <tr>
+                <th> <input type="submit" value="保存"></th>
+            </tr>
+
+            <tr>
+                <th> <a href="/delstu?student_id=<%= stu_info.student_id %>" ><input type="button" name="delete_stu" id="delete_stu" value="删除该学生" > </a> </th>
+            </tr>
+
+        </table>
+    </form>
+</div>
+
 <% } else if(locals.notfound){ %>
 <label> <%= notfound%> </label>
 <% } %>

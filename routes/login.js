@@ -30,7 +30,7 @@ function user_type_string(type) {
 router.route('/')
     .get(function (req, res) {
         if (util.checklogin(req, res) == true) {
-            res.render('home', { title: '选调生管理系统', user: res.locals.islogin, type: user_type_string(req.cookies.type) });
+            res.render('home', { title: global.systemtitle , user: res.locals.islogin, type: user_type_string(req.cookies.type) });
         }
         else
             res.render('login', { title: '用户登录', test: res.locals.islogin });
@@ -46,8 +46,9 @@ router.route('/')
                 if (result[0].password === cryptPwd(req.body.password)) {
                     req.session.islogin = req.body.username;
                     res.locals.islogin = req.session.islogin;
-                    res.cookie('islogin', res.locals.islogin, { maxAge: 60000 });
-                    res.cookie('type', result[0].type);
+                    //100分钟后cookie清空
+                    res.cookie('islogin', res.locals.islogin, { maxAge: 6000000 });
+                    res.cookie('type', result[0].type,{ maxAge: 6000000 });
                     res.redirect('/home');
                 } else {
                     res.redirect('/');
@@ -66,10 +67,10 @@ router.get('/logout', function (req, res) {
 router.get('/home', function (req, res) {
 
     if (util.checklogin(req, res) == false) {
-        res.send("未登录");
+        res.redirect('/');
     }
     else
-        res.render('home', { title: '选调生管理系统', user: res.locals.islogin, type: user_type_string(req.cookies.type) });
+        res.render('home', { title: global.systemtitle , user: res.locals.islogin, type: user_type_string(req.cookies.type) });
 });
 
 module.exports = router;

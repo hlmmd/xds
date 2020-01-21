@@ -64,4 +64,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+global.systemtitle = '选调生管理系统';
+
+
 module.exports = app;

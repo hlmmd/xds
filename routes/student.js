@@ -10,24 +10,38 @@ router.get('/student', function (req, res) {
     }
     else {
         if (req.query.student_id == undefined)
-            res.render('student', { title: '选调生管理系统' });
+            res.render('student', { title: global.systemtitle });
         else {
             client = usr.connect();
             result = null;
             usr.studentFun(client, req.query.student_id, function (result) {
-                if(result==null)
-                {
-                    res.render('student', { title: '选调生管理系统' });
+                if (result == null) {
+                    res.render('student', { title: global.systemtitle });
                 }
                 else if (result[0] !== undefined) {
                     result[0].province = util.getprovincename(result[0].province_id);
-                    res.render('student', { title: '选调生管理系统', stu_info: result[0] });
+                    res.render('student', { title: global.systemtitle, stu_info: result[0] });
                 }
-                else{
-                    res.render('student', { title: '选调生管理系统', notfound: '未找到' });
+                else {
+                    res.render('student', { title: global.systemtitle, notfound: '未找到' });
                 }
             });
         }
+    }
+});
+
+router.get('/delstu', function (req, res) {
+
+    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+        || (req.query.student_id == '') || isNaN(req.query.student_id)) {
+        res.redirect('/');
+    }
+    else {
+        client = usr.connect();
+        result = null;
+        usr.delstudentFun(client, req.query.student_id, function (result) {
+            res.redirect('/student');
+        });
     }
 
 });
