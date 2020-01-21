@@ -4,12 +4,11 @@ var usr = require('../common/dbConnect');
 var util = require('../common/util');
 
 router.get('/student', function (req, res) {
-
     if (util.checklogin(req, res) == false) {
         res.redirect('/');
     }
     else {
-        if (req.query.student_id == undefined)
+        if (req.query.student_id == undefined || isNaN(req.query.student_id))
             res.render('student', { title: global.systemtitle });
         else {
             client = usr.connect();
@@ -39,21 +38,19 @@ router.post('/student', function (req, res) {
     else {
         client = usr.connect();
         result = null;
-        var stu_info = new Array(); ;
-        
-        stu_info['student_id'] = req.query.student_id;        
+        var stu_info = new Array();;
+
+        stu_info['student_id'] = req.query.student_id;
         stu_info['name'] = req.body.info_name;
         stu_info['year'] = req.body.info_year;
-       
         usr.updatestudentFun(client, stu_info, function (result) {
-            res.redirect('/student?student_id='+req.query.student_id);
+            res.redirect('/student?student_id=' + req.query.student_id);
             //res.render('student', { title: global.systemtitle, students: result });
         });
     }
 });
 
 router.get('/delstu', function (req, res) {
-
     if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
         || (req.query.student_id == '') || isNaN(req.query.student_id)) {
         res.redirect('/');
@@ -65,7 +62,6 @@ router.get('/delstu', function (req, res) {
             res.redirect('/student');
         });
     }
-
 });
 
 

@@ -15,8 +15,12 @@ router.get('/xds', function (req, res) {
 });
 
 router.post('/xds', function (req, res) {
-    if (util.checklogin(req, res) == false) {
+    if (util.checklogin(req, res) == false  ) {
         res.redirect('/');
+    }
+    else if( isNaN(req.body.year) || isNan(req.body.province))
+    {
+        res.redirect('/xds');
     }
     else {
 
