@@ -30,6 +30,28 @@ router.get('/student', function (req, res) {
     }
 });
 
+
+//修改学生信息
+router.post('/student', function (req, res) {
+    if (util.checklogin(req, res) == false) {
+        res.redirect('/');
+    }
+    else {
+        client = usr.connect();
+        result = null;
+        var stu_info = new Array(); ;
+        
+        stu_info['student_id'] = req.query.student_id;        
+        stu_info['name'] = req.body.info_name;
+        stu_info['year'] = req.body.info_year;
+       
+        usr.updatestudentFun(client, stu_info, function (result) {
+            res.redirect('/student?student_id='+req.query.student_id);
+            //res.render('student', { title: global.systemtitle, students: result });
+        });
+    }
+});
+
 router.get('/delstu', function (req, res) {
 
     if (util.checklogin(req, res) == false || (req.query.student_id == undefined)

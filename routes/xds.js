@@ -28,9 +28,6 @@ router.post('/xds', function (req, res) {
 
         });
     }
-
-
-
 });
 
 module.exports = router;

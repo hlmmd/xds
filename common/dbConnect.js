@@ -121,7 +121,26 @@ function delstudentFun(client, student_id, callback) {
             callback(results);
         });
     }
+}
 
+
+//修改选调生信息
+function updatestudentFun(client, stu_info, callback) {
+    if (stu_info == undefined) {
+        callback(null);
+    }
+    else {
+        var sqlstr = 'update xds_student set name =\'' + stu_info['name'] +
+            '\', year =\'' + stu_info['year'] +
+            '\' where student_id = "' + stu_info['student_id'] + '"';
+        client.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+                //throw err;
+            }
+            callback(results);
+        });
+    }
 }
 
 exports.connect = connectServer;
@@ -130,3 +149,4 @@ exports.loginFun = loginFun;
 exports.xdsFun = xdsFun;
 exports.studentFun = studentFun;
 exports.delstudentFun = delstudentFun;
+exports.updatestudentFun = updatestudentFun;
