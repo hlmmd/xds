@@ -5,7 +5,6 @@ var usr = require('../common/dbConnect');
 var util = require('../common/util');
 
 router.get('/xds', function (req, res) {
-
     if (util.checklogin(req, res) == false) {
         res.redirect('/');
     }
@@ -15,11 +14,10 @@ router.get('/xds', function (req, res) {
 });
 
 router.post('/xds', function (req, res) {
-    if (util.checklogin(req, res) == false  ) {
+    if (util.checklogin(req, res) == false) {
         res.redirect('/');
     }
-    else if( isNaN(req.body.year) || isNan(req.body.province))
-    {
+    else if (isNaN(req.body.year) || isNaN(req.body.province)) {
         res.redirect('/xds');
     }
     else {
@@ -27,7 +25,7 @@ router.post('/xds', function (req, res) {
         client = usr.connect();
         result = null;
         usr.xdsFun(client, req.body.year, req.body.province, function (result) {
-            
+
             res.render('xds', { title: global.systemtitle, students: result });
 
         });

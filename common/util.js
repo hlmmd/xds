@@ -54,7 +54,15 @@ function Datetoyyyymmdd(mysqldate) {
     return res;
 }
 
+
+function endgestart(start_time, end_time) {
+    var date1 = new Date(start_time);
+    var date2 = new Date(end_time);
+    return date1.getTime() <= date2.getTime();
+}
+
 exports.checklogin = checklogin
 exports.getprovincename = getprovincename
 exports.stripscript = stripscript
 exports.Datetoyyyymmdd = Datetoyyyymmdd
+exports.endgestart = endgestart;

@@ -81,9 +81,14 @@ router.post('/addcareer', function (req, res) {
         client = usr.connect();
         result = null;
 
-        usr.addcareerFun(client, req.query.student_id, req.body, function (result) {
+        if (util.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             res.redirect('/student?student_id=' + req.query.student_id);
-        });
+        }
+        else {
+            usr.addcareerFun(client, req.query.student_id, req.body, function (result) {
+                res.redirect('/student?student_id=' + req.query.student_id);
+            });
+        }
     }
 
 });
@@ -115,9 +120,14 @@ router.post('/updatecareer', function (req, res) {
         client = usr.connect();
         result = null;
 
-        usr.updatecareerFun(client, req.query.student_id, req.body, function (result) {
+        if (util.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             res.redirect('/student?student_id=' + req.query.student_id);
-        });
+        }
+        else {
+            usr.updatecareerFun(client, req.query.student_id, req.body, function (result) {
+                res.redirect('/student?student_id=' + req.query.student_id);
+            });
+        }
     }
 });
 

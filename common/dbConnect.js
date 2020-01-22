@@ -44,7 +44,7 @@ function xdsFun(client, year, province, callback) {
         year = '';
 
     if (year == '' && province == 100) {
-        client.query('select id,year,province_id from xds_student order by year,province_id', function (err, results, fields) {
+        client.query('select student_id,name from xds_student order by year,province_id', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
                 //throw err;
@@ -54,7 +54,7 @@ function xdsFun(client, year, province, callback) {
     }
 
     else if (year == '') {
-        client.query('select id,year,province_id from xds_student where province_id="' + province + '" order by year,province_id', function (err, results, fields) {
+        client.query('select student_id,name from xds_student where province_id="' + province + '" order by year,province_id', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
                 //throw err;
@@ -63,7 +63,7 @@ function xdsFun(client, year, province, callback) {
         });
     }
     else if (province == 100) {
-        client.query('select id,year,province_id from xds_student where year="' + year + '" order by year,province_id', function (err, results, fields) {
+        client.query('select student_id,name from xds_student where year="' + year + '" order by year,province_id', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
                 //throw err;
@@ -72,7 +72,7 @@ function xdsFun(client, year, province, callback) {
         });
     }
     else {
-        client.query('select id,year,province_id from xds_student where year="' + year + '"' + 'and province_id="' + province + '" order by year,province_id', function (err, results, fields) {
+        client.query('select student_id,name from xds_student where year="' + year + '"' + 'and province_id="' + province + '" order by year,province_id', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
                 //throw err;

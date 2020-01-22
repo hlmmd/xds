@@ -56,10 +56,12 @@
     </table>
 </form>
 
-<% if ( locals.students) { %>
+
+
+<% if ( locals.students && students.length>0) { %>
 <ul class="col_3_1">
     <% for (var student in students) { %>
-    <label> <%= students[student].id %> </label>
+    <label> <%= students[student].student_id %> </label>
     <% } %>
 </ul>
 <% } %>
