@@ -73,7 +73,7 @@
 
         <% for (i =0 ;i<careers.length;i++) { %>
         <tr>
-            <form action="/updatecareer?student_id=<%= stu_info.student_id %>">
+            <form action="/updatecareer?student_id=<%= stu_info.student_id %>" method="POST">
                 <td hidden><input type="text" name="career_id" id="career_id" value="<%= careers[i].id %>"> </td>
                 <td><%= i+1 %></td>
                 <td><input type="date" name="career_start_time" id="career_start_time"

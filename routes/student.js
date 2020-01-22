@@ -8,8 +8,10 @@ router.get('/student', function (req, res) {
         res.redirect('/');
     }
     else {
-        if (req.query.student_id == undefined || isNaN(req.query.student_id))
+        if (req.query.student_id == undefined)
             res.render('student', { title: global.systemtitle });
+        else if (isNaN(req.query.student_id) || req.query.student_id == '')
+            res.redirect('/student');
         else {
             client = usr.connect();
             result = null;
@@ -24,12 +26,9 @@ router.get('/student', function (req, res) {
                     cresult = null;
                     usr.careerFun(client, req.query.student_id, function (cresult) {
                         for (i = 0; i < cresult.length; i++) {
-
                             cresult[i].start_time = util.Datetoyyyymmdd(cresult[i].start_time);
                             cresult[i].end_time = util.Datetoyyyymmdd(cresult[i].end_time);
-                            //    cresult[i].start_time = new Date(cresult[i].start_time).format("yyyy--mm--dd");
                         }
-                        console.log(cresult);
                         res.render('student', { title: global.systemtitle, stu_info: result[0], careers: cresult, career_levels: global.career_levels });
                     });
                 }
@@ -50,12 +49,8 @@ router.post('/student', function (req, res) {
     else {
         client = usr.connect();
         result = null;
-        var stu_info = new Array();;
 
-        stu_info['student_id'] = req.query.student_id;
-        stu_info['name'] = req.body.info_name;
-        stu_info['year'] = req.body.info_year;
-        usr.updatestudentFun(client, stu_info, function (result) {
+        usr.updatestudentFun(client, req.query.student_id, req.body, function (result) {
             res.redirect('/student?student_id=' + req.query.student_id);
             //res.render('student', { title: global.systemtitle, students: result });
         });
@@ -107,7 +102,25 @@ router.get('/delcareer', function (req, res) {
             res.redirect('/student?student_id=' + req.query.student_id);
         });
     }
-
 });
+
+
+//修改工作经历
+router.post('/updatecareer', function (req, res) {
+    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+        || (req.query.student_id == '') || isNaN(req.query.student_id)) {
+        res.redirect('/');
+    }
+    else {
+        client = usr.connect();
+        result = null;
+
+        usr.updatecareerFun(client, req.query.student_id, req.body, function (result) {
+            res.redirect('/student?student_id=' + req.query.student_id);
+        });
+    }
+});
+
+
 
 module.exports = router

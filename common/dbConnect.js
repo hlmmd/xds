@@ -125,14 +125,14 @@ function delstudentFun(client, student_id, callback) {
 
 
 //修改选调生信息
-function updatestudentFun(client, stu_info, callback) {
-    if (stu_info == undefined) {
+function updatestudentFun(client, student_id, body, callback) {
+    if (isNaN(student_id)) {
         callback(null);
     }
     else {
-        var sqlstr = 'update xds_student set name =\'' + stu_info['name'] +
-            '\', year =\'' + stu_info['year'] +
-            '\' where student_id = "' + stu_info['student_id'] + '"';
+        var sqlstr = 'update xds_student set name =\'' + body.info_name +
+            '\', year =\'' + body.info_year +
+            '\' where student_id = "' + student_id + '"';
         client.query(sqlstr, function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
@@ -194,6 +194,52 @@ function addcareerFun(client, student_id, body, callback) {
 }
 
 
+//按学号删除选调生
+function delcareerFun(client, student_id, career_id, callback) {
+    if (isNaN(student_id) || isNaN(career_id)) {
+        callback(null);
+    }
+    else {
+        var sqlstr = 'delete from xds_career where student_id = "' +
+            student_id + '"' + 'and id=\'' + career_id + '\'';
+        client.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+    }
+}
+
+
+
+//修改选调生信息
+function updatecareerFun(client, student_id, body, callback) {
+    if (isNaN(student_id)) {
+        callback(null);
+    }
+    else {
+        var sqlstr = 'update xds_career set start_time =\'' + body.career_start_time +
+            '\', end_time =\'' + body.career_end_time +
+            '\', unit =\'' + body.career_unit +
+            '\', position =\'' + body.career_position +
+            '\', level =\'' + body.career_level +
+            '\' where student_id = "' + student_id + '"' +
+            'and id = \'' + body.career_id + '\'';
+        client.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+                //throw err;
+            }
+            callback(results);
+        });
+    }
+}
+
+
+
+
+
 exports.connect = connectServer;
 exports.regFun = regFun;
 exports.loginFun = loginFun;
@@ -204,3 +250,5 @@ exports.updatestudentFun = updatestudentFun;
 
 exports.careerFun = careerFun;
 exports.addcareerFun = addcareerFun;
+exports.delcareerFun = delcareerFun;
+exports.updatecareerFun = updatecareerFun;
