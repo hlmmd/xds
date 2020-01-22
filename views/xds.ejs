@@ -2,50 +2,30 @@
 
 <h1> 选调生信息</h1>
 
-<form method="post" id="xdsform">
+<form method="get" id="xdsform">
     <table>
         <tr>
             <th>年份</th>
+            <% if (locals.year) { %>
+            <td><input type="text" name="year" id="year" value="<%= year %>"> </td>
+            <%  } else  { %>
             <td><input type="text" name="year" id="year"> </td>
-
+            <% } %>
             <th>省份</th>
             <td>
                 <select name="province" id="province">
-                    <option value="100">全选</option>"
-                    <option value="0">北京市</option>"
-                    <option value="1">天津市</option>"
-                    <option value="2">上海市</option>"
-                    <option value="3">重庆市</option>"
-                    <option value="4">河北省</option>"
-                    <option value="5">山西省</option>"
-                    <option value="6">辽宁省</option>"
-                    <option value="7">吉林省</option>"
-                    <option value="8">黑龙江省</option>"
-                    <option value="9">江苏省</option>"
-                    <option value="10">浙江省</option>"
-                    <option value="11">安徽省</option>"
-                    <option value="12">福建省</option>"
-                    <option value="13">江西省</option>"
-                    <option value="14">山东省</option>"
-                    <option value="15">河南省</option>"
-                    <option value="16">湖北省</option>"
-                    <option value="17">湖南省</option>"
-                    <option value="18">广东省</option>"
-                    <option value="19">海南省</option>"
-                    <option value="20">四川省</option>"
-                    <option value="21">贵州省</option>"
-                    <option value="22">云南省</option>"
-                    <option value="23">陕西省</option>"
-                    <option value="24">甘肃省</option>"
-                    <option value="25">青海省</option>"
-                    <option value="26">台湾省</option>"
-                    <option value="27">内蒙古自治区</option>"
-                    <option value="28">广西壮族自治区</option>"
-                    <option value="29">西藏自治区</option>"
-                    <option value="30">宁夏回族自治区</option>"
-                    <option value="31">新疆维吾尔自治区</option>"
-                    <option value="32">香港特别行政区</option>"
-                    <option value="33">澳门特别行政区</option>"
+                    <% if (locals.province_id && province_id==100) { %>
+                    <option value="100" selected>全选</option>
+                    <%  } else  { %>
+                    <option value="100">全选</option>
+                    <% } %>
+                    <% for( i = 0;i<provinces.length;i++) {%>
+                    <% if (locals.province_id && province_id==i) { %>
+                    <option value="<%= i %>" selected> <%= provinces[i] %> </option>
+                    <%  } else  { %>
+                    <option value="<%= i %>"> <%= provinces[i] %> </option>
+                    <% } %>
+                    <% } %>
                 </select>
             </td>
 
@@ -59,11 +39,24 @@
 
 
 <% if ( locals.students && students.length>0) { %>
-<ul class="col_3_1">
-    <% for (var student in students) { %>
-    <label> <%= students[student].student_id %> </label>
+
+<table>
+    <% for (i=0;i<students.length;i+=4){ %>
+    <tr>
+        <% for(j = i;j<students.length && (j<i+4);j++) { %>
+        <td>
+            <a href="/student?student_id=<%= students[j].student_id %>">
+                <input type="button" value="<%= students[j].name %>">
+            </a>
+        </td>
+        <% } %>
+    </tr>
     <% } %>
-</ul>
+
+
+</table>
+
+
 <% } %>
 
 <% include footer %>
