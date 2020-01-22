@@ -41,6 +41,7 @@
 <% if ( locals.students && students.length>0) { %>
 
 <table>
+    <% // 表格每行4列  %>
     <% for (i=0;i<students.length;i+=4){ %>
     <tr>
         <% for(j = i;j<students.length && (j<i+4);j++) { %>

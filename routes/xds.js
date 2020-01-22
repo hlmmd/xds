@@ -18,7 +18,6 @@ router.get('/xds', function (req, res) {
         client = usr.connect();
         result = null;
         usr.xdsFun(client, req.query.year, req.query.province, function (result) {
-            console.log(result);
             res.render('xds', {
                 title: global.systemtitle, provinces: global.provinces, students: result,
                 year: req.query.year, province_id: req.query.province
