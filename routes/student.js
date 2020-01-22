@@ -19,7 +19,19 @@ router.get('/student', function (req, res) {
                 }
                 else if (result[0] !== undefined) {
                     result[0].province = util.getprovincename(result[0].province_id);
-                    res.render('student', { title: global.systemtitle, stu_info: result[0] });
+
+                    //继续读取career信息
+                    cresult = null;
+                    usr.careerFun(client, req.query.student_id, function (cresult) {
+                        for (i = 0; i < cresult.length; i++) {
+
+                            cresult[i].start_time = util.Datetoyyyymmdd(cresult[i].start_time);
+                            cresult[i].end_time = util.Datetoyyyymmdd(cresult[i].end_time);
+                            //    cresult[i].start_time = new Date(cresult[i].start_time).format("yyyy--mm--dd");
+                        }
+                        console.log(cresult);
+                        res.render('student', { title: global.systemtitle, stu_info: result[0], careers: cresult, career_levels: global.career_levels });
+                    });
                 }
                 else {
                     res.render('student', { title: global.systemtitle, notfound: '未找到' });
@@ -64,5 +76,38 @@ router.get('/delstu', function (req, res) {
     }
 });
 
+//添加工作经历
+router.post('/addcareer', function (req, res) {
+    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+        || (req.query.student_id == '') || isNaN(req.query.student_id)) {
+        res.redirect('/');
+    }
+    else {
+        client = usr.connect();
+        result = null;
+
+        usr.addcareerFun(client, req.query.student_id, req.body, function (result) {
+            res.redirect('/student?student_id=' + req.query.student_id);
+        });
+    }
+
+});
+
+//删除工作经历
+router.get('/delcareer', function (req, res) {
+    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+        || (req.query.student_id == '') || isNaN(req.query.student_id)
+        || isNaN(req.query.career_id)) {
+        res.redirect('/');
+    }
+    else {
+        client = usr.connect();
+        result = null;
+        usr.delcareerFun(client, req.query.student_id, req.query.career_id, function (result) {
+            res.redirect('/student?student_id=' + req.query.student_id);
+        });
+    }
+
+});
 
 module.exports = router

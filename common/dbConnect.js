@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-
+var util = require('./util');
 
 function connectServer() {
     var client = mysql.createConnection({
@@ -143,6 +143,57 @@ function updatestudentFun(client, stu_info, callback) {
     }
 }
 
+
+
+//按学号查询选调生职位信息
+function careerFun(client, student_id, callback) {
+    //client为一个mysql连接对象
+    if (student_id == undefined || student_id == '') {
+        callback(null);
+    }
+    else {
+        var sqlstr = 'select * from xds_career where student_id = "' + student_id + '" order by start_time';
+        client.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+                //throw err;
+            }
+            callback(results);
+        });
+    }
+}
+
+//添加选调生职位信息
+function addcareerFun(client, student_id, body, callback) {
+    //client为一个mysql连接对象
+    if (student_id == undefined || student_id == '') {
+        callback(null);
+    }
+    else if (global.career_levels.contains(body.career_level) == false) {
+        callback(null);
+    }
+    else {
+        //简单防止sql注入
+        body.career_unit = util.stripscript(body.career_unit);
+        body.career_position = util.stripscript(body.career_position);
+        var sqlstr = 'insert into xds_career(student_id,start_time,end_time,unit,position,level) values(\''
+            + student_id + '\',\''
+            + body.career_start_time + '\',\''
+            + body.career_end_time + '\',\''
+            + body.career_unit + '\',\''
+            + body.career_position + '\',\''
+            + body.career_level + '\')';
+        client.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+                //throw err;
+            }
+            callback(results);
+        });
+    }
+}
+
+
 exports.connect = connectServer;
 exports.regFun = regFun;
 exports.loginFun = loginFun;
@@ -150,3 +201,6 @@ exports.xdsFun = xdsFun;
 exports.studentFun = studentFun;
 exports.delstudentFun = delstudentFun;
 exports.updatestudentFun = updatestudentFun;
+
+exports.careerFun = careerFun;
+exports.addcareerFun = addcareerFun;

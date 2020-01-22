@@ -22,18 +22,20 @@
         <table>
             <tr>
                 <th>学号</th>
-                <td><input type="text" name="info_student_id" id="info_student_id" value ="<%= stu_info.student_id %>" disabled></td>
+                <td><input type="text" name="info_student_id" id="info_student_id" value="<%= stu_info.student_id %>"
+                        disabled></td>
 
                 <th>姓名</th>
-                <td><input type="text" name="info_name" id="info_name"  value ="<%= stu_info.name %>" >  </td>
+                <td><input type="text" name="info_name" id="info_name" value="<%= stu_info.name %>"> </td>
 
                 <th>年份</th>
-                <td><input type="text" name="info_year" id="info_year" value="<%= stu_info.year %>">  </td>
+                <td><input type="text" name="info_year" id="info_year" value="<%= stu_info.year %>"> </td>
             </tr>
 
             <tr>
                 <th>省份</th>
-                <td><input type="text" name="info_province" id="info_province" disabled value="<%= stu_info.province %>">  </td>
+                <td><input type="text" name="info_province" id="info_province" disabled
+                        value="<%= stu_info.province %>"> </td>
             </tr>
 
             <tr>
@@ -41,15 +43,108 @@
             </tr>
 
             <tr>
-                <th> <a href="/delstu?student_id=<%= stu_info.student_id %>" ><input type="button" name="delete_stu" id="delete_stu" value="删除该学生" > </a> </th>
+                <th> <a href="/delstu?student_id=<%= stu_info.student_id %>"><input type="button" name="delete_stu"
+                            id="delete_stu" value="删除该学生"> </a> </th>
             </tr>
 
         </table>
     </form>
 </div>
 
+
+
+<% if ( locals.careers) { %>
+
+<div>
+
+    <table border="1px">
+        <caption>职业经历</caption>
+        <tr>
+            <th hidden> id </th>
+            <th>序号</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>单位名称</th>
+            <th>职位名称</th>
+            <th>职级</th>
+            <th>操作</th>
+            <th>删除</th>
+        </tr>
+
+        <% for (i =0 ;i<careers.length;i++) { %>
+        <tr>
+            <form action="/updatecareer?student_id=<%= stu_info.student_id %>">
+                <td hidden><input type="text" name="career_id" id="career_id" value="<%= careers[i].id %>"> </td>
+                <td><%= i+1 %></td>
+                <td><input type="date" name="career_start_time" id="career_start_time"
+                        value="<%=  careers[i].start_time %>" required></td>
+                <td><input type="date" name="career_end_time" id="career_end_time" value="<%= careers[i].end_time %>"
+                        required> </td>
+                <td><input type="text" name="career_unit" id="career_unit" value="<%= careers[i].unit %>" required>
+                </td>
+                <td><input type="text" name="career_position" id="career_position" value="<%= careers[i].position %>"
+                        required> </td>
+
+                <td>
+                    <% if (locals.career_levels) { %>
+                    <select name="career_level" id="career_level">
+                        <% for (j= 0;j<career_levels.length;j++) { %>
+                        <% if(career_levels[j]==careers[i].level) { %>
+                        <option value="<%= career_levels[j] %>" selected> <%= career_levels[j] %></option>
+                        <% } else {%>
+                        <option value="<%= career_levels[j] %>"> <%= career_levels[j] %></option>
+                        <% } }%>
+                    </select>
+                    <% } else {%>
+                    <input type="text" name="career_level" id="career_level" value="" required>
+                    <% } %>
+
+                </td>
+                <td> <input type="submit" value="保存"></td>
+                <td><a href="/delcareer?student_id=<%= stu_info.student_id %>&career_id=<%= careers[i].id %>" > <input type="button" value="删除"> </a></td>
+            </form>
+        </tr>
+
+        <% } %>
+
+
+        <tr>
+            <form action="/addcareer?student_id=<%= stu_info.student_id %>" id="addcareer" method="POST">
+                <td><label><%= careers.length+1 %></label></td>
+                <td><input type="date" name="career_start_time" id="career_start_time" required></td>
+                <td><input type="date" name="career_end_time" id="career_end_time" required> </td>
+                <td><input type="text" name="career_unit" id="career_unit" required> </td>
+                <td><input type="text" name="career_position" id="career_position" required> </td>
+                <td>
+                    <% if (locals.career_levels) { %>
+                    <select name="career_level" id="career_level">
+                        <% for (i= 0;i<career_levels.length;i++) { %>
+                        <option value="<%= career_levels[i] %>"> <%= career_levels[i] %></option>
+                        <% } %>
+                    </select>
+                    <% } else {%>
+                    <input type="text" name="career_level" id="career_level" value="" required>
+                    <% } %>
+
+                </td>
+                <td> <input type="submit" value="添加"></td>
+
+            </form>
+        </tr>
+    </table>
+
+</div>
+
+
+<% }  %>
+
+
+
+
 <% } else if(locals.notfound){ %>
 <label> <%= notfound%> </label>
 <% } %>
+
+
 
 <% include footer %>

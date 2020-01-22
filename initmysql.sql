@@ -33,10 +33,13 @@ CREATE TABLE xds_student
 CREATE TABLE xds_career
 (
   id        int NOT NULL auto_increment,
-  start_time     int DEFAULT '0' NOT NULL,
-  end_time       int DEFAULT '0' NOT NULL,
+  student_id  int DEFAULT '0' NOT NULL,
+  start_time     DATE DEFAULT '2000-01-01' NOT NULL,
+  end_time       DATE DEFAULT '2000-01-01' NOT NULL,
   unit varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
   position varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  level varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+-- level int DEFAULT '0' NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

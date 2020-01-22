@@ -65,6 +65,16 @@ app.use(function (err, req, res, next) {
 });
 
 global.systemtitle = '选调生管理系统';
+global.career_levels = ['办事员', '科员', '副科级', '正科级', '副处级', '正处级', '副厅级', '正厅级', '副部级', '正部级', '其他']
 
+Array.prototype.contains = function (obj) {
+  var index = this.length;
+  while (index--) {
+    if (this[index] === obj) {
+      return true;
+    }
+  }
+  return false;
+}
 
 module.exports = app;
