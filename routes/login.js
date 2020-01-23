@@ -5,6 +5,8 @@ var usr = require('../common/dbConnect');
 var myutil = require('../common/myutil');
 var crypto = require('crypto');
 
+
+
 function cryptPwd(password) {
     var md5 = crypto.createHash('md5');
     return md5.update(password).digest('hex');
@@ -39,15 +41,12 @@ router.route('/reg')
 
         usr.regFun(client, req.body.username, cryptPwd(req.body.password2), function (err) {
 
-            if (err) {
+            if (err == null || err.message != '') {
                 return res.send('注册失败,用户名已经被占用');
                 //  throw err;
             }
             else
                 res.send('注册成功');
-        });
-        client.end(function (err) {
-            // The connection is terminated now
         });
 
     });
@@ -62,7 +61,6 @@ router.route('/')
             res.render('login', { title: global.systemtitle, test: res.locals.islogin });
     })
     .post(function (req, res) {
-
         client = usr.connect();
         result = null;
         usr.loginFun(client, req.body.username, function (result) {
