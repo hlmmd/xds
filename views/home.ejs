@@ -1,7 +1,9 @@
 <% include header %>
-用户：<%= user %>
-<br></br>
+
 身份：<%= type %>
-<h1> 欢迎登录</h1>
+
+<div class="alert alert-info" role="alert">
+    <strong><%= user %></strong> ,欢迎登录!
+</div>
 
 <% include footer %>
