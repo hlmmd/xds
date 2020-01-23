@@ -5,12 +5,21 @@
     <meta charset="UTF-8" />
     <title>登录</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-theme.min.css">
+    <script src="javascripts/jquery.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
 </head>
 
 
 <div class="container">
+
     <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post">
+        <div class="page-header text-center">
+            <h1> <%= title %> </h1>
+        </div>
         <fieldset>
+
             <% if(locals.islogin) { %>
             <meta http-equiv="refresh" content="0;url=/logout">
             <% } else{ %>
@@ -30,8 +39,15 @@
                 <div class="col-sm-offset-3 col-sm-9">
                     <button type="submit" class="btn btn-primary">登录</button>
                 </div>
+
             </div>
-            <a class="btn" href="/reg">注册</a>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <a class="btn btn-danger" href="/reg">注册</a>
+                </div>
+            </div>
+
+            <% //    <a  class="form-group" href="/reg">注册</a>  %>
             <% } %>
         </fieldset>
     </form>

@@ -5,16 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 //var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var LoginRouter = require('./routes/login');
-var regRouter = require('./routes/reg');
 
 var xdsRouter = require('./routes/xds')
 var studentRouter = require('./routes/student')
 //add
 var session = require('express-session');
-
 var app = express();
 
 
@@ -40,11 +37,7 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
 app.use('/', LoginRouter);
-app.use('/', regRouter);
 app.use('/', xdsRouter);
 app.use('/', studentRouter);
 
@@ -75,6 +68,8 @@ global.provinces = ['北京市', '天津市', '上海市', '重庆市',
   '甘肃省', '青海省', '台湾省', '内蒙古自治区',
   '广西壮族自治区', '西藏自治区', '宁夏回族自治区',
   '新疆维吾尔自治区', '香港特别行政区', '澳门特别行政区'];
+
+global.enablereg = true;
 
 
 

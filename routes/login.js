@@ -27,13 +27,39 @@ function user_type_string(type) {
         return null;
 }
 
+
+//注册功能
+router.route('/reg')
+    .get(function (req, res) {
+        if (util.checklogin(req, res) == false)
+            res.render('reg', { title: '注册' });
+    })
+    .post(function (req, res) {
+        client = usr.connect();
+
+        usr.regFun(client, req.body.username, cryptPwd(req.body.password2), function (err) {
+
+            if (err) {
+                return res.send('注册失败,用户名已经被占用');
+                //  throw err;
+            }
+            else
+                res.send('注册成功');
+        });
+        client.end(function (err) {
+            // The connection is terminated now
+        });
+
+    });
+
+
 router.route('/')
     .get(function (req, res) {
         if (util.checklogin(req, res) == true) {
-            res.render('home', { title: global.systemtitle , user: res.locals.islogin, type: user_type_string(req.cookies.type) });
+            res.render('home', { title: global.systemtitle, user: res.locals.islogin, type: user_type_string(req.cookies.type) });
         }
         else
-            res.render('login', { title: '用户登录', test: res.locals.islogin });
+            res.render('login', { title: global.systemtitle, test: res.locals.islogin });
     })
     .post(function (req, res) {
 
@@ -48,7 +74,7 @@ router.route('/')
                     res.locals.islogin = req.session.islogin;
                     //100分钟后cookie清空
                     res.cookie('islogin', res.locals.islogin, { maxAge: 6000000 });
-                    res.cookie('type', result[0].type,{ maxAge: 6000000 });
+                    res.cookie('type', result[0].type, { maxAge: 6000000 });
                     res.redirect('/home');
                 } else {
                     res.redirect('/');
@@ -70,7 +96,7 @@ router.get('/home', function (req, res) {
         res.redirect('/');
     }
     else
-        res.render('home', { title: global.systemtitle , user: res.locals.islogin, type: user_type_string(req.cookies.type) });
+        res.render('home', { title: global.systemtitle, user: res.locals.islogin, type: user_type_string(req.cookies.type) });
 });
 
 module.exports = router;
