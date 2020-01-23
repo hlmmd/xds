@@ -29,7 +29,7 @@ function user_type_string(type) {
         return null;
 }
 
-
+//TODO
 //注册功能
 router.route('/reg')
     .get(function (req, res) {
@@ -40,7 +40,6 @@ router.route('/reg')
         client = usr.connect();
 
         usr.regFun(client, req.body.username, cryptPwd(req.body.password2), function (err) {
-
             if (err == null || err.message != '') {
                 return res.send('注册失败,用户名已经被占用');
                 //  throw err;
@@ -61,6 +60,12 @@ router.route('/')
             res.render('login', { title: global.systemtitle, test: res.locals.islogin });
     })
     .post(function (req, res) {
+
+        //检查用户名是否为空，或者是否可能发生sql注入
+        if (req.body.username == '' || req.body.username != myutil.stripscript(req.body.username)) {
+            res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });
+            return;
+        }
         client = usr.connect();
         result = null;
         usr.loginFun(client, req.body.username, function (result) {
@@ -72,8 +77,7 @@ router.route('/')
                 res.cookie('type', result[0].type, { maxAge: 6000000 });
                 res.redirect('/home');
             }
-            else { //用户名不存在或者密码错误                
-
+            else { //用户名不存在或者密码错误      
                 res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });
             }
         });
@@ -90,6 +94,7 @@ router.get('/home', function (req, res) {
 
     if (myutil.checklogin(req, res) == false) {
         res.redirect('/');
+        return ;
     }
     else
         res.render('home', { title: global.systemtitle, user: res.locals.islogin, type: user_type_string(req.cookies.type) });

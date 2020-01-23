@@ -1,7 +1,8 @@
 var mysql = require('mysql');
 var myutil = require('./myutil');
-
 var util = require('util');
+
+//所有参数在调用sql之前检查。
 
 function connectServer() {
     var client = mysql.createConnection({
@@ -16,14 +17,7 @@ function connectServer() {
 }
 
 function loginFun(client, username, callback) {
-    //client为一个mysql连接对象
-    if (username === undefined) {
-        callback(null);
-        return;
-    }
-
-    username = myutil.stripscript(username);
-
+    
     var sqlstr = util.format('select password,type from xds_users where username="%s"', username);
 
     client.query(sqlstr, function (err, results, fields) {
@@ -35,10 +29,6 @@ function loginFun(client, username, callback) {
 }
 
 function regFun(client, username, password, callback) {
-    if (username === undefined || password === undefined || (username != myutil.stripscript(username))) {
-        callback(null);
-        return;
-    }
 
     var sqlstr = util.format('insert into xds_users (username,password) value("%s","%s")', username, password);
 
@@ -52,11 +42,6 @@ function regFun(client, username, password, callback) {
 
 //按年份和省份查询选调生信息
 function xdsFun(client, year, province, callback) {
-
-    if (isNaN(year) || isNaN(province)) {
-        callback(null);
-        return;
-    }
 
     var sqlstr = '';
     if (year == '' && province == '') {
@@ -96,11 +81,7 @@ function xdsyearsFun(client, callback) {
 
 //按学号查询选调生信息
 function studentFun(client, student_id, callback) {
-    //client为一个mysql连接对象
-    if (student_id == undefined || student_id == '') {
-        callback(null);
-        return;
-    }
+  
     var sqlstr = util.format(' select * from xds_student where student_id = "%d"', student_id);
 
     client.query(sqlstr, function (err, results, fields) {
@@ -114,10 +95,7 @@ function studentFun(client, student_id, callback) {
 
 //按学号删除选调生
 function delstudentFun(client, student_id, callback) {
-    if (student_id == undefined || student_id == '') {
-        callback(null);
-        returnn;
-    }
+  
     var sqlstr = util.format('delete from xds_student where student_id = "%d"', student_id);
     client.query(sqlstr, function (err, results, fields) {
         if (err) {
@@ -130,12 +108,9 @@ function delstudentFun(client, student_id, callback) {
 
 //修改选调生信息
 function updatestudentFun(client, student_id, body, callback) {
-    if (isNaN(student_id)) {
-        callback(null);
-        return;
-    }
-
-    var sqlstr = util.format('update xds_student set name ="%s" ,year="%d" where student_id="%d"', body.info_name, body.info_year, student_id);
+   
+    var sqlstr = util.format('update xds_student set name ="%s" ,year="%d" where student_id="%d"',
+        body.info_name, body.info_year, student_id);
 
     client.query(sqlstr, function (err, results, fields) {
         if (err) {
@@ -150,10 +125,7 @@ function updatestudentFun(client, student_id, body, callback) {
 
 //按学号查询选调生职位信息
 function careerFun(client, student_id, callback) {
-    if (student_id == undefined || student_id == '') {
-        callback(null);
-        return;
-    }
+    
     var sqlstr = util.format('select * from xds_career where student_id = "%d" order by start_time', student_id);
     client.query(sqlstr, function (err, results, fields) {
         if (err) {
@@ -165,19 +137,7 @@ function careerFun(client, student_id, callback) {
 
 //添加选调生职位信息
 function addcareerFun(client, student_id, body, callback) {
-    //client为一个mysql连接对象
-    if (student_id == undefined || student_id == '') {
-        callback(null);
-        return;
-    }
-    else if (global.career_levels.contains(body.career_level) == false) {
-        callback(null);
-        return;
-    }
-    //简单防止sql注入
-    body.career_unit = myutil.stripscript(body.career_unit);
-    body.career_position = myutil.stripscript(body.career_position);
-
+    
     var sqlstr = util.format('insert into xds_career(student_id,start_time,end_time,unit,position,level) values ("%d","%s","%s","%s","%s","%s")',
         student_id, body.career_start_time, body.career_end_time,
         body.career_unit, body.career_position, body.career_level);
@@ -193,11 +153,7 @@ function addcareerFun(client, student_id, body, callback) {
 
 //按学号删除选调生
 function delcareerFun(client, student_id, career_id, callback) {
-    if (isNaN(student_id) || isNaN(career_id)) {
-        callback(null);
-        return;
-    }
-
+   
     var sqlstr = util.format('delete from xds_career where student_id = "%d" and id="%d"',
         student_id, career_id);
 
@@ -209,15 +165,9 @@ function delcareerFun(client, student_id, career_id, callback) {
     });
 }
 
-
-
 //修改选调生信息
 function updatecareerFun(client, student_id, body, callback) {
-    if (isNaN(student_id)) {
-        callback(null);
-        return;
-    }
-
+  
     var sqlstr = util.format('update xds_career set start_time ="%s", end_time="%s",unit="%s",position="%s",level="%s" where student_id="%d" and id="%d"',
         body.career_start_time, body.career_end_time, body.career_unit, body.career_position,
         body.career_level, student_id, body.career_id);

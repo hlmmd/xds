@@ -10,24 +10,26 @@ router.get('/xds', function (req, res) {
     }
     client = usr.connect();
     years = null;
-    years = usr.xdsyearsFun(client, function (years) {
+    usr.xdsyearsFun(client, function (years) {
+        //req.query未定义，说明是尚未查询，直接渲染
         if (req.query.year === undefined && req.query.province === undefined) {
-            res.render('xds', { title: global.systemtitle, years: years, provinces: global.provinces });
+            return res.render('xds', { title: global.systemtitle, years: years, provinces: global.provinces });
         }
         else if (isNaN(req.query.year) || isNaN(req.query.province)) {
-            res.redirect('/xds');
+            //已经查询，Url不合法，跳转到/xds页面
+            return res.redirect('/xds');
         }
         else {
+            //合法查询
             result = null;
             usr.xdsFun(client, req.query.year, req.query.province, function (result) {
-                res.render('xds', {
+                return res.render('xds', {
                     title: global.systemtitle, years: years, provinces: global.provinces, students: result,
                     year: req.query.year, province_id: req.query.province
                 });
             });
         }
     });
-
 
 });
 

@@ -5,38 +5,38 @@ var myutil = require('../common/myutil');
 
 router.get('/student', function (req, res) {
     if (myutil.checklogin(req, res) == false) {
-        res.redirect('/');
+        return res.redirect('/');
+    }
+
+    //初始学生信息查询页面
+    if (req.query.student_id == undefined) {
+        return res.render('student', { title: global.systemtitle });
+    }
+    else if (isNaN(req.query.student_id) || req.query.student_id == '') {
+        //查询不合法
+        return res.redirect('/student');
     }
     else {
-        if (req.query.student_id == undefined)
-            res.render('student', { title: global.systemtitle });
-        else if (isNaN(req.query.student_id) || req.query.student_id == '')
-            res.redirect('/student');
-        else {
-            client = usr.connect();
-            result = null;
-            usr.studentFun(client, req.query.student_id, function (result) {
-                if (result == null) {
-                    res.render('student', { title: global.systemtitle });
-                }
-                else if (result[0] !== undefined) {
-                    result[0].province = myutil.getprovincename(result[0].province_id);
+        client = usr.connect();
+        result = null;
+        usr.studentFun(client, req.query.student_id, function (result) {
+            if (result[0] !== undefined) {
+                result[0].province = myutil.getprovincename(result[0].province_id);
 
-                    //继续读取career信息
-                    cresult = null;
-                    usr.careerFun(client, req.query.student_id, function (cresult) {
-                        for (i = 0; i < cresult.length; i++) {
-                            cresult[i].start_time = myutil.Datetoyyyymmdd(cresult[i].start_time);
-                            cresult[i].end_time = myutil.Datetoyyyymmdd(cresult[i].end_time);
-                        }
-                        res.render('student', { title: global.systemtitle, stu_info: result[0], careers: cresult, career_levels: global.career_levels });
-                    });
-                }
-                else {
-                    res.render('student', { title: global.systemtitle, notfound: '未找到' });
-                }
-            });
-        }
+                //继续读取career信息
+                cresult = null;
+                usr.careerFun(client, req.query.student_id, function (cresult) {
+                    for (i = 0; i < cresult.length; i++) {
+                        cresult[i].start_time = myutil.Datetoyyyymmdd(cresult[i].start_time);
+                        cresult[i].end_time = myutil.Datetoyyyymmdd(cresult[i].end_time);
+                    }
+                    return res.render('student', { title: global.systemtitle, stu_info: result[0], careers: cresult, career_levels: global.career_levels });
+                });
+            }
+            else {
+                return res.render('student', { title: global.systemtitle, notfound: '未找到' });
+            }
+        });
     }
 });
 
@@ -44,67 +44,88 @@ router.get('/student', function (req, res) {
 //修改学生信息
 router.post('/student', function (req, res) {
     if (myutil.checklogin(req, res) == false) {
-        res.redirect('/');
+        return res.redirect('/');
     }
-    else {
-        client = usr.connect();
-        result = null;
 
-        usr.updatestudentFun(client, req.query.student_id, req.body, function (result) {
-            res.redirect('/student?student_id=' + req.query.student_id);
-            //res.render('student', { title: global.systemtitle, students: result });
-        });
+    if (isNaN(student_id) || student_id == '') {
+        return res.redirect('/student');
     }
+    //name sql注入检查
+    if (req.body.info_name != myutil.stripscript(req.body.info_name)) {
+        //TODO 渲染错误提示，非法字符
+        return res.redirect('/student');
+    }
+    //year检查
+    if (isNaN(req.body.info_year) || req.body.info_year == '') {
+        return res.redirect('/student');
+    }
+
+    client = usr.connect();
+    result = null;
+    usr.updatestudentFun(client, req.query.student_id, req.body, function (result) {
+        return res.redirect('/student?student_id=' + req.query.student_id);
+    });
 });
 
+//删除学生
 router.get('/delstu', function (req, res) {
-    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
-        || (req.query.student_id == '') || isNaN(req.query.student_id)) {
-        res.redirect('/');
+    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+        || (req.query.student_id == '')) {
+        return res.redirect('/student');
     }
     else {
         client = usr.connect();
         result = null;
         usr.delstudentFun(client, req.query.student_id, function (result) {
-            res.redirect('/student');
+            return res.redirect('/student');
         });
     }
 });
 
 //添加工作经历
 router.post('/addcareer', function (req, res) {
-    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
-        || (req.query.student_id == '') || isNaN(req.query.student_id)) {
-        res.redirect('/');
+    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+        || (req.query.student_id == '')) {
+        return res.redirect('/');
     }
     else {
+        //结束时间需要晚于开始时间
+        if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+        //TODO ，错误提示 非法字符
+        if (req.body.career_unit != myutil.stripscript(req.body.career_unit) ||
+            req.body.career_position != myutil.stripscript(req.body.career_position)) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+
+        //检查 career是否是select 中的
+        if (global.career_levels.contains(req.body.career_level) == false) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+
         client = usr.connect();
         result = null;
 
-        if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
-            res.redirect('/student?student_id=' + req.query.student_id);
-        }
-        else {
-            usr.addcareerFun(client, req.query.student_id, req.body, function (result) {
-                res.redirect('/student?student_id=' + req.query.student_id);
-            });
-        }
+        usr.addcareerFun(client, req.query.student_id, req.body, function (result) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        });
     }
 
 });
 
 //删除工作经历
 router.get('/delcareer', function (req, res) {
-    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
-        || (req.query.student_id == '') || isNaN(req.query.student_id)
-        || isNaN(req.query.career_id)) {
-        res.redirect('/');
+    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+        || (req.query.student_id == '') || isNaN(req.query.career_id)
+        || req.query.career_id == '') {
+        return res.redirect('/');
     }
     else {
         client = usr.connect();
         result = null;
         usr.delcareerFun(client, req.query.student_id, req.query.career_id, function (result) {
-            res.redirect('/student?student_id=' + req.query.student_id);
+            return res.redirect('/student?student_id=' + req.query.student_id);
         });
     }
 });
@@ -112,22 +133,34 @@ router.get('/delcareer', function (req, res) {
 
 //修改工作经历
 router.post('/updatecareer', function (req, res) {
-    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
-        || (req.query.student_id == '') || isNaN(req.query.student_id)) {
+    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+        || (req.query.student_id == '')) {
         res.redirect('/');
     }
     else {
+
+
+        //结束时间需要晚于开始时间
+        if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+        //TODO ，错误提示 非法字符
+        if (req.body.career_unit != myutil.stripscript(req.body.career_unit) ||
+            req.body.career_position != myutil.stripscript(req.body.career_position)) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+
+        //检查 career是否是select 中的
+        if (global.career_levels.contains(req.body.career_level) == false) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+
         client = usr.connect();
         result = null;
 
-        if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
+        usr.updatecareerFun(client, req.query.student_id, req.body, function (result) {
             res.redirect('/student?student_id=' + req.query.student_id);
-        }
-        else {
-            usr.updatecareerFun(client, req.query.student_id, req.body, function (result) {
-                res.redirect('/student?student_id=' + req.query.student_id);
-            });
-        }
+        });
     }
 });
 

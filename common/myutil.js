@@ -1,6 +1,6 @@
 
 function checklogin(req, res) {
-    return true;
+  //  return true;
     if (req.session.islogin) {
         res.locals.islogin = req.session.islogin;
     }
