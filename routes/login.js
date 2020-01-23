@@ -63,10 +63,6 @@ router.route('/')
     })
     .post(function (req, res) {
 
-        var s1 = 'xx';
-        var s2 = 'bb';
-        var sql = 'select a from b where a = :${s1} b = :${s2}';
-        console.log(sql);
         client = usr.connect();
         result = null;
         usr.loginFun(client, req.body.username, function (result) {
@@ -94,7 +90,7 @@ router.get('/logout', function (req, res) {
 
 router.get('/home', function (req, res) {
 
-    if (util.checklogin(req, res) == false) {
+    if (myutil.checklogin(req, res) == false) {
         res.redirect('/');
     }
     else
