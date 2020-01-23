@@ -6,24 +6,30 @@ var util = require('../common/util');
 
 router.get('/xds', function (req, res) {
     if (util.checklogin(req, res) == false) {
-        res.redirect('/');
+        return res.redirect('/');
     }
-    else if (req.query.year === undefined && req.query.province === undefined) {
-        res.render('xds', { title: global.systemtitle, provinces: global.provinces });
-    }
-    else if (isNaN(req.query.year) || isNaN(req.query.province)) {
-        res.redirect('/xds');
-    }
-    else {
-        client = usr.connect();
-        result = null;
-        usr.xdsFun(client, req.query.year, req.query.province, function (result) {
-            res.render('xds', {
-                title: global.systemtitle, provinces: global.provinces, students: result,
-                year: req.query.year, province_id: req.query.province
+    client = usr.connect();
+
+    years = null;
+    years = usr.xdsyearsFun(client, function (years) {        
+        if (req.query.year === undefined && req.query.province === undefined) {
+            res.render('xds', { title: global.systemtitle, years: years, provinces: global.provinces });
+        }
+        else if (isNaN(req.query.year) || isNaN(req.query.province)) {
+            res.redirect('/xds');
+        }
+        else {
+            result = null;
+            usr.xdsFun(client, req.query.year, req.query.province, function (result) {
+                res.render('xds', {
+                    title: global.systemtitle, years: years, provinces: global.provinces, students: result,
+                    year: req.query.year, province_id: req.query.province
+                });
             });
-        });
-    }
+        }
+    });
+
+
 });
 
 // router.post('/xds', function (req, res) {

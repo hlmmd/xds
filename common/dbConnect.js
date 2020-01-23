@@ -83,6 +83,20 @@ function xdsFun(client, year, province, callback) {
 
 }
 
+function xdsyearsFun(client, callback) {
+    //client为一个mysql连接对象
+
+    var sqlstr = 'select distinct year from xds_student order by year; ';
+    results = null;
+    client.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+            //throw err;
+        }
+        callback(results);
+    });
+}
+
 
 //按学号查询选调生信息
 function studentFun(client, student_id, callback) {
@@ -243,7 +257,10 @@ function updatecareerFun(client, student_id, body, callback) {
 exports.connect = connectServer;
 exports.regFun = regFun;
 exports.loginFun = loginFun;
+
 exports.xdsFun = xdsFun;
+exports.xdsyearsFun = xdsyearsFun;
+
 exports.studentFun = studentFun;
 exports.delstudentFun = delstudentFun;
 exports.updatestudentFun = updatestudentFun;
