@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var util = require('./util');
+var util = require('./myutil');
 
 function connectServer() {
     var client = mysql.createConnection({

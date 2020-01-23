@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var usr = require('../common/dbConnect');
-var util = require('../common/util');
+var myutil = require('../common/myutil');
 
 router.get('/student', function (req, res) {
-    if (util.checklogin(req, res) == false) {
+    if (myutil.checklogin(req, res) == false) {
         res.redirect('/');
     }
     else {
@@ -20,14 +20,14 @@ router.get('/student', function (req, res) {
                     res.render('student', { title: global.systemtitle });
                 }
                 else if (result[0] !== undefined) {
-                    result[0].province = util.getprovincename(result[0].province_id);
+                    result[0].province = myutil.getprovincename(result[0].province_id);
 
                     //继续读取career信息
                     cresult = null;
                     usr.careerFun(client, req.query.student_id, function (cresult) {
                         for (i = 0; i < cresult.length; i++) {
-                            cresult[i].start_time = util.Datetoyyyymmdd(cresult[i].start_time);
-                            cresult[i].end_time = util.Datetoyyyymmdd(cresult[i].end_time);
+                            cresult[i].start_time = myutil.Datetoyyyymmdd(cresult[i].start_time);
+                            cresult[i].end_time = myutil.Datetoyyyymmdd(cresult[i].end_time);
                         }
                         res.render('student', { title: global.systemtitle, stu_info: result[0], careers: cresult, career_levels: global.career_levels });
                     });
@@ -43,7 +43,7 @@ router.get('/student', function (req, res) {
 
 //修改学生信息
 router.post('/student', function (req, res) {
-    if (util.checklogin(req, res) == false) {
+    if (myutil.checklogin(req, res) == false) {
         res.redirect('/');
     }
     else {
@@ -58,7 +58,7 @@ router.post('/student', function (req, res) {
 });
 
 router.get('/delstu', function (req, res) {
-    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
         || (req.query.student_id == '') || isNaN(req.query.student_id)) {
         res.redirect('/');
     }
@@ -73,7 +73,7 @@ router.get('/delstu', function (req, res) {
 
 //添加工作经历
 router.post('/addcareer', function (req, res) {
-    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
         || (req.query.student_id == '') || isNaN(req.query.student_id)) {
         res.redirect('/');
     }
@@ -81,7 +81,7 @@ router.post('/addcareer', function (req, res) {
         client = usr.connect();
         result = null;
 
-        if (util.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
+        if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             res.redirect('/student?student_id=' + req.query.student_id);
         }
         else {
@@ -95,7 +95,7 @@ router.post('/addcareer', function (req, res) {
 
 //删除工作经历
 router.get('/delcareer', function (req, res) {
-    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
         || (req.query.student_id == '') || isNaN(req.query.student_id)
         || isNaN(req.query.career_id)) {
         res.redirect('/');
@@ -112,7 +112,7 @@ router.get('/delcareer', function (req, res) {
 
 //修改工作经历
 router.post('/updatecareer', function (req, res) {
-    if (util.checklogin(req, res) == false || (req.query.student_id == undefined)
+    if (myutil.checklogin(req, res) == false || (req.query.student_id == undefined)
         || (req.query.student_id == '') || isNaN(req.query.student_id)) {
         res.redirect('/');
     }
@@ -120,7 +120,7 @@ router.post('/updatecareer', function (req, res) {
         client = usr.connect();
         result = null;
 
-        if (util.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
+        if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             res.redirect('/student?student_id=' + req.query.student_id);
         }
         else {

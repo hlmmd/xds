@@ -2,7 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var usr = require('../common/dbConnect');
-var util = require('../common/util');
+var myutil = require('../common/myutil');
 var crypto = require('crypto');
 
 function cryptPwd(password) {
@@ -31,7 +31,7 @@ function user_type_string(type) {
 //注册功能
 router.route('/reg')
     .get(function (req, res) {
-        if (util.checklogin(req, res) == false)
+        if (myutil.checklogin(req, res) == false)
             res.render('reg', { title: '注册' });
     })
     .post(function (req, res) {
@@ -55,7 +55,7 @@ router.route('/reg')
 
 router.route('/')
     .get(function (req, res) {
-        if (util.checklogin(req, res) == true) {
+        if (myutil.checklogin(req, res) == true) {
             res.render('home', { title: global.systemtitle, user: res.locals.islogin, type: user_type_string(req.cookies.type) });
         }
         else
@@ -63,6 +63,10 @@ router.route('/')
     })
     .post(function (req, res) {
 
+        var s1 = 'xx';
+        var s2 = 'bb';
+        var sql = 'select a from b where a = :${s1} b = :${s2}';
+        console.log(sql);
         client = usr.connect();
         result = null;
         usr.loginFun(client, req.body.username, function (result) {
