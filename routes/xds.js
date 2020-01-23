@@ -9,9 +9,8 @@ router.get('/xds', function (req, res) {
         return res.redirect('/');
     }
     client = usr.connect();
-
     years = null;
-    years = usr.xdsyearsFun(client, function (years) {        
+    years = usr.xdsyearsFun(client, function (years) {
         if (req.query.year === undefined && req.query.province === undefined) {
             res.render('xds', { title: global.systemtitle, years: years, provinces: global.provinces });
         }

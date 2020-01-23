@@ -7,13 +7,10 @@
         <tr>
             <th>年份</th>
             <% //如果有years就做成下拉框，没有就input %>
-            <% if (locals.years) { %>
+            <% if (locals.years && years!=null) { %>
             <td>
-
                 <select name="year" id="year">
-
                     <option value="">全选</option>
-
                     <% for(i=0;i<years.length;i++) { %>
                     <% if (locals.year && year==years[i].year) { %>
                     <option value="<%= year %>" selected><%= year %></option>
@@ -37,11 +34,7 @@
             <th>省份</th>
             <td>
                 <select name="province" id="province">
-                    <% if (locals.province_id && province_id==100) { %>
-                    <option value="100" selected>全选</option>
-                    <%  } else  { %>
-                    <option value="100">全选</option>
-                    <% } %>
+                    <option value="">全选</option>
                     <% for( i = 0;i<provinces.length;i++) {%>
                     <% if (locals.province_id && province_id==i) { %>
                     <option value="<%= i %>" selected> <%= provinces[i] %> </option>

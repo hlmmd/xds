@@ -40,10 +40,8 @@ function regFun(client, username, password, callback) {
 function xdsFun(client, year, province, callback) {
     //client为一个mysql连接对象
     //province =100 表示全部省份
-    if (year == null)
-        year = '';
 
-    if (year == '' && province == 100) {
+    if (year == '' && province == '') {
         client.query('select student_id,name from xds_student order by year,province_id', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
@@ -52,7 +50,6 @@ function xdsFun(client, year, province, callback) {
             callback(results);
         });
     }
-
     else if (year == '') {
         client.query('select student_id,name from xds_student where province_id="' + province + '" order by year,province_id', function (err, results, fields) {
             if (err) {
@@ -62,7 +59,7 @@ function xdsFun(client, year, province, callback) {
             callback(results);
         });
     }
-    else if (province == 100) {
+    else if (province == '') {
         client.query('select student_id,name from xds_student where year="' + year + '" order by year,province_id', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
