@@ -66,19 +66,17 @@ router.route('/')
         client = usr.connect();
         result = null;
         usr.loginFun(client, req.body.username, function (result) {
-            if (result[0] === undefined) {
-                res.send('没有该用户');
-            } else {
-                if (result[0].password === cryptPwd(req.body.password)) {
-                    req.session.islogin = req.body.username;
-                    res.locals.islogin = req.session.islogin;
-                    //100分钟后cookie清空
-                    res.cookie('islogin', res.locals.islogin, { maxAge: 6000000 });
-                    res.cookie('type', result[0].type, { maxAge: 6000000 });
-                    res.redirect('/home');
-                } else {
-                    res.redirect('/');
-                }
+            if (result[0] !== undefined && result[0].password === cryptPwd(req.body.password)) {
+                req.session.islogin = req.body.username;
+                res.locals.islogin = req.session.islogin;
+                //100分钟后cookie清空,maxAge单位ms
+                res.cookie('islogin', res.locals.islogin, { maxAge: 6000000 });
+                res.cookie('type', result[0].type, { maxAge: 6000000 });
+                res.redirect('/home');
+            }
+            else { //用户名不存在或者密码错误                
+
+                res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });
             }
         });
     });
