@@ -40,7 +40,9 @@ CREATE TABLE xds_career
   position varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
   level varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 -- level int DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+-- 外键级联删除/更新，学生被删除后，自动删除其对应的工作经历  
+  foreign key (student_id) references xds_student(student_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO xds_student (name,student_id,year, province_id) VALUES( 'xx0','0','2017','19');
