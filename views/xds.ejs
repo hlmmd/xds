@@ -64,7 +64,7 @@
                     <% for(j = i;j<students.length && (j<i+6);j++) { %>
                     <td>
                         <a href="/student?student_id=<%= students[j].student_id %>">
-                            <input type="button" value="<%= students[j].student_id + students[j].name %>">
+                            <input type="button" value="<%= students[j].student_id +' '+ students[j].name %>">
                         </a>
                     </td>
                     <% } %>

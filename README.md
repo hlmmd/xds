@@ -30,3 +30,17 @@ express -e test
 安装 mysql
 
 sudo apt install mysql-server
+
+## 项目运行
+
+框架： express+ejs+bootstrap+mysql
+
+```bash
+git clone https://github.com/hlmmd/xds
+cd xds
+npm install
+mysql -uusername -ppassword < initmysql.sql
+npm start
+```
+
+浏览器127.0.0.1:3000访问
