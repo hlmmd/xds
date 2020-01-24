@@ -10,6 +10,15 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav ">
 
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                  </div>
+
                 <% if(locals.navbar_active && navbar_active=='home') { %>
                 <li class="active"><a href="/home">主页</a></li>
                 <% } else { %>
@@ -61,9 +70,9 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <% if(locals.navbar_active && navbar_active=='about') { %>
-                <li class="active"><a href="/about">关于</a></li>
+                <li class="active"><a href="/#">关于</a></li>
                 <% } else { %>
-                <li><a href="/about">关于</a></li>
+                <li><a href="/#">关于</a></li>
                 <% } %>
 
                 <li><a href="/logout">注销</a></li>
@@ -74,5 +83,3 @@
     <!--/.container-fluid -->
 </nav>
 
-
-<article>

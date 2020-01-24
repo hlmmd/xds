@@ -1,79 +1,86 @@
 <% include header %>
 
-<h1> 选调生信息</h1>
 
-<form method="get" id="xdsform">
-    <table>
-        <tr>
-            <th>年份</th>
+<div class="page-header">
+    <h3>选调生查询</h3>
+</div>
+
+<div>
+    <form method="get" id="xdsform">
+        <div class="form-group controls">
+            <label for="year">年份</label>
+
             <% //如果有years就做成下拉框，没有就input %>
             <% if (locals.years && years!=null) { %>
-            <td>
-                <select name="year" id="year">
-                    <option value="">全选</option>
-                    <% for(i=0;i<years.length;i++) { %>
-                    <% if (locals.year && year==years[i].year) { %>
-                    <option value="<%= year %>" selected><%= year %></option>
-                    <% } else { %>
-                    <option value="<%= years[i].year %>"><%= years[i].year %></option>
-                    <% } %>
-                    <% } %>
+            <select name="year" id="year">
+                <option value="">全选</option>
+                <% for(i=0;i<years.length;i++) { %>
+                <% if (locals.year && year==years[i].year) { %>
+                <option value="<%= year %>" selected><%= year %></option>
+                <% } else { %>
+                <option value="<%= years[i].year %>"><%= years[i].year %></option>
+                <% } %>
+                <% } %>
 
-                </select>
-
-            </td>
+            </select>
             <% } else { %>
             <% if (locals.year) { %>
-            <td><input type="text" name="year" id="year" value="<%= year %>"> </td>
+            <input type="text" name="year" id="year" value="<%= year %>">
             <%  } else  { %>
-            <td><input type="text" name="year" id="year"> </td>
+            <input type="text" name="year" id="year">
             <% } %>
             <% } %>
 
-
-            <th>省份</th>
-            <td>
-                <select name="province" id="province">
-                    <option value="">全选</option>
-                    <% for( i = 0;i<provinces.length;i++) {%>
-                    <% if (locals.province_id && province_id==i) { %>
-                    <option value="<%= i %>" selected> <%= provinces[i] %> </option>
-                    <%  } else  { %>
-                    <option value="<%= i %>"> <%= provinces[i] %> </option>
-                    <% } %>
-                    <% } %>
-                </select>
-            </td>
-
-            <th> <input type="submit" value="查询"></th>
-        </tr>
-
-
-    </table>
-</form>
-
-
+            <label for="province">省份</label>
+            <select name="province" id="province">
+                <option value="">全选</option>
+                <% for( i = 0;i<provinces.length;i++) {%>
+                <% if (locals.province_id && province_id==i) { %>
+                <option value="<%= i %>" selected> <%= provinces[i] %> </option>
+                <%  } else  { %>
+                <option value="<%= i %>"> <%= provinces[i] %> </option>
+                <% } %>
+                <% } %>
+            </select>
+            <input type="submit" value="查询">
+        </div>
+    </form>
+</div>
 
 <% if ( locals.students && students.length>0) { %>
 
-<table>
-    <% // 表格每行4列  %>
-    <% for (i=0;i<students.length;i+=4){ %>
-    <tr>
-        <% for(j = i;j<students.length && (j<i+4);j++) { %>
-        <td>
-            <a href="/student?student_id=<%= students[j].student_id %>">
-                <input type="button" value="<%= students[j].name %>">
-            </a>
-        </td>
-        <% } %>
-    </tr>
-    <% } %>
+<div class="page-header">
+    <h3>查询结果</h3>
+</div>
 
+<div>
+    <table class="table table-bordered table-striped " style="table-layout: fixed;">
+        <tbody>
+            <% // 表格每行6列  %>
+            <% for (i=0;i<students.length;i+=6){ %>
 
-</table>
+            <div class="row col-md-2">
+                <tr>
+                    <% for(j = i;j<students.length && (j<i+6);j++) { %>
+                    <td>
+                        <a href="/student?student_id=<%= students[j].student_id %>">
+                            <input type="button" value="<%= students[j].student_id + students[j].name %>">
+                        </a>
+                    </td>
+                    <% } %>
+                </tr>
+            </div>
 
+            <% } %>
 
-<% } %>
+        </tbody>
+    </table>
+</div>
+
+<% } else if( locals.students && students.length==0){ %>
+<div class="alert alert-warning " role="alert">
+    <strong>未找到符合条件的学生</strong>
+</div>
+<% }  %>
 
 <% include footer %>

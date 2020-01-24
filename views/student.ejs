@@ -16,30 +16,28 @@
 
 <div>
     <form method="post" id="studentinfo">
-        <table>
+        <table class="table table-bordered">
             <tr>
-                <th>学号</th>
+                <td><strong>学号</strong></td>
                 <td><input type="text" name="info_student_id" id="info_student_id" value="<%= stu_info.student_id %>"
                         disabled></td>
 
-                <th>姓名</th>
+                <td><strong>姓名</strong></td>
                 <td><input type="text" name="info_name" id="info_name" value="<%= stu_info.name %>"> </td>
 
-                <th>年份</th>
+                <td><strong>就业年份</strong></td>
                 <td><input type="text" name="info_year" id="info_year" value="<%= stu_info.year %>"> </td>
             </tr>
 
             <tr>
-                <th>省份</th>
+                <td><strong>省份</strong></td>
                 <td><input type="text" name="info_province" id="info_province" disabled
                         value="<%= stu_info.province %>"> </td>
             </tr>
 
             <tr>
-                <th> <input type="submit" value="保存"></th>
+                <td colspan="6" class="text-center"> <input type="submit" value="保存"></td>
             </tr>
-
-
 
         </table>
     </form>
@@ -151,7 +149,5 @@
     <strong><%= notfound%></strong>
 </div>
 <% } %>
-
-
 
 <% include footer %>

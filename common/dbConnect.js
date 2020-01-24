@@ -6,7 +6,6 @@ var util = require('util');
 function connectServer() {
     var client = mysql.createConnection({
         host: 'localhost',
-        //host: '120.27.249.122',
         user: 'root',
         password: 'tj91database',
         database: 'tj91'
@@ -21,7 +20,6 @@ var pool = mysql.createPool({
     password: 'tj91database',
     database: 'tj91'
 });
-
 
 function loginFun(username, callback) {
 

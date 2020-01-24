@@ -35,7 +35,8 @@ router.get('/student', function (req, res) {
                     return res.render('student', {
                         title: global.systemtitle,
                         navbar_active: 'student',
-                        stu_info: result[0], careers: cresult,
+                        stu_info: result[0],
+                        careers: cresult,
                         career_levels: global.career_levels
                     });
                 });
@@ -145,7 +146,6 @@ router.post('/updatecareer', function (req, res) {
         return res.redirect('/');
     }
     else {
-
 
         //结束时间需要晚于开始时间
         if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {

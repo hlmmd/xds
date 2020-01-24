@@ -38,7 +38,7 @@ router.route('/reg')
     })
     .post(function (req, res) {
 
-        usr.regFun( req.body.username, cryptPwd(req.body.password2), function (err) {
+        usr.regFun(req.body.username, cryptPwd(req.body.password2), function (err) {
             if (err == null || err.message != '') {
                 return res.send('注册失败,用户名已经被占用');
                 //  throw err;
@@ -69,8 +69,8 @@ router.route('/')
             return;
         }
         result = null;
-        usr.loginFun( req.body.username, function (result) {
-            if (result[0] !== undefined && result[0].password === cryptPwd(req.body.password)) {
+        usr.loginFun(req.body.username, function (result) {
+            if (result !== undefined && result[0].password === cryptPwd(req.body.password)) {
                 req.session.islogin = req.body.username;
                 res.locals.islogin = req.session.islogin;
                 //100分钟后cookie清空,maxAge单位ms
