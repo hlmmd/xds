@@ -9,8 +9,18 @@
     <div class="container-fluid">
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav ">
+
+                <% if(locals.navbar_active && navbar_active=='home') { %>
                 <li class="active"><a href="/home">主页</a></li>
+                <% } else { %>
+                <li><a href="/home">主页</a></li>
+                <% } %>
+
+                <% if(locals.navbar_active && navbar_active=='student') { %>
+                <li class="dropdown active">
+                    <% } else { %>
                 <li class="dropdown">
+                    <% } %>
                     <a href="/student" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                         aria-expanded="false">学生管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -20,10 +30,24 @@
                     </ul>
                 </li>
 
+                <% if(locals.navbar_active && navbar_active=='xds') { %>
+                <li class="active"> <a href="/xds">选调生查询</a></li>
+                <% } else { %>
                 <li><a href="/xds">选调生查询</a></li>
-                <li><a href="#">选调生工作</a></li>
+                <% } %>
 
+
+                <% if(locals.navbar_active && navbar_active=='event') { %>
+                <li class="active"><a href="#">选调生工作</a></li>
+                <% } else { %>
+                <li><a href="#">选调生工作</a></li>
+                <% } %>
+
+                <% if(locals.navbar_active && navbar_active=='backup') { %>
+                <li class="dropdown active">
+                    <% } else { %>
                 <li class="dropdown">
+                    <% } %>
                     <a href="/student" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                         aria-expanded="false">数据管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -36,7 +60,12 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <% if(locals.navbar_active && navbar_active=='about') { %>
+                <li class="active"><a href="/about">关于</a></li>
+                <% } else { %>
                 <li><a href="/about">关于</a></li>
+                <% } %>
+
                 <li><a href="/logout">注销</a></li>
             </ul>
         </div>

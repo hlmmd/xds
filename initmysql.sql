@@ -36,9 +36,9 @@ CREATE TABLE xds_career
   student_id  int DEFAULT '0' NOT NULL,
   start_time     DATE DEFAULT '2000-01-01' NOT NULL,
   end_time       DATE DEFAULT '2000-01-01' NOT NULL,
-  unit varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
-  position varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
-  level varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  unit varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  position varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  level varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 -- level int DEFAULT '0' NOT NULL,
   PRIMARY KEY (id),
 -- 外键级联删除/更新，学生被删除后，自动删除其对应的工作经历  

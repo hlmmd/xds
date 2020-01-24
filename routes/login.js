@@ -37,9 +37,8 @@ router.route('/reg')
             res.render('reg', { title: '注册' });
     })
     .post(function (req, res) {
-        client = usr.connect();
 
-        usr.regFun(client, req.body.username, cryptPwd(req.body.password2), function (err) {
+        usr.regFun( req.body.username, cryptPwd(req.body.password2), function (err) {
             if (err == null || err.message != '') {
                 return res.send('注册失败,用户名已经被占用');
                 //  throw err;
@@ -54,10 +53,13 @@ router.route('/reg')
 router.route('/')
     .get(function (req, res) {
         if (myutil.checklogin(req, res) == true) {
-            res.render('home', { title: global.systemtitle, user: res.locals.islogin, type: user_type_string(req.cookies.type) });
+            return res.redirect('/home');
         }
         else
-            res.render('login', { title: global.systemtitle, test: res.locals.islogin });
+            return res.render('login', {
+                title: global.systemtitle,
+                test: res.locals.islogin
+            });
     })
     .post(function (req, res) {
 
@@ -66,9 +68,8 @@ router.route('/')
             res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });
             return;
         }
-        client = usr.connect();
         result = null;
-        usr.loginFun(client, req.body.username, function (result) {
+        usr.loginFun( req.body.username, function (result) {
             if (result[0] !== undefined && result[0].password === cryptPwd(req.body.password)) {
                 req.session.islogin = req.body.username;
                 res.locals.islogin = req.session.islogin;
@@ -78,7 +79,10 @@ router.route('/')
                 res.redirect('/home');
             }
             else { //用户名不存在或者密码错误      
-                res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });
+                res.render('login', {
+                    title: global.systemtitle,
+                    errmsg: '用户名或密码错误!'
+                });
             }
         });
     });
@@ -94,10 +98,15 @@ router.get('/home', function (req, res) {
 
     if (myutil.checklogin(req, res) == false) {
         res.redirect('/');
-        return ;
+        return;
     }
     else
-        res.render('home', { title: global.systemtitle, user: res.locals.islogin, type: user_type_string(req.cookies.type) });
+        res.render('home', {
+            title: global.systemtitle,
+            user: res.locals.islogin,
+            type: user_type_string(req.cookies.type),
+            navbar_active: 'home'
+        });
 });
 
 module.exports = router;
