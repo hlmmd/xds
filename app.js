@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 
+
 //var indexRouter = require('./routes/index');
 
 var LoginRouter = require('./routes/login');
@@ -22,6 +23,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+
 
 //modify
 //app.use(cookieParser());

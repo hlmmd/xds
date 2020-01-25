@@ -25,6 +25,8 @@ CREATE TABLE xds_student
   student_id int NOT NULL unique,
   year	int NOT NULL,
   province_id 	int NOT NULL,
+
+  photo_suffix   varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

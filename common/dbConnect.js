@@ -127,6 +127,36 @@ function updatestudentFun(student_id, body, callback) {
 }
 
 
+//修改选调生照片
+function updatephotoFun(student_id, photo_suffix, callback) {
+
+    var sqlstr = util.format('update xds_student set photo_suffix ="%s" where student_id="%d"',
+        photo_suffix, student_id);
+
+    pool.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+
+}
+
+//修改选调生照片
+function deletephotoFun(student_id,  callback) {
+
+    var sqlstr = util.format('update xds_student set photo_suffix ="" where student_id="%d"',
+        student_id);
+
+    pool.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+
+}
+
 
 //按学号查询选调生职位信息
 function careerFun(student_id, callback) {
@@ -199,6 +229,9 @@ exports.xdsyearsFun = xdsyearsFun;
 exports.studentFun = studentFun;
 exports.delstudentFun = delstudentFun;
 exports.updatestudentFun = updatestudentFun;
+exports.updatephotoFun = updatephotoFun;
+exports.deletephotoFun = deletephotoFun;
+
 
 exports.careerFun = careerFun;
 exports.addcareerFun = addcareerFun;

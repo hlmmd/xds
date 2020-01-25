@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 var usr = require('../common/dbConnect');
 var myutil = require('../common/myutil');
+var fs = require('fs');
+//上传文件使用
+var multer = require('multer');
+//上传的文件放在临时文件夹中
+var photomulter = multer({ dest: './public/tmp/' });
 
 router.get('/student', function (req, res) {
     if (myutil.checklogin(req, res) == false) {
@@ -51,6 +56,8 @@ router.get('/student', function (req, res) {
         });
     }
 });
+
+
 
 
 //修改学生信息
@@ -164,11 +171,58 @@ router.post('/updatecareer', function (req, res) {
         result = null;
 
         usr.updatecareerFun(req.query.student_id, req.body, function (result) {
-            res.redirect('/student?student_id=' + req.query.student_id);
+            return res.redirect('/student?student_id=' + req.query.student_id);
         });
     }
 });
 
 
 
+//上传文件，主要用到multer模块和fs模块。
+//TODO 目前采用学号+后缀的命名方式，数据不安全。
+router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
+    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+        || (req.query.student_id == '')) {
+        return res.redirect('/');
+    }
+    if (req.files.length == 0) {
+        return res.redirect('/student?student_id=' + req.query.student_id);
+    }
+    else {
+
+        var oname = req.files[0].originalname.split('.');
+        //获取上传文件后缀
+        var suffix = oname.length > 0 ? oname[oname.length - 1] : '';
+        if (suffix != 'png' && suffix != 'jpg' && suffix != 'gif' && suffix != 'jpeg') {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+
+        //设置文件大小限制10M
+        if (req.files[0].size > 10 * 1024 * 1024) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        }
+
+        var des_file = 'public/student_photo/' + req.query.student_id +
+            (suffix == '' ? '' : ('.' + suffix));
+
+
+        //通过rename 进行move
+        fs.renameSync(req.files[0].path, des_file);
+
+        usr.updatephotoFun(req.query.student_id, suffix, function (result) {
+            return res.redirect('/student?student_id=' + req.query.student_id);
+        });
+    }
+});
+
+router.get('/delstuphoto', function (req, res) {
+    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+        || (req.query.student_id == '')) {
+        return res.redirect('/');
+    }
+    usr.deletephotoFun(req.query.student_id, function (result) {
+        return res.redirect('/student?student_id=' + req.query.student_id);
+    });
+
+});
 module.exports = router
