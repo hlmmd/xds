@@ -5,8 +5,6 @@ var usr = require('../common/dbConnect');
 var myutil = require('../common/myutil');
 var crypto = require('crypto');
 
-
-
 function cryptPwd(password) {
     var md5 = crypto.createHash('md5');
     return md5.update(password).digest('hex');
@@ -37,7 +35,7 @@ router.route('/reg')
             res.render('reg', { title: '注册' });
     })
     .post(function (req, res) {
-
+        return res.send('not yet');
         usr.regFun(req.body.username, cryptPwd(req.body.password2), function (err) {
             if (err == null || err.message != '') {
                 return res.send('注册失败,用户名已经被占用');
@@ -62,6 +60,7 @@ router.route('/')
             });
     })
     .post(function (req, res) {
+
 
         //检查用户名是否为空，或者是否可能发生sql注入
         if (req.body.username == '' || req.body.username != myutil.stripscript(req.body.username)) {

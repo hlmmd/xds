@@ -24,7 +24,7 @@ CREATE TABLE xds_student
   year	int NOT NULL,
   province_id 	int NOT NULL,
   photo_suffix   varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
-  PRIMARY KEY (student_id)  ,
+  PRIMARY KEY (student_id),
 
  -- student_id 是外键，想要删除学生时直接删除学生在xds_users表中的项即可。 
 

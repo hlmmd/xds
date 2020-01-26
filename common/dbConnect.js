@@ -7,14 +7,15 @@ function connectServer() {
     var client = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'tj91database',
-        database: 'tj91'
+        password: '',
+        database: ''
     })
     return client;
 }
 
 //建立mysql连接池
 var pool = mysql.createPool({
+
     host: 'localhost',
     user: 'root',
     password: 'tj91database',
@@ -22,6 +23,8 @@ var pool = mysql.createPool({
 });
 
 function loginFun(username, callback) {
+
+    console.log(global);
 
     var sqlstr = util.format('select password,type from xds_users where username="%s"', username);
 

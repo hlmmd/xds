@@ -10,8 +10,12 @@ var session = require('express-session');
 
 var LoginRouter = require('./routes/login');
 
-var xdsRouter = require('./routes/xds')
-var studentRouter = require('./routes/student')
+var xdsRouter = require('./routes/xds');
+var studentRouter = require('./routes/student');
+
+var databaseRouter = require('./routes/database');
+
+
 //add
 var app = express();
 
@@ -44,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', LoginRouter);
 app.use('/', xdsRouter);
 app.use('/', studentRouter);
+app.use('/', databaseRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -60,6 +65,11 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//数据库用户名密码
+global.databaseuser = 'root';
+global.databasepassword = 'tj91database';
+
 
 global.systemtitle = '选调生管理系统';
 global.career_levels = ['办事员', '科员', '副科级', '正科级', '副处级',
