@@ -1,7 +1,21 @@
+<% if(type== 0) { %>
 <% include header %>
+<% // } else if(type == 1) { %>
+<% // include header_ass %>
+<% } else if(type == 2 ) { %>
+<% include header_stu %>
+<% } %>
 
 <div class="page-header">
-    <h3>身份：<%= type %></h3>
+
+    <% if(type== 0) { %>
+    <h3>身份：管理员</h3>
+    <%  } else if(type == 1) { %>
+    <h3>身份：助管</h3>
+    <% } else if(type == 2 ) { %>
+    <h3>身份：学生</h3>
+    <% } %>
+
 </div>
 
 <div class="alert alert-info" role="alert">

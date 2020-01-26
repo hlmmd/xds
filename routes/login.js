@@ -10,8 +10,6 @@ function cryptPwd(password) {
     return md5.update(password).digest('hex');
 }
 
-
-
 //TODO
 //注册功能
 router.route('/reg')
@@ -86,7 +84,7 @@ router.get('/home', function (req, res) {
         res.render('home', {
             title: global.systemtitle,
             user: res.locals.islogin,
-            type: myutil.user_type_string(req.cookies.type),
+            type: req.cookies.type,
             navbar_active: 'home'
         });
 });
