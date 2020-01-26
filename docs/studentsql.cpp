@@ -35,20 +35,13 @@ int main()
 	// }
 
 	//sql
-	// for (int i = 0; i < student_size; i++)
-	// {
-
-	// 	int year = e() % 5 + 2015;
-	// 	int province_id = e() % 34;
-
-	// 	ostringstream ostr1;
-	// 	ostr1 << "INSERT INTO xds_student (name,student_id,year, province_id) VALUES( \'";
-	// 	ostr1 << "名字" << i << "\',\'1" << e() % 10 << (10000 + i) << "\',\'";
-	// 	ostr1 << year << "\',\'" << province_id << "\');";
-	// 	cout << ostr1.str() << endl;
-	// }
-
-	for (int i = 0; i < student_size; i++)
+	for (int i = 1; i <= student_size; i++)
+	{
+		ostringstream user;
+		user << "INSERT INTO xds_users (id,username, password ) VALUES ("<<i<<","<<" \'" << i << "\',md5(\'" << i << "\'));";
+		cout << user.str() << endl;
+	}
+	for (int i = 1; i <= student_size; i++)
 	{
 
 		int year = e() % 5 + 2015;

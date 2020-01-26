@@ -100,8 +100,9 @@ function studentFun(student_id, callback) {
 
 //按学号删除选调生
 function delstudentFun(student_id, callback) {
-
-    var sqlstr = util.format('delete from xds_student where student_id = "%d"', student_id);
+    //var sqlstr = util.format('delete from xds_student where student_id = "%d"', student_id);
+    //改为直接删除学生用户账号，利用外键级联删除特性直接删除学生
+    var sqlstr = util.format('delete from xds_users where id = "%d"', student_id);
     pool.query(sqlstr, function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
@@ -143,7 +144,7 @@ function updatephotoFun(student_id, photo_suffix, callback) {
 }
 
 //修改选调生照片
-function deletephotoFun(student_id,  callback) {
+function deletephotoFun(student_id, callback) {
 
     var sqlstr = util.format('update xds_student set photo_suffix ="" where student_id="%d"',
         student_id);
