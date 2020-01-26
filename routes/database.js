@@ -16,7 +16,7 @@ var exec = require('child_process').exec;
 
 router.get('/databackup', function (req, res) {
 
-    if (myutil.checklogin(req, res) == false) {
+    if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
 
@@ -28,7 +28,7 @@ router.get('/databackup', function (req, res) {
 
 router.post('/databackup', function (req, res) {
 
-    if (myutil.checklogin(req, res) == false) {
+    if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
 
@@ -45,7 +45,6 @@ router.post('/databackup', function (req, res) {
             console.log(stderr);
             return res.redirect('/');
         } else {
-            //console.log(stdout);
             //res.download(stdout);
             return   res.download(filename);
         }

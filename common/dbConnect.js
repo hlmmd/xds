@@ -24,8 +24,6 @@ var pool = mysql.createPool({
 
 function loginFun(username, callback) {
 
-    console.log(global);
-
     var sqlstr = util.format('select password,type from xds_users where username="%s"', username);
 
     pool.query(sqlstr, function (err, results, fields) {

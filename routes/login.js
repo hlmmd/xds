@@ -10,22 +10,7 @@ function cryptPwd(password) {
     return md5.update(password).digest('hex');
 }
 
-var user_type = {
-    admin: 0,
-    assist: 1,
-    student: 2
-};
 
-function user_type_string(type) {
-    if (type == user_type.admin)
-        return '管理员';
-    else if (type == user_type.assist)
-        return '助管';
-    else if (type == user_type.student)
-        return '学生';
-    else
-        return null;
-}
 
 //TODO
 //注册功能
@@ -95,14 +80,13 @@ router.get('/logout', function (req, res) {
 router.get('/home', function (req, res) {
 
     if (myutil.checklogin(req, res) == false) {
-        res.redirect('/');
-        return;
+        return res.redirect('/');
     }
     else
         res.render('home', {
             title: global.systemtitle,
             user: res.locals.islogin,
-            type: user_type_string(req.cookies.type),
+            type: myutil.user_type_string(req.cookies.type),
             navbar_active: 'home'
         });
 });

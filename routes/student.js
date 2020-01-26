@@ -9,7 +9,7 @@ var multer = require('multer');
 var photomulter = multer({ dest: './public/tmp/' });
 
 router.get('/student', function (req, res) {
-    if (myutil.checklogin(req, res) == false) {
+    if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
 
@@ -62,7 +62,7 @@ router.get('/student', function (req, res) {
 
 //修改学生信息
 router.post('/student', function (req, res) {
-    if (myutil.checklogin(req, res) == false) {
+    if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
 
@@ -87,7 +87,7 @@ router.post('/student', function (req, res) {
 
 //删除学生
 router.get('/delstu', function (req, res) {
-    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
         || (req.query.student_id == '')) {
         return res.redirect('/student');
     }
@@ -101,7 +101,7 @@ router.get('/delstu', function (req, res) {
 
 //添加工作经历
 router.post('/addcareer', function (req, res) {
-    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
         || (req.query.student_id == '')) {
         return res.redirect('/');
     }
@@ -132,7 +132,7 @@ router.post('/addcareer', function (req, res) {
 
 //删除工作经历
 router.get('/delcareer', function (req, res) {
-    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
         || (req.query.student_id == '') || isNaN(req.query.career_id)
         || req.query.career_id == '') {
         return res.redirect('/');
@@ -148,7 +148,7 @@ router.get('/delcareer', function (req, res) {
 
 //修改工作经历
 router.post('/updatecareer', function (req, res) {
-    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
         || (req.query.student_id == '')) {
         return res.redirect('/');
     }
@@ -181,7 +181,7 @@ router.post('/updatecareer', function (req, res) {
 //上传文件，主要用到multer模块和fs模块。
 //TODO 目前采用学号+后缀的命名方式，数据不安全。
 router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
-    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
         || (req.query.student_id == '')) {
         return res.redirect('/');
     }
@@ -216,7 +216,7 @@ router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
 });
 
 router.get('/delstuphoto', function (req, res) {
-    if (myutil.checklogin(req, res) == false || isNaN(req.query.student_id)
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
         || (req.query.student_id == '')) {
         return res.redirect('/');
     }

@@ -1,18 +1,76 @@
 
+var user_type = {
+    admin: 0,
+    assist: 1,
+    student: 2
+};
+
+function user_type_string(type) {
+    if (type == user_type.admin)
+        return '管理员';
+    else if (type == user_type.assist)
+        return '助管';
+    else if (type == user_type.student)
+        return '学生';
+    else
+        return null;
+}
+
 function checklogin(req, res) {
-  //  return true;
-
-    console.log(req.locals);
-    console.log(req.session);
-
+    //  return true;
     if (req.session.islogin) {
         res.locals.islogin = req.session.islogin;
     }
     else {
         return false;
     }
-    if (req.cookies.islogin) {
-        req.session.islogin = req.cookies.islogin;
+    return true;
+}
+
+function checklogin_student(req, res) {
+    //  return true;
+    if (req.session.islogin) {
+        res.locals.islogin = req.session.islogin;
+    }
+    else {
+        return false;
+    }
+    if (req.cookies.type && req.cookies.type == user_type.student) {
+        // res.locals.type = req.cookies.type;
+    }
+    else {
+        return false;
+    }
+    return true;
+}
+
+function checklogin_assist(req, res) {
+    //  return true;
+    if (req.session.islogin) {
+        res.locals.islogin = req.session.islogin;
+    }
+    else {
+        return false;
+    }
+    if (req.cookies.type && req.cookies.type == user_type.assist) {
+        // res.locals.type = req.cookies.type;
+    }
+    else {
+        return false;
+    }
+    return true;
+}
+
+function checklogin_admin(req, res) {
+    //  return true;
+    if (req.session.islogin) {
+        res.locals.islogin = req.session.islogin;
+    }
+    else {
+        return false;
+    }
+    if (req.cookies.type && req.cookies.type == user_type.admin) {
+        // res.locals.type = req.cookies.type;
     }
     else {
         return false;
@@ -65,6 +123,10 @@ function endgestart(start_time, end_time) {
 }
 
 exports.checklogin = checklogin
+exports.checklogin_student = checklogin_student
+exports.checklogin_assist = checklogin_assist
+exports.checklogin_admin = checklogin_admin
+exports.user_type_string = user_type_string
 exports.getprovincename = getprovincename
 exports.stripscript = stripscript
 exports.Datetoyyyymmdd = Datetoyyyymmdd

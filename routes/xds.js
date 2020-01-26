@@ -5,7 +5,7 @@ var usr = require('../common/dbConnect');
 var myutil = require('../common/myutil');
 
 router.get('/xds', function (req, res) {
-    if (myutil.checklogin(req, res) == false) {
+    if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
     years = null;
