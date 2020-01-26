@@ -31,6 +31,8 @@ express -e test
 
 sudo apt install mysql-server
 
+**数据库用户名密码需要在app.js和common/dbConnect.js中修改**
+
 ## 项目运行
 
 框架： express+ejs+bootstrap+mysql
