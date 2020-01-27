@@ -34,6 +34,18 @@ function loginFun(username, callback) {
     });
 }
 
+function updatepasswordFun(username,password,callback) {
+
+    var sqlstr = util.format('update  xds_users set password ="%s" where username="%s"', password, username);
+
+    pool.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
 function regFun(username, password, callback) {
 
     var sqlstr = util.format('insert into xds_users (username,password) value("%s","%s")', username, password);
@@ -224,6 +236,7 @@ function updatecareerFun(student_id, body, callback) {
 exports.connect = connectServer;
 exports.regFun = regFun;
 exports.loginFun = loginFun;
+exports.updatepasswordFun = updatepasswordFun;
 
 exports.xdsFun = xdsFun;
 exports.xdsyearsFun = xdsyearsFun;
