@@ -57,9 +57,6 @@ router.get('/student', function (req, res) {
     }
 });
 
-
-
-
 //修改学生信息
 router.post('/student', function (req, res) {
     if (myutil.checklogin_admin(req, res) == false) {
@@ -67,11 +64,6 @@ router.post('/student', function (req, res) {
     }
 
     if (isNaN(req.query.student_id) || req.query.student_id == '') {
-        return res.redirect('/student');
-    }
-    //name sql注入检查
-    if (req.body.info_name != myutil.stripscript(req.body.info_name)) {
-        //TODO 渲染错误提示，非法字符
         return res.redirect('/student');
     }
     //year检查
@@ -110,12 +102,7 @@ router.post('/addcareer', function (req, res) {
         if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             return res.redirect('/student?student_id=' + req.query.student_id);
         }
-        //TODO ，错误提示 非法字符
-        if (req.body.career_unit != myutil.stripscript(req.body.career_unit) ||
-            req.body.career_position != myutil.stripscript(req.body.career_position)) {
-            return res.redirect('/student?student_id=' + req.query.student_id);
-        }
-
+    
         //检查 career是否是select 中的
         if (global.career_levels.contains(req.body.career_level) == false) {
             return res.redirect('/student?student_id=' + req.query.student_id);
@@ -158,11 +145,6 @@ router.post('/updatecareer', function (req, res) {
         if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             return res.redirect('/student?student_id=' + req.query.student_id);
         }
-        //TODO ，错误提示 非法字符
-        if (req.body.career_unit != myutil.stripscript(req.body.career_unit) ||
-            req.body.career_position != myutil.stripscript(req.body.career_position)) {
-            return res.redirect('/student?student_id=' + req.query.student_id);
-        }
 
         //检查 career是否是select 中的
         if (global.career_levels.contains(req.body.career_level) == false) {
@@ -194,11 +176,13 @@ router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
         //获取上传文件后缀
         var suffix = oname.length > 0 ? oname[oname.length - 1] : '';
         if (suffix != 'png' && suffix != 'jpg' && suffix != 'gif' && suffix != 'jpeg') {
+            fs.unlinkSync(req.files[0].path);
             return res.redirect('/student?student_id=' + req.query.student_id);
         }
 
         //设置文件大小限制10M
         if (req.files[0].size > 10 * 1024 * 1024) {
+            fs.unlinkSync(req.files[0].path);
             return res.redirect('/student?student_id=' + req.query.student_id);
         }
 
@@ -225,4 +209,15 @@ router.get('/delstuphoto', function (req, res) {
     });
 
 });
+
+router.get('/student_stu', function (req, res) {
+
+    if (myutil.checklogin_student(req, res) == false) {
+        return res.redirect('/');
+    }
+
+    return res.send('not finish yet');
+});
+
+
 module.exports = router

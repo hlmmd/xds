@@ -22,11 +22,11 @@ var pool = mysql.createPool({
     database: 'tj91'
 });
 
+//sql query  ? 占位符，可以避免sql注入问题
+
 function loginFun(username, callback) {
 
-    var sqlstr = util.format('select password,type from xds_users where username="%s"', username);
-
-    pool.query(sqlstr, function (err, results, fields) {
+    pool.query('select password,type from xds_users where username=?', [username], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
@@ -34,11 +34,9 @@ function loginFun(username, callback) {
     });
 }
 
-function updatepasswordFun(username,password,callback) {
+function updatepasswordFun(username, password, callback) {
 
-    var sqlstr = util.format('update  xds_users set password ="%s" where username="%s"', password, username);
-
-    pool.query(sqlstr, function (err, results, fields) {
+    pool.query('update  xds_users set password =? where username=?', [password, username], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
@@ -48,9 +46,7 @@ function updatepasswordFun(username,password,callback) {
 
 function regFun(username, password, callback) {
 
-    var sqlstr = util.format('insert into xds_users (username,password) value("%s","%s")', username, password);
-
-    pool.query(sqlstr, function (err, results, fields) {
+    pool.query('insert into xds_users (username,password) value(?,?)', [username, password], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
@@ -128,15 +124,14 @@ function delstudentFun(student_id, callback) {
 //修改选调生信息
 function updatestudentFun(student_id, body, callback) {
 
-    var sqlstr = util.format('update xds_student set name ="%s" ,year="%d" where student_id="%d"',
-        body.info_name, body.info_year, student_id);
 
-    pool.query(sqlstr, function (err, results, fields) {
-        if (err) {
-            console.log("error:" + err.message);
-        }
-        callback(results);
-    });
+    pool.query('update xds_student set name =? ,year=? where student_id=?',
+        [body.info_name, body.info_year, student_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
 
 }
 
@@ -144,15 +139,14 @@ function updatestudentFun(student_id, body, callback) {
 //修改选调生照片
 function updatephotoFun(student_id, photo_suffix, callback) {
 
-    var sqlstr = util.format('update xds_student set photo_suffix ="%s" where student_id="%d"',
-        photo_suffix, student_id);
 
-    pool.query(sqlstr, function (err, results, fields) {
-        if (err) {
-            console.log("error:" + err.message);
-        }
-        callback(results);
-    });
+    pool.query('update xds_student set photo_suffix =? where student_id=?',
+        [photo_suffix, student_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
 
 }
 
@@ -187,16 +181,14 @@ function careerFun(student_id, callback) {
 //添加选调生职位信息
 function addcareerFun(student_id, body, callback) {
 
-    var sqlstr = util.format('insert into xds_career(student_id,start_time,end_time,unit,position,level) values ("%d","%s","%s","%s","%s","%s")',
-        student_id, body.career_start_time, body.career_end_time,
-        body.career_unit, body.career_position, body.career_level);
-
-    pool.query(sqlstr, function (err, results, fields) {
-        if (err) {
-            console.log("error:" + err.message);
-        }
-        callback(results);
-    });
+    pool.query('insert into xds_career(student_id,start_time,end_time,unit,position,level) values (?,?,?,?,?,?)',
+        [student_id, body.career_start_time, body.career_end_time,
+            body.career_unit, body.career_position, body.career_level], function (err, results, fields) {
+                if (err) {
+                    console.log("error:" + err.message);
+                }
+                callback(results);
+            });
 }
 
 
@@ -217,16 +209,14 @@ function delcareerFun(student_id, career_id, callback) {
 //修改选调生信息
 function updatecareerFun(student_id, body, callback) {
 
-    var sqlstr = util.format('update xds_career set start_time ="%s", end_time="%s",unit="%s",position="%s",level="%s" where student_id="%d" and id="%d"',
-        body.career_start_time, body.career_end_time, body.career_unit, body.career_position,
-        body.career_level, student_id, body.career_id);
-
-    pool.query(sqlstr, function (err, results, fields) {
-        if (err) {
-            console.log("error:" + err.message);
-        }
-        callback(results);
-    });
+    pool.query('update xds_career set start_time =?, end_time=?,unit=?,position=?,level=? where student_id=? and id=?',
+        [body.career_start_time, body.career_end_time, body.career_unit, body.career_position,
+        body.career_level, student_id, body.career_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
 }
 
 
