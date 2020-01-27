@@ -58,6 +58,7 @@ router.route('/')
                 //100分钟后cookie清空,maxAge单位ms
                 res.cookie('islogin', res.locals.islogin, { maxAge: 6000000 });
                 res.cookie('type', result[0].type, { maxAge: 6000000 });
+                res.cookie('user_id', result[0].id, { maxAge: 6000000 });
                 res.redirect('/home');
             }
             else { //用户名不存在或者密码错误      

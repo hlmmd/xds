@@ -248,4 +248,5 @@ INSERT INTO xds_student (name,student_id,year, province_id) VALUES( '名字96','
 INSERT INTO xds_student (name,student_id,year, province_id) VALUES( '名字97','97','2015','27');
 INSERT INTO xds_student (name,student_id,year, province_id) VALUES( '名字98','98','2015','10');
 INSERT INTO xds_student (name,student_id,year, province_id) VALUES( '名字99','99','2017','19');
+INSERT INTO xds_student (name,student_id,year, province_id) VALUES( '名字100','100','2019','22');
 

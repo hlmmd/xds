@@ -26,7 +26,7 @@ var pool = mysql.createPool({
 
 function loginFun(username, callback) {
 
-    pool.query('select password,type from xds_users where username=?', [username], function (err, results, fields) {
+    pool.query('select * from xds_users where username=?', [username], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
