@@ -219,6 +219,75 @@ function updatecareerFun(student_id, body, callback) {
         });
 }
 
+//查询提交信息
+function commentFun(user_id, callback) {
+
+    if (user_id == 0) {
+        pool.query('select * from xds_comment where state!=2 order by state asc, timestamp desc', function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+    }
+    else {
+        pool.query('select * from xds_comment where user_id=? and state!=2  order by state asc, timestamp desc',
+            [user_id], function (err, results, fields) {
+                if (err) {
+                    console.log("error:" + err.message);
+                }
+                callback(results);
+            });
+    }
+}
+
+
+//添加投诉
+function addcommentFun(user_id, body, callback) {
+
+    pool.query('insert into xds_comment(user_id,content ) values(?,?)', [user_id, body.content], function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+
+//删除投诉
+function delcommentFun(user_id, comment_id, callback) {
+    if (user_id == 0) {
+        //   pool.query('delete from xds_comment where comment_id=?', [comment_id], function (err, results, fields) {
+        pool.query('update xds_comment set state = 2 where comment_id=?', [comment_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+    }
+    else {
+
+        pool.query('update xds_comment set state = 2 where user_id=? and comment_id=?', [user_id, comment_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+
+    }
+}
+//处理
+function dealcommentFun(user_id, comment_id, callback) {
+
+    pool.query('update xds_comment set state=1  where user_id=? and comment_id=?', [user_id, comment_id], function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+
+}
+
 
 
 
@@ -242,3 +311,8 @@ exports.careerFun = careerFun;
 exports.addcareerFun = addcareerFun;
 exports.delcareerFun = delcareerFun;
 exports.updatecareerFun = updatecareerFun;
+
+exports.commentFun = commentFun;
+exports.addcommentFun = addcommentFun;
+exports.delcommentFun = delcommentFun;
+exports.dealcommentFun = dealcommentFun;

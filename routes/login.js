@@ -77,18 +77,116 @@ router.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
+//关于
+router.get('/about', function (req, res) {
+    if (myutil.checklogin(req, res) == false) {
+        return res.redirect('/');
+    }
+    else {
+        return res.render('about', {
+            title: global.systemtitle,
+            user: res.locals.islogin,
+            user_id: req.cookies.user_id,
+            type: req.cookies.type,
+            navbar_active: 'about'
+        });
+    }
+});
+
+
 router.get('/home', function (req, res) {
 
     if (myutil.checklogin(req, res) == false) {
         return res.redirect('/');
     }
-    else
-        res.render('home', {
-            title: global.systemtitle,
-            user: res.locals.islogin,
-            type: req.cookies.type,
-            navbar_active: 'home'
+    else if (myutil.checklogin_student(req, res)) {
+        result = null;
+        usr.commentFun(req.cookies.user_id, function (result) {
+
+            for (i = 0; i < result.length; i++) {
+                result[i].timestamp = myutil.Datetoyyyymmdd(result[i].timestamp);
+            }
+            return res.render('home', {
+                title: global.systemtitle,
+                user: res.locals.islogin,
+                user_id: req.cookies.user_id,
+                type: req.cookies.type,
+                navbar_active: 'home',
+                comments: result
+            });
         });
+    }
+    else {
+        result = null;
+        usr.commentFun(0, function (result) {
+
+            for (i = 0; i < result.length; i++) {
+                result[i].timestamp = myutil.Datetoyyyymmdd(result[i].timestamp);
+            }
+
+            return res.render('home', {
+                title: global.systemtitle,
+                user: res.locals.islogin,
+                user_id: req.cookies.user_id,
+                type: req.cookies.type,
+                navbar_active: 'home',
+                comments: result
+            });
+        });
+    }
+
+});
+
+
+
+router.post('/addcomment', function (req, res) {
+
+    if (myutil.checklogin_student(req, res) == false || isNaN(req.query.user_id)
+        || req.query.user_id == ' ') {
+        return res.redirect('/');
+    }
+    else {
+
+        usr.addcommentFun(req.query.user_id, req.body, function (result) {
+            return res.redirect('/home');
+        });
+
+    }
+});
+
+
+router.get('/dealcomment', function (req, res) {
+
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    else if (isNaN(req.query.user_id) || req.query.user_id == ' '
+        || isNaN(req.query.comment_id) || req.query.comment_id == ' ') {
+        return res.redirect('/');
+    }
+    else {
+        usr.dealcommentFun(req.query.user_id, req.query.comment_id, function (err) {
+            return res.redirect('/home');
+        });
+    }
+
+});
+
+router.get('/delcomment', function (req, res) {
+
+    if (myutil.checklogin_admin(req, res) == true) {
+        usr.delcommentFun(0, req.query.comment_id, function (err) {
+            return res.redirect('/home');
+        });
+    }
+    else if (myutil.checklogin_student(req, res) == false) {
+        return res.redirect('/');
+    }
+    else {
+        usr.delcommentFun(req.cookies.user_id, req.query.comment_id, function (err) {
+            return res.redirect('/home');
+        });
+    }
 });
 
 
@@ -115,7 +213,7 @@ router.post('/password', function (req, res) {
         if (req.body.password1 != req.body.password2 || req.body.password2.length < 6) {
             return res.redirect('/password');
         }
-        
+
         //先检查原密码
         result = null;
         usr.loginFun(req.cookies.islogin, function (result) {

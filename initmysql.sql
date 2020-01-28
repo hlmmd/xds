@@ -17,6 +17,7 @@ CREATE TABLE xds_users
 -- 0 admin ,1 assist ,2 student
 INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'tj91', 'e0de3c61693cfeeb39da703c657be46c');
 
+drop table if exists xds_student;
 CREATE TABLE xds_student
 (
   student_id int NOT NULL unique,
@@ -33,6 +34,7 @@ CREATE TABLE xds_student
 
 -- province: /docs/province.txt
 
+drop table if exists xds_career;
 CREATE TABLE xds_career
 (
   id        int NOT NULL auto_increment,
@@ -47,7 +49,18 @@ CREATE TABLE xds_career
   foreign key (student_id) references xds_student(student_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+drop table if exists xds_comment;
+CREATE TABLE xds_comment
+(
+  user_id int NOT NULL,
+  comment_id        int NOT NULL auto_increment,
+  content      varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci , 
+-- 0: 待处理 1:已处理 2:删除
+  state int  DEFAULT '0' not NULL, 
+  timestamp timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (comment_id),
+  foreign key (user_id) references xds_users(id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO xds_users (id,username, password ) VALUES (1, '1',md5('1'));
 INSERT INTO xds_users (id,username, password ) VALUES (2, '2',md5('2'));
