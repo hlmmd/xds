@@ -290,6 +290,19 @@ function dealcommentFun(user_id, comment_id, callback) {
 
 
 
+//添加事件
+function addeventFun(photo_file, body, callback) {
+
+    pool.query('insert into xds_event (photofile,title,content, year,province_id) values(?,?,?,?,?)',
+        [photo_file, body.title, body.content, body.year, body.province], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+
+}
+
 
 
 exports.connect = connectServer;
@@ -316,3 +329,5 @@ exports.commentFun = commentFun;
 exports.addcommentFun = addcommentFun;
 exports.delcommentFun = delcommentFun;
 exports.dealcommentFun = dealcommentFun;
+
+exports.addeventFun = addeventFun;

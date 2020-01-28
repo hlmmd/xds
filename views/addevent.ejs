@@ -1,0 +1,60 @@
+<% include header %>
+
+<div class="page-header">
+    <h3>添加选调生工作</h3>
+</div>
+
+<div class="">
+
+    <form method="post" id="eventform" enctype="multipart/form-data">
+
+        <div class="form-group controls">
+
+            <input type="file" name="photo" id="photo" accept="image/*">
+
+            <label for="photo">上传图片，支持jpg/jpeg/png/gif格式</label>
+        </div>
+
+        <div class="form-group controls">
+
+            <label for="title">主题</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+
+        <div class="form-group controls">
+
+            <label for="content">详情</label>
+            <textarea rows="3" cols="80" id="content" name="content"></textarea>
+        </div>
+
+        <div class="form-group controls">
+
+            <label for="year">年份</label>
+            <input type="text" name="year" id="year" required>
+        </div>
+
+        <div class="form-group controls">
+            <label for="province">省份</label>
+            <select name="province" id="province">
+                <% for( i = 0;i<provinces.length;i++) {%>
+                <% if (locals.province_id && province_id==i) { %>
+                <option value="<%= i %>" selected> <%= provinces[i] %> </option>
+                <%  } else  { %>
+                <option value="<%= i %>"> <%= provinces[i] %> </option>
+                <% } %>
+                <% } %>
+            </select>
+        </div>
+
+        <% //如果有错误消息，则用alert框显示 %>
+        <% if (locals.errmsg) { %>
+        <div class="alert alert-warning form-group"><%= errmsg %> </div>
+        <% } %>
+
+        <div class="form-group controls">
+            <input type="submit" value="添加"></input>
+        </div>
+    </form>
+</div>
+
+<% include footer %>

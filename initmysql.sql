@@ -69,7 +69,9 @@ CREATE TABLE xds_event
   year int DEFAULT '2010' not NULL,
   province_id int DEFAULT '0' not NULL,
   title varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  content varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci,
   photofile  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  timestamp timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (event_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
