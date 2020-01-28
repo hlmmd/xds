@@ -36,7 +36,6 @@
                     <ul class="dropdown-menu">
                         <li><a href="/student">学生信息</a></li>
                         <li><a href="#">添加学生</a></li>
-                        <li><a href="#">搜索</a></li>
                     </ul>
                 </li>
 
@@ -48,10 +47,19 @@
 
 
                 <% if(locals.navbar_active && navbar_active=='event') { %>
-                <li class="active"><a href="#">选调生工作</a></li>
-                <% } else { %>
-                <li><a href="#">选调生工作</a></li>
-                <% } %>
+                <li class="dropdown active">
+                    <% } else { %>
+                <li class="dropdown">
+                    <% } %>
+
+                    <a href="/event" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false">选调生工作<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/event">查询</a></li>
+                        <li><a href="/addevent">添加</a></li>
+                    </ul>
+                </li>
+
 
                 <% if(locals.navbar_active && navbar_active=='backup') { %>
                 <li class="dropdown active">

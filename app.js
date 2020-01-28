@@ -15,6 +15,7 @@ var studentRouter = require('./routes/student');
 
 var databaseRouter = require('./routes/database');
 
+var eventRouter = require('./routes/event');
 
 //add
 var app = express();
@@ -49,6 +50,7 @@ app.use('/', LoginRouter);
 app.use('/', xdsRouter);
 app.use('/', studentRouter);
 app.use('/', databaseRouter);
+app.use('/', eventRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
