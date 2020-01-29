@@ -32,8 +32,7 @@
             </div>
             <input type="file" name="photo" id="photo" accept="image/*">
             <input type="submit" value="保存图片">
-            <a href="/delstuphoto?student_id=<%= stu_info.student_id %>"><input type="button" name="delete_stu_photo"
-                    id="delete_stu_photo" value="删除照片" class="btn btn-danger"> </a>
+            <input onclick="delstuphoto(<%= stu_info.student_id %>)" type="button" value="删除照片" class="btn btn-danger">
         </div>
     </form>
 </div>
@@ -186,5 +185,18 @@
     <strong><%= notfound%></strong>
 </div>
 <% } %>
+
+
+<script>
+    function delstuphoto(student_id) {
+        var r = confirm("确认删除?");
+        if (r == true) {
+            $.post("/delstuphoto", { student_id: student_id }, function (result) {
+                window.location.reload();
+            })
+        }
+    }
+</script>
+
 
 <% include footer %>

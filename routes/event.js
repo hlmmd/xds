@@ -37,8 +37,7 @@ router.post('/addevent', filemulter.any(), function (req, res) {
     if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
-    else if (isNaN(req.body.year) || req.body.year == ''
-        || req.body.title == '' || isNaN(req.body.province)
+    else if (req.body.title == '' || isNaN(req.body.province)
         || req.body.province == '') {
 
         return res.render('addevent', {
@@ -49,16 +48,19 @@ router.post('/addevent', filemulter.any(), function (req, res) {
         });
 
     }
-    //硬编码检查输入的年份
-    else if (req.body.year >= 2100 || req.body.year < 1980) {
-        return res.render('addevent', {
-            title: global.systemtitle,
-            provinces: global.provinces,
-            navbar_active: 'event',
-            errmsg: '添加失败，请检查输入'
-        });
-    }
+
     else {
+        var dt = new Date(req.body.start_date);
+        year = dt.getFullYear();
+        //硬编码检查输入的年份
+        if (year >= 2100 || year < 1980) {
+            return res.render('addevent', {
+                title: global.systemtitle,
+                provinces: global.provinces,
+                navbar_active: 'event',
+                errmsg: '添加失败，请检查输入'
+            });
+        }
         var photofile = '';
         if (req.files.length != 0) {
 
@@ -79,7 +81,8 @@ router.post('/addevent', filemulter.any(), function (req, res) {
             var des_file = 'public/event_photo/' + req.files[0].filename +
                 (suffix == '' ? '' : ('.' + suffix));
 
-            photofile = des_file;
+            photofile = '/event_photo/' + req.files[0].filename +
+                (suffix == '' ? '' : ('.' + suffix));;
 
             //通过rename 进行move
             fs.renameSync(req.files[0].path, des_file);
@@ -103,11 +106,160 @@ router.get('/event_detail', function (req, res) {
     }
     else {
 
-        return res.render('event_detail', {
-            title: global.systemtitle,
-            provinces: global.provinces,
-            navbar_active: 'event'
+        usr.eventdetailFun(req.query.event_id, function (result) {
+            if (result !== undefined && result.length == 1) {
+                result[0].start_date = myutil.Datetoyyyymmdd(result[0].start_date);
+
+                usr.eventfileFun(req.query.event_id, function (fresult) {
+                    if (fresult !== undefined && fresult.length > 0) {
+
+                        return res.render('event_detail', {
+                            title: global.systemtitle,
+                            provinces: global.provinces,
+                            detail: result[0],
+                            eventfiles: fresult,
+                            navbar_active: 'event'
+                        });
+                    }
+                    else {
+                        return res.render('event_detail', {
+                            title: global.systemtitle,
+                            provinces: global.provinces,
+                            detail: result[0],
+                            navbar_active: 'event'
+                        });
+                    }
+                });
+
+
+            }
+            else {
+                return res.render('event_detail', {
+                    title: global.systemtitle,
+                    provinces: global.provinces,
+                    navbar_active: 'event',
+                    errmsg: '事件不存在'
+                });
+            }
+
         });
+
+
+    }
+});
+
+
+//上传文件，主要用到multer模块和fs模块。
+router.post('/eventphoto', filemulter.any(), function (req, res, next) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.event_id)
+        || (req.query.event_id == '')) {
+        return res.redirect('/');
+    }
+    else {
+        var photofile = '';
+        if (req.files.length != 0) {
+
+
+            var oname = req.files[0].originalname.split('.');
+            //获取上传文件后缀
+            var suffix = oname.length > 0 ? oname[oname.length - 1] : '';
+            if (suffix != 'png' && suffix != 'jpg' && suffix != 'gif' && suffix != 'jpeg') {
+                fs.unlinkSync(req.files[0].path);
+                return res.redirect('/event_detail?event_id=' + req.query.event_id);
+            }
+
+            //设置文件大小限制10M
+            if (req.files[0].size > 10 * 1024 * 1024) {
+                fs.unlinkSync(req.files[0].path);
+                return res.redirect('/event_detail?event_id=' + req.query.event_id);
+            }
+
+            var des_file = 'public/event_photo/' + req.files[0].filename +
+                (suffix == '' ? '' : ('.' + suffix));
+
+            photofile = '/event_photo/' + req.files[0].filename +
+                (suffix == '' ? '' : ('.' + suffix));;
+
+            //通过rename 进行move
+            fs.renameSync(req.files[0].path, des_file);
+        }
+
+        usr.eventphotoFun(req.query.event_id, photofile, function (result) {
+            return res.redirect('/event_detail?event_id=' + req.query.event_id);
+        });
+    }
+});
+
+//修改事件的主题和描述
+router.post('/updateevent', function (req, res, next) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.event_id)
+        || (req.query.event_id == '')) {
+        return res.redirect('/');
+    }
+    else {
+        usr.updateeventFun(req.query.event_id, req.body, function (result) {
+            return res.redirect('/event_detail?event_id=' + req.query.event_id);
+        });
+    }
+});
+
+//删除事件
+router.post('/delevent', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.body.event_id)
+        || (req.body.event_id == '')) {
+        return res.redirect('/');
+    }
+    else {
+        usr.deleventFun(req.body.event_id, function (result) {
+            return res.redirect('/event');
+        });
+    }
+});
+
+
+//添加文件
+
+router.post('/addfile', filemulter.any(), function (req, res, next) {
+    if (myutil.checklogin_admin(req, res) == false
+        || isNaN(req.query.event_id) || (req.query.event_id == '')) {
+        return res.redirect('/');
+    }
+    else if (req.files.length == 0) {
+        return res.redirect('/event_detail?event_id=' + req.query.event_id);
+    }
+    else {
+        var des_file = 'files/' + req.files[0].filename;
+
+        //通过rename 进行move
+        fs.renameSync(req.files[0].path, des_file);
+
+        usr.addfileFun(req.query.event_id, req.files[0].originalname, des_file, function (result) {
+            return res.redirect('/event_detail?event_id=' + req.query.event_id);
+        });
+    }
+});
+
+//删除文件
+router.post('/deleventfile', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.body.file_id)
+        || (req.body.file_id == '')) {
+        return res.redirect('/');
+    }
+    else {
+        usr.deleventfile(req.body.file_id, function (result) {
+            return res.redirect('/event');
+        });
+    }
+});
+
+//下载文件
+router.post('/downloadfile', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    else {
+        res.download(req.body.filepath, req.body.filename);
+        return;
     }
 });
 

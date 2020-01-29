@@ -4,5 +4,107 @@
     <h3>选调生工作详情</h3>
 </div>
 
+<% if(locals.detail) { %>
+
+<div class="row col-md-12 container ">
+
+    <div class="row col-md-3">
+        <h4>图片</h4>
+        <% if (detail.photofile!='') { %>
+        <a href="<%= detail.photofile %>" target="_blank"> <img src="<%= detail.photofile %>" width="200"
+                height="150"></a>
+        <% } %>
+        <form method="POST" action="/eventphoto?event_id=<%= detail.event_id %>" enctype="multipart/form-data">
+            <input type="file" name="photofile" id="photofile" accept="image/*">
+            <input type="submit" value="保存图片">
+        </form>
+    </div>
+
+    <div class="row col-md-5">
+
+        <form action="updateevent?event_id=<%= detail.event_id %>" method="post" id="eventform">
+            <h4><%= detail.start_date %> <%= provinces[detail.province_id] %></h4>
+            <div class="form-group controls">
+                <input type="text" name="title" id="title" value="<%= detail.title %>" maxlength="100" size="40"
+                    placeholder="主题"" required>
+            </div>
+            <div class=" form-group controls">
+                <textarea rows="5" cols="45" id="content" name="content" maxlength="10000" placeholder="内容"
+                    required><%= detail.content %></textarea>
+            </div>
+            <div class="form-group controls">
+                <input type="submit" value="保存修改">
+            </div>
+        </form>
+    </div>
+
+    <div class="row col-md-4 container  ">
+        <h4>附件列表</h4>
+        <table class="table table-bordered ">
+            <% if(locals.eventfiles) {  for(i = 0 ;i<eventfiles.length;i++) { %>
+            <tr>
+                <td>
+                    <form method="POST" action="/downloadfile">
+                        <input id="filename" name="filename" type="text" hidden value="<%= eventfiles[i].filename %>">
+                        <input id="filepath" name="filepath" type="text" hidden value="<%= eventfiles[i].filepath %>">
+                        <input class="btn btn-sm btn-primary" type="submit" value="<%= eventfiles[i].filename %>">
+                    </form>
+
+
+                </td>
+                <td>
+                    <a class="btn  btn-sm btn-danger" onclick="deleventfile(<%= eventfiles[i].file_id %>)">删除文件</a>
+                </td>
+            </tr>
+            <% } } %>
+            <tr>
+                <form method="POST" action="/addfile?event_id=<%= detail.event_id %>" enctype="multipart/form-data">
+                    <td>
+                        <input type="file" name="newfile" id="newfile">
+                    </td>
+                    <td>
+                        <input type="submit" value="上传文件">
+                    </td>
+                </form>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<div class=" row col-md-12">
+    <hr>
+    <a class="btn btn-danger" onclick="delevent(<%= detail.event_id %>)">删除该事件</a>
+</div>
+
+<% } %>
+
+
+<% if(locals.errmsg) { %>
+<div class="alert alert-warning form-group"><%= errmsg %> </div>
+<% } %>
+
+<script>
+    function delevent(event_id) {
+        var r = confirm("确认删除?");
+        if (r == true) {
+            $.post("/delevent", { event_id: event_id }, function (result) {
+                window.location.reload();
+            })
+        }
+    }
+</script>
+
+<script>
+    function deleventfile(file_id) {
+        var r = confirm("确认删除?");
+        if (r == true) {
+            $.post("/deleventfile", { file_id: file_id }, function (result) {
+                window.location.reload();
+            })
+        }
+    }
+</script>
 
 <% include footer %>

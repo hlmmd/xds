@@ -44,6 +44,9 @@ router.route('/')
     })
     .post(function (req, res) {
 
+        if (myutil.checklogin(req, res) == true) {
+            return res.redirect('/home');
+        }
         //检查用户名是否为空，或者是否可能发生sql注入
         if (req.body.username == '' || req.body.username != myutil.stripscript(req.body.username)) {
             return res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });

@@ -150,7 +150,7 @@ function updatephotoFun(student_id, photo_suffix, callback) {
 
 }
 
-//修改选调生照片
+//删除选调生照片
 function deletephotoFun(student_id, callback) {
 
     var sqlstr = util.format('update xds_student set photo_suffix ="" where student_id="%d"',
@@ -293,8 +293,11 @@ function dealcommentFun(user_id, comment_id, callback) {
 //添加事件
 function addeventFun(photo_file, body, callback) {
 
-    pool.query('insert into xds_event (photofile,title,content, year,province_id) values(?,?,?,?,?)',
-        [photo_file, body.title, body.content, body.year, body.province], function (err, results, fields) {
+    var dt = new Date(body.start_date);
+    year = dt.getFullYear();
+
+    pool.query('insert into xds_event (photofile,title,content, year , province_id ,start_date ) values(?,?,?,?,?,?)',
+        [photo_file, body.title, body.content, year, body.province, body.start_date], function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
             }
@@ -302,6 +305,93 @@ function addeventFun(photo_file, body, callback) {
         });
 
 }
+
+//事件详情
+function eventdetailFun(event_id, callback) {
+
+    pool.query('select * from xds_event where event_id=?', event_id, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+//修改事件照片
+function eventphotoFun(event_id, photofile, callback) {
+
+    pool.query('update xds_event set photofile =? where event_id=?',
+        [photofile, event_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+
+}
+
+//修改事件
+function updateeventFun(event_id, body, callback) {
+
+    pool.query('update xds_event set title=? , content=? where event_id=?',
+        [body.title, body.content, event_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+
+}
+
+//删除事件
+function deleventFun(event_id, callback) {
+
+    pool.query('delete from xds_event  where event_id=?',
+        [event_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
+
+
+//添加事件文件
+function addfileFun(event_id, filename, filepath, callback) {
+
+    pool.query('insert into xds_eventfile (event_id,filename,filepath) values( ?,?,?)',
+        [event_id, filename, filepath], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
+
+//查询文件
+function eventfileFun(event_id, callback) {
+
+    pool.query('select * from xds_eventfile where event_id=? order by timestamp', event_id, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+
+//删除文件 
+function deleventfile(file_id, callback) {
+
+    pool.query('delete from xds_eventfile  where file_id=?',
+        [file_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
+
 
 
 
@@ -331,3 +421,12 @@ exports.delcommentFun = delcommentFun;
 exports.dealcommentFun = dealcommentFun;
 
 exports.addeventFun = addeventFun;
+exports.eventdetailFun = eventdetailFun;
+exports.eventphotoFun = eventphotoFun;
+exports.updateeventFun = updateeventFun;
+exports.deleventFun = deleventFun;
+
+
+exports.addfileFun = addfileFun;
+exports.eventfileFun = eventfileFun;
+exports.deleventfile = deleventfile;

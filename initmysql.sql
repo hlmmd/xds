@@ -67,6 +67,7 @@ CREATE TABLE xds_event
 (
   event_id bigint NOT NULL auto_increment,
   year int DEFAULT '2010' not NULL,
+  start_date  DATE DEFAULT '2000-01-01' NOT NULL,
   province_id int DEFAULT '0' not NULL,
   title varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
   content varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci,
@@ -82,6 +83,7 @@ CREATE TABLE xds_eventfile
   file_id bigint NOT NULL auto_increment,
   filename varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci,
   filepath  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  timestamp timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (file_id),
   foreign key (event_id) references xds_event(event_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

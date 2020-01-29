@@ -199,13 +199,13 @@ router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
     }
 });
 
-router.get('/delstuphoto', function (req, res) {
-    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
-        || (req.query.student_id == '')) {
+router.post('/delstuphoto', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.body.student_id)
+        || (req.body.student_id == '')) {
         return res.redirect('/');
     }
-    usr.deletephotoFun(req.query.student_id, function (result) {
-        return res.redirect('/student?student_id=' + req.query.student_id);
+    usr.deletephotoFun(req.body.student_id, function (result) {
+        return res.redirect('/student?student_id=' + req.body.student_id);
     });
 
 });
