@@ -11,12 +11,45 @@ var multer = require('multer');
 var filemulter = multer({ dest: './public/tmp/' });
 
 
+
 router.get('/event', function (req, res) {
     if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
     else {
-        return res.send('not finish yet');
+
+        years = null;
+        usr.eventyearsFun(function (years) {
+            //req.query未定义，说明是尚未查询，直接渲染
+            if (req.query.year === undefined && req.query.province === undefined) {
+                return res.render('event', {
+                    title: global.systemtitle,
+                    navbar_active: 'event',
+                    years: years,
+                    provinces: global.provinces
+                });
+            }
+            else if (isNaN(req.query.year) || isNaN(req.query.province)) {
+                //已经查询，Url不合法，跳转到/event
+                return res.redirect('/event');
+            }
+            else {
+                //合法查询
+                result = null;
+                usr.eventFun(req.query.year, req.query.province, function (result) {
+                    return res.render('event', {
+                        title: global.systemtitle,
+                        years: years,
+                        navbar_active: 'event',
+                        provinces: global.provinces,
+                        events: result,
+                        year: req.query.year,
+                        province_id: req.query.province
+                    });
+                });
+            }
+        });
+
     }
 });
 

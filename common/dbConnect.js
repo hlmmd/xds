@@ -93,6 +93,18 @@ function xdsyearsFun(callback) {
     });
 }
 
+//求所有事件的年份
+function eventyearsFun(callback) {
+    var sqlstr = 'select distinct year from xds_event order by year; ';
+    results = null;
+    pool.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
 //按学号查询选调生信息
 function studentFun(student_id, callback) {
 
@@ -288,6 +300,34 @@ function dealcommentFun(user_id, comment_id, callback) {
 }
 
 
+//按年份和省份查询选调生事件信息
+function eventFun(year, province, callback) {
+
+    var sqlstr = '';
+    if (year == '' && province == '') {
+        sqlstr = 'select  * from xds_event order by start_date';
+    }
+    else if (year == '') {
+        sqlstr = util.format('select * from xds_event where province_id=%d order by start_date', province);
+    }
+    else if (province == '') {
+        sqlstr = util.format('select * from xds_event  where year=%d order by start_date', year);
+    }
+    else {
+        sqlstr = util.format('select  * from xds_event where year=%d and province_id=%d order by start_date', year, province);
+    }
+
+    pool.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+
+}
+
+
+
 
 //添加事件
 function addeventFun(photo_file, body, callback) {
@@ -424,7 +464,8 @@ exports.eventdetailFun = eventdetailFun;
 exports.eventphotoFun = eventphotoFun;
 exports.updateeventFun = updateeventFun;
 exports.deleventFun = deleventFun;
-
+exports.eventyearsFun = eventyearsFun;
+exports.eventFun = eventFun;
 
 exports.addfileFun = addfileFun;
 exports.eventfileFun = eventfileFun;

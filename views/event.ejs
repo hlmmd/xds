@@ -1,0 +1,93 @@
+<% include header %>
+
+
+<div class="page-header">
+    <h3>选调生工作查询</h3>
+</div>
+
+<div>
+    <form method="get" id="eventform">
+        <div class="form-group controls">
+            <label for="year">年份</label>
+
+            <% //如果有years就做成下拉框，没有就input %>
+            <% if (locals.years && years!=null) { %>
+            <select name="year" id="year">
+                <option value="">全选</option>
+                <% for(i=0;i<years.length;i++) { %>
+                <% if (locals.year && year==years[i].year) { %>
+                <option value="<%= year %>" selected><%= year %></option>
+                <% } else { %>
+                <option value="<%= years[i].year %>"><%= years[i].year %></option>
+                <% } %>
+                <% } %>
+            </select>
+            <% } else { %>
+            <% if (locals.year) { %>
+            <input type="text" name="year" id="year" value="<%= year %>">
+            <%  } else  { %>
+            <input type="text" name="year" id="year">
+            <% } %>
+            <% } %>
+
+            <label for="province">省份</label>
+            <select name="province" id="province">
+                <option value="">全选</option>
+                <% for( i = 0;i<provinces.length;i++) {%>
+                <% if (locals.province_id && province_id==i) { %>
+                <option value="<%= i %>" selected> <%= provinces[i] %> </option>
+                <%  } else  { %>
+                <option value="<%= i %>"> <%= provinces[i] %> </option>
+                <% } %>
+                <% } %>
+            </select>
+            <input type="submit" value="查询">
+        </div>
+    </form>
+</div>
+
+<% if ( locals.events && events.length>0) { %>
+
+<div class="page-header">
+    <h3>查询结果</h3>
+</div>
+
+<div>
+    <table class="table table-bordered table-striped " style="table-layout: fixed;">
+        <tbody>
+            <% // 表格每行2列  %>
+            <% for (i=0;i<events.length;i+=2){ %>
+
+            <div class="row col-md-6">
+                <tr>
+                    <% for(j = i;j<events.length && (j<i+2);j++) { %>
+                    <td>
+
+                        <% if (events[j].photofile!='') { %>
+                        <div class="row col-md-3">
+                            <a href="<%= events[j].photofile %>" target="_blank"> <img src="<%= events[j].photofile %>" width="200"
+                                    height="150"></a>
+                        </div>
+
+                        <% } %>
+                        <a href="/event_detail?event_id=<%= events[j].event_id %>">
+                            aa
+                        </a>
+                    </td>
+                    <% } %>
+                </tr>
+            </div>
+
+            <% } %>
+
+        </tbody>
+    </table>
+</div>
+
+<% } else if( locals.events && events.length==0){ %>
+<div class="alert alert-warning " role="alert">
+    <strong>未找到</strong>
+</div>
+<% }  %>
+
+<% include footer %>
