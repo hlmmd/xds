@@ -24,7 +24,7 @@ CREATE TABLE xds_student
   name  varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   year	int NOT NULL,
   province_id 	int NOT NULL,
-  photo_suffix   varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+  photofile   varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
   PRIMARY KEY (student_id),
 
  -- student_id 是外键，想要删除学生时直接删除学生在xds_users表中的项即可。 
@@ -37,14 +37,14 @@ CREATE TABLE xds_student
 drop table if exists xds_career;
 CREATE TABLE xds_career
 (
-  id        bigint NOT NULL auto_increment,
+  career_id        bigint NOT NULL auto_increment,
   student_id  bigint DEFAULT '0' NOT NULL,
   start_time     DATE DEFAULT '2000-01-01' NOT NULL,
   end_time       DATE DEFAULT '2000-01-01' NOT NULL,
   unit varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
   position varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
   level varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (career_id),
 -- 外键级联删除/更新，学生被删除后，自动删除其对应的工作经历  
   foreign key (student_id) references xds_student(student_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

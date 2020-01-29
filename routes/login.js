@@ -175,10 +175,10 @@ router.get('/dealcomment', function (req, res) {
 
 });
 
-router.get('/delcomment', function (req, res) {
+router.post('/delcomment', function (req, res) {
 
     if (myutil.checklogin_admin(req, res) == true) {
-        usr.delcommentFun(0, req.query.comment_id, function (err) {
+        usr.delcommentFun(0, req.body.comment_id, function (err) {
             return res.redirect('/home');
         });
     }
@@ -186,12 +186,11 @@ router.get('/delcomment', function (req, res) {
         return res.redirect('/');
     }
     else {
-        usr.delcommentFun(req.cookies.user_id, req.query.comment_id, function (err) {
+        usr.delcommentFun(req.cookies.user_id, req.body.comment_id, function (err) {
             return res.redirect('/home');
         });
     }
 });
-
 
 //修改密码
 router.get('/password', function (req, res) {

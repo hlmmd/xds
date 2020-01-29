@@ -137,11 +137,11 @@ function updatestudentFun(student_id, body, callback) {
 
 
 //修改选调生照片
-function updatephotoFun(student_id, photo_suffix, callback) {
+function updatephotoFun(student_id, photofile, callback) {
 
 
-    pool.query('update xds_student set photo_suffix =? where student_id=?',
-        [photo_suffix, student_id], function (err, results, fields) {
+    pool.query('update xds_student set photofile=? where student_id=?',
+        [photofile, student_id], function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
             }
@@ -153,7 +153,7 @@ function updatephotoFun(student_id, photo_suffix, callback) {
 //删除选调生照片
 function deletephotoFun(student_id, callback) {
 
-    var sqlstr = util.format('update xds_student set photo_suffix ="" where student_id="%d"',
+    var sqlstr = util.format('update xds_student set photofile ="" where student_id="%d"',
         student_id);
 
     pool.query(sqlstr, function (err, results, fields) {
@@ -193,10 +193,9 @@ function addcareerFun(student_id, body, callback) {
 
 
 //按学号删除选调生
-function delcareerFun(student_id, career_id, callback) {
+function delcareerFun(career_id, callback) {
 
-    var sqlstr = util.format('delete from xds_career where student_id = "%d" and id="%d"',
-        student_id, career_id);
+    var sqlstr = util.format('delete from xds_career where  career_id="%d"', career_id);
 
     pool.query(sqlstr, function (err, results, fields) {
         if (err) {
@@ -209,7 +208,7 @@ function delcareerFun(student_id, career_id, callback) {
 //修改选调生信息
 function updatecareerFun(student_id, body, callback) {
 
-    pool.query('update xds_career set start_time =?, end_time=?,unit=?,position=?,level=? where student_id=? and id=?',
+    pool.query('update xds_career set start_time =?, end_time=?,unit=?,position=?,level=? where student_id=? and career_id=?',
         [body.career_start_time, body.career_end_time, body.career_unit, body.career_position,
         body.career_level, student_id, body.career_id], function (err, results, fields) {
             if (err) {

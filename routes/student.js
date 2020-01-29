@@ -78,14 +78,14 @@ router.post('/student', function (req, res) {
 });
 
 //删除学生
-router.get('/delstu', function (req, res) {
-    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
-        || (req.query.student_id == '')) {
+router.post('/delstu', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.body.student_id)
+        || (req.body.student_id == '')) {
         return res.redirect('/student');
     }
     else {
         result = null;
-        usr.delstudentFun(req.query.student_id, function (result) {
+        usr.delstudentFun(req.body.student_id, function (result) {
             return res.redirect('/student');
         });
     }
@@ -102,7 +102,7 @@ router.post('/addcareer', function (req, res) {
         if (myutil.endgestart(req.body.career_start_time, req.body.career_end_time) == false) {
             return res.redirect('/student?student_id=' + req.query.student_id);
         }
-    
+
         //检查 career是否是select 中的
         if (global.career_levels.contains(req.body.career_level) == false) {
             return res.redirect('/student?student_id=' + req.query.student_id);
@@ -118,16 +118,17 @@ router.post('/addcareer', function (req, res) {
 });
 
 //删除工作经历
-router.get('/delcareer', function (req, res) {
-    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
-        || (req.query.student_id == '') || isNaN(req.query.career_id)
-        || req.query.career_id == '') {
+router.post('/delcareer', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.body.career_id)
+        || req.body.career_id == '') {
         return res.redirect('/');
     }
     else {
         result = null;
-        usr.delcareerFun(req.query.student_id, req.query.career_id, function (result) {
-            return res.redirect('/student?student_id=' + req.query.student_id);
+        console.log(req.body);
+        usr.delcareerFun(req.body.career_id, function (result) {
+            return res.redirect('/');
+            //javascript会自动刷新
         });
     }
 });
@@ -161,14 +162,13 @@ router.post('/updatecareer', function (req, res) {
 
 
 //上传文件，主要用到multer模块和fs模块。
-//TODO 目前采用学号+后缀的命名方式，数据不安全。
 router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
-    if (myutil.checklogin_admin(req, res) == false || isNaN(req.query.student_id)
-        || (req.query.student_id == '')) {
+    if (myutil.checklogin_admin(req, res) == false || isNaN(req.body.student_id)
+        || (req.body.student_id == '')) {
         return res.redirect('/');
     }
     if (req.files.length == 0) {
-        return res.redirect('/student?student_id=' + req.query.student_id);
+        return res.redirect('/student?student_id=' + req.body.student_id);
     }
     else {
 
@@ -177,24 +177,26 @@ router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
         var suffix = oname.length > 0 ? oname[oname.length - 1] : '';
         if (suffix != 'png' && suffix != 'jpg' && suffix != 'gif' && suffix != 'jpeg') {
             fs.unlinkSync(req.files[0].path);
-            return res.redirect('/student?student_id=' + req.query.student_id);
+            return res.redirect('/student?student_id=' + req.body.student_id);
         }
 
         //设置文件大小限制10M
         if (req.files[0].size > 10 * 1024 * 1024) {
             fs.unlinkSync(req.files[0].path);
-            return res.redirect('/student?student_id=' + req.query.student_id);
+            return res.redirect('/student?student_id=' + req.body.student_id);
         }
 
-        var des_file = 'public/student_photo/' + req.query.student_id +
+        var des_file = 'public/student_photo/' + req.files[0].filename +
             (suffix == '' ? '' : ('.' + suffix));
 
+        var photofile = '/student_photo/' + req.files[0].filename +
+            (suffix == '' ? '' : ('.' + suffix));
 
         //通过rename 进行move
         fs.renameSync(req.files[0].path, des_file);
 
-        usr.updatephotoFun(req.query.student_id, suffix, function (result) {
-            return res.redirect('/student?student_id=' + req.query.student_id);
+        usr.updatephotoFun(req.body.student_id, photofile, function (result) {
+            return res.redirect('/student?student_id=' + req.body.student_id);
         });
     }
 });
