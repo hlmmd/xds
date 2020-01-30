@@ -87,7 +87,8 @@ global.provinces = ['北京市', '天津市', '上海市', '重庆市',
 
 global.enablereg = true;
 
-
+//用户上传文件大小限制
+global.filelimit = 50;
 
 Array.prototype.contains = function (obj) {
   var index = this.length;

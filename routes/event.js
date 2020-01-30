@@ -108,8 +108,8 @@ router.post('/addevent', filemulter.any(), function (req, res) {
                 return res.redirect('/addevent');
             }
 
-            //设置文件大小限制10M
-            if (req.files[0].size > 10 * 1024 * 1024) {
+            //设置文件大小限制
+            if (req.files[0].size > global.filelimit * 1024 * 1024) {
                 fs.unlinkSync(req.files[0].path);
                 return res.redirect('/addevent');
             }
@@ -204,8 +204,8 @@ router.post('/eventphoto', filemulter.any(), function (req, res, next) {
                 return res.redirect('/event_detail?event_id=' + req.query.event_id);
             }
 
-            //设置文件大小限制10M
-            if (req.files[0].size > 10 * 1024 * 1024) {
+            //设置文件大小限制
+            if (req.files[0].size > global.filelimit * 1024 * 1024) {
                 fs.unlinkSync(req.files[0].path);
                 return res.redirect('/event_detail?event_id=' + req.query.event_id);
             }
@@ -264,6 +264,13 @@ router.post('/addfile', filemulter.any(), function (req, res, next) {
         return res.redirect('/event_detail?event_id=' + req.query.event_id);
     }
     else {
+
+        //设置文件大小限制
+        if (req.files[0].size > global.filelimit * 1024 * 1024) {
+            fs.unlinkSync(req.files[0].path);
+            return res.redirect('/event_detail?event_id=' + req.query.event_id);
+        }
+
         var des_file = 'files/' + req.files[0].filename;
 
         //通过rename 进行move

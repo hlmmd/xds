@@ -180,8 +180,8 @@ router.post('/uploadphoto', photomulter.any(), function (req, res, next) {
             return res.redirect('/student?student_id=' + req.body.student_id);
         }
 
-        //设置文件大小限制10M
-        if (req.files[0].size > 10 * 1024 * 1024) {
+        //设置文件大小限制
+        if (req.files[0].size > global.filelimit * 1024 * 1024) {
             fs.unlinkSync(req.files[0].path);
             return res.redirect('/student?student_id=' + req.body.student_id);
         }
