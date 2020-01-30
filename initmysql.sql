@@ -17,6 +17,8 @@ CREATE TABLE xds_users
 -- 0 admin ,1 assist ,2 student
 INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'tj91', 'e0de3c61693cfeeb39da703c657be46c');
 
+
+
 drop table if exists xds_student;
 CREATE TABLE xds_student
 (
@@ -25,6 +27,60 @@ CREATE TABLE xds_student
   year	int NOT NULL,
   province_id 	int NOT NULL,
   photofile   varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+
+
+xingbie varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+mingzu varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+zzmm varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+csrq varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+sfzjh varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+jkzk varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xueyuan varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xisuo varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xslx varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xueli varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xuewei varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+zhuanye varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xjzt varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xuezhi varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+rxny varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+rxfs varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+pyfs varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+-- 就业年份
+jynf varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+syd varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+shoujihao varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+lxdh varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+jtdz varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+jtdh varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dzxx varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+qqhao varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+weixinhao varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+lxdz varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+yzbh varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xysbh varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+qxlx varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dwmc varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+zzjgdm varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+tyshxydm varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+sqlx varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+xxdjh varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+zzcy varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dwxz varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dwhy varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+zwlb varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dwszdq varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dwtxdz varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+lxrdh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+bdzdwmc varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+bdzbh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+bdzdwdq varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dajsdw varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dajsyb varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dajsdz varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+dajslxdh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+
+
   PRIMARY KEY (student_id),
 
  -- student_id 是外键，想要删除学生时直接删除学生在xds_users表中的项即可。 
