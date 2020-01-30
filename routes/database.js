@@ -5,6 +5,9 @@ var usr = require('../common/dbConnect');
 var myutil = require('../common/myutil');
 var util = require('util');
 
+//读取excel
+var excel = require('xlsx');
+
 var fs = require('fs');
 //上传文件使用
 var multer = require('multer');
@@ -22,7 +25,7 @@ var exec = require('child_process').exec;
 
 
 var columns = {
-    '学号': 'student_id',
+    //   '学号': 'student_id',
     '姓名': 'name',
     '性别': 'xingbie',
     '民族': 'mingzu',
@@ -125,6 +128,7 @@ router.get('/uploadstudent', function (req, res) {
 });
 
 
+//base中有21项（包括学号）
 router.post('/uploadbase', filemulter.any(), function (req, res) {
 
     if (myutil.checklogin_admin(req, res) == false) {
@@ -134,7 +138,81 @@ router.post('/uploadbase', filemulter.any(), function (req, res) {
         return res.redirect('/uploadstudent');
     }
     else {
-        console.log(req.files[0]);
+        //读取excel文件
+        var workbook = excel.readFile(req.files[0].path);
+        //获取所有sheet
+        const sheetNames = workbook.SheetNames;
+        //没有表
+        if (sheetNames.length == 0) {
+            return res.render('uploadstudent', {
+                title: global.systemtitle,
+                navbar_active: 'backup',
+                errmsg: '导入失败'
+            });
+        }
+
+        const worksheet = workbook.Sheets[sheetNames[0]];
+
+        //将 excel数据转化为json
+        var data = excel.utils.sheet_to_json(worksheet);
+        if (data.length == 0)
+            return res.redirect('/uploadstudent');
+
+        //必须要有学号
+        if (data[0].hasOwnProperty('学号') == false) {
+            return res.redirect('/uploadstudent');
+        }
+
+        usr.student_idFun(function (exist_student_ids) {
+            //exist_student_ids保存着目前数据库内存在的所有学生用户,转化成集合esid
+            esid = {};
+            for (i = 0; i < exist_student_ids.length; i++) {
+                esid[exist_student_ids[i].student_id] = exist_student_ids[i].student_id;
+            }
+
+            //遍历每一行数据
+            for (i = 0; i < data.length; i++) {
+
+                var student_id = data[i]['学号'];
+                //学号已经存在
+                if (esid.hasOwnProperty(student_id) === true) {
+                    continue;
+                }
+
+                //注册用户
+                usr.regstudentFun(student_id, function (res) {
+                    //console.log(res);
+                });
+
+                var sqlstr = 'insert into xds_student(student_id';
+                var sqlparm = [];
+                sqlparm.push(student_id);
+                //遍历excel中的数据，再和columns中的比对
+                for (var key in data[i]) {
+                    //如果columns中存在，说明是我们需要的，则保留
+                    if (columns.hasOwnProperty(key)) {
+                        sqlstr += ',' + columns[key];
+                        sqlparm.push(data[i][key]);
+                        //  console.log(columns[key] + '->' + data[i][key]);
+                    }
+                }
+
+                sqlstr += ')values(?';
+
+                for (i = 1; i < sqlparm.length; i++) {
+                    sqlstr += ',?';
+                }
+                sqlstr += ')';
+
+                //插入数据
+                usr.sqlqueryFun(sqlstr, sqlparm, function (result) {
+                    //
+                });
+            }
+
+        });
+
+
         return res.redirect('/uploadstudent');
     }
 });

@@ -93,6 +93,42 @@ function xdsyearsFun(callback) {
     });
 }
 
+
+// 求所有的选调生学号，避免重复导入
+function student_idFun(callback) {
+
+    var sqlstr = 'select student_id from xds_student ';
+    results = null;
+    pool.query(sqlstr, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+// 为学生注册账号，用户名密码同学号
+function regstudentFun(student_id, callback) {
+    pool.query('insert into xds_users (id,username,password) value(?,?,?)', [student_id, student_id, student_id], function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+
+//直接执行sql语句
+function sqlqueryFun(sqlstr, sqlparm, callback) {
+    pool.query(sqlstr, sqlparm, function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+
 //求所有事件的年份
 function eventyearsFun(callback) {
     var sqlstr = 'select distinct year from xds_event order by year; ';
@@ -470,3 +506,7 @@ exports.eventFun = eventFun;
 exports.addfileFun = addfileFun;
 exports.eventfileFun = eventfileFun;
 exports.deleventfile = deleventfile;
+
+exports.student_idFun = student_idFun;
+exports.regstudentFun = regstudentFun;
+exports.sqlqueryFun = sqlqueryFun;
