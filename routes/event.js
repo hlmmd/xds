@@ -37,6 +37,9 @@ router.get('/event', function (req, res) {
                 //合法查询
                 result = null;
                 usr.eventFun(req.query.year, req.query.province, function (result) {
+                    for (i = 0; i < result.length; i++)
+                        result[i].start_date = myutil.Datetoyyyymmdd(result[i].start_date);
+
                     return res.render('event', {
                         title: global.systemtitle,
                         years: years,

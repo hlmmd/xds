@@ -54,29 +54,54 @@
 
 <div>
     <table class="table table-bordered table-striped " style="table-layout: fixed;">
-        <tbody>
-            <% // 表格每行2列  %>
-            <% for (i=0;i<events.length;i+=2){ %>
+        <tr style="visibility: hidden;">
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+        </tr>
 
-            <div class="row col-md-6">
-                <tr>
-                    <% for(j = i;j<events.length && (j<i+2);j++) { %>
+        <tbody>
+            <% // 表格每行3列  %>
+
+
+            <% for (i=0;i<events.length;i+=3){ %>
+
+            <tr>
+
+                <div class="row col-md-4 container">
+                    <% for(j = i;j<events.length && (j<i+3);j++) { %>
                     <td>
 
                         <% if (events[j].photofile!='') { %>
-                        <div class="row col-md-3">
-                            <a href="<%= events[j].photofile %>" target="_blank"> <img src="<%= events[j].photofile %>" width="200"
-                                    height="150"></a>
+                        <div class="row col-md-8">
+                            <a href="<%= events[j].photofile %>" target="_blank"> <img src="<%= events[j].photofile %>"
+                                    width="200" height="150"></a>
+                        </div>
+
+                        <% } else { %>
+                        <div class="row col-md-8 text-center" style="vertical-align: text-top;">
+                            <h4>暂无图片</h4>
                         </div>
 
                         <% } %>
-                        <a href="/event_detail?event_id=<%= events[j].event_id %>">
-                            aa
-                        </a>
+
+                        <div class="row col-md-4" style="word-wrap:break-word; ">
+                            <h5><%= events[j].start_date %></h5>
+                            <h5><%= provinces[events[j].province_id] %></h5>
+                            <h5><%= events[j].title %>fadfadfasdfasdfasfasfsfdfa</h5>
+                            <a href="/event_detail?event_id=<%= events[j].event_id %>" class="text-center">
+                                <h4>详情>>></h4>
+                            </a>
+                        </div>
+
                     </td>
                     <% } %>
-                </tr>
-            </div>
+
+                </div>
+            </tr>
 
             <% } %>
 
