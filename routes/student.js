@@ -57,6 +57,60 @@ router.get('/student', function (req, res) {
     }
 });
 
+//按学号查询
+router.post('/studentid', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    if (isNaN(req.body.student_id) || req.body.student_id == '') {
+        return res.redirect('/student');
+    }
+    usr.studentidlikeFun(req.body.student_id, function (result) {
+        if (result === undefined || result.length == 0) {
+            return res.render('student', {
+                title: global.systemtitle,
+                navbar_active: 'student',
+                notfound: '未找到'
+            });
+        }
+        else {
+            return res.render('student', {
+                title: global.systemtitle,
+                navbar_active: 'student',
+                provinces: global.provinces,
+                query: result
+            });
+        }
+    });
+});
+
+//按姓名查询
+router.post('/studentname', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    if (req.body.name === undefined || req.body.name == '') {
+        return res.redirect('/student');
+    }
+    usr.studentnamelikeFun(req.body.name, function (result) {
+        if (result === undefined || result.length == 0) {
+            return res.render('student', {
+                title: global.systemtitle,
+                navbar_active: 'student',
+                notfound: '未找到'
+            });
+        }
+        else {
+            return res.render('student', {
+                title: global.systemtitle,
+                navbar_active: 'student',
+                provinces: global.provinces,
+                query: result
+            });
+        }
+    });
+});
+
 //修改学生信息
 router.post('/student', function (req, res) {
     if (myutil.checklogin_admin(req, res) == false) {
@@ -64,10 +118,6 @@ router.post('/student', function (req, res) {
     }
 
     if (isNaN(req.query.student_id) || req.query.student_id == '') {
-        return res.redirect('/student');
-    }
-    //year检查
-    if (isNaN(req.body.info_year) || req.body.info_year == '') {
         return res.redirect('/student');
     }
 
@@ -217,8 +267,31 @@ router.get('/student_stu', function (req, res) {
     if (myutil.checklogin_student(req, res) == false) {
         return res.redirect('/');
     }
+    else {
+        usr.studentFun(req.cookies.user_id, function (result) {
+            if (result !== undefined && result.length != 0 ) {
+                result[0].province = myutil.getprovincename(result[0].province_id);
 
-    return res.send('not finish yet');
+                //继续读取career信息
+                cresult = null;
+                usr.careerFun(req.cookies.user_id, function (cresult) {
+                    for (i = 0; i < cresult.length; i++) {
+                        cresult[i].start_time = myutil.Datetoyyyymmdd(cresult[i].start_time);
+                        cresult[i].end_time = myutil.Datetoyyyymmdd(cresult[i].end_time);
+                    }
+                    return res.render('student_stu', {
+                        title: global.systemtitle,
+                        navbar_active: 'student',
+                        stu_info: result[0],
+                        careers: cresult,
+                        career_levels: global.career_levels
+                    });
+                });
+            }
+        });
+
+    }
+
 });
 
 

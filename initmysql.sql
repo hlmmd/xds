@@ -25,16 +25,15 @@ CREATE TABLE xds_student
   student_id bigint NOT NULL unique,
   name  varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   year	int NOT NULL DEFAULT '2000',
-  province_id 	int NOT NULL DEFAULT '0',
+  province_id 	int NOT NULL DEFAULT '34',
   photofile   varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 
 
 xingbie varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
-mingzu varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+minzu varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 zzmm varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 csrq varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 sfzjh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
-jkzk varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 xueyuan varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 xisuo varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 xslx varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
@@ -46,8 +45,8 @@ xuezhi varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 rxny varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 rxfs varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 pyfs varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
--- 就业年份
-jynf varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
+-- 就业年份 用year替代
+-- jynf varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 syd varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 shoujihao varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 lxdh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
@@ -65,7 +64,6 @@ zzjgdm varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 tyshxydm varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 sqlx varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 xxdjh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
-zzcy varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 dwxz varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 dwhy varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 zwlb varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
@@ -102,7 +100,9 @@ CREATE TABLE xds_career
   level varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (career_id),
 -- 外键级联删除/更新，学生被删除后，自动删除其对应的工作经历  
-  foreign key (student_id) references xds_student(student_id) ON DELETE CASCADE ON UPDATE CASCADE
+-- 考虑到通过重新导入学生信息修改 基本信息，去除删除操作
+--  foreign key (student_id) references xds_student(student_id) ON DELETE CASCADE ON UPDATE CASCADE
+  foreign key (student_id) references xds_student(student_id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists xds_comment;

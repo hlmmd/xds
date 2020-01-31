@@ -25,7 +25,7 @@ router.get('/xds', function (req, res) {
         else {
             //合法查询
             result = null;
-            usr.xdsFun(req.query.year, req.query.province, function (result) {
+            usr.xdsFun(req.query.year, req.query.province, function (result) {                
                 return res.render('xds', {
                     title: global.systemtitle, years: years,
                     navbar_active: 'xds',

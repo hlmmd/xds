@@ -1,15 +1,36 @@
 <% include header %>
 
 <div class="page-header">
-    <h3>上传</h3>
+    <h3>上传基本信息</h3>
 </div>
 
-<div class="">
+<h4>请先上传基本信息，如果数据库中已经存在相应的学号，则忽略</h4>
 
+<div class=" center-block">
     <form method="post" id="upload" enctype="multipart/form-data" action="/uploadbase">
         <input type="file" id="base" name="base">
-        <input type="submit" value="上传">
+        <input type="submit" value="上传基本信息">
     </form>
+    <% if(locals.errmsg) { %>
+    <div class="alert alert-warning form-group"><%= errmsg %> </div>
+    <% } %>
+</div>
+
+<div class="page-header">
+    <h3>上传毕业去向</h3>
+</div>
+
+<h4>请先上传基本信息后再上传毕业去向</h4>
+
+<div class=" center-block">
+    <form method="post" id="upload" enctype="multipart/form-data" action="/uploadbyqx">
+       <input type="file" id="byqx" name="byqx" >
+        <input type="submit" value="上传毕业去向">
+    </form>
+
+    <% if(locals.errmsg2) { %>
+    <div class="alert alert-warning form-group"><%= errmsg2 %> </div>
+    <% } %>
 </div>
 
 <% include footer %>

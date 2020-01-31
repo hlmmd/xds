@@ -2,6 +2,13 @@ var mysql = require('mysql');
 var myutil = require('./myutil');
 var util = require('util');
 
+var crypto = require('crypto');
+
+function cryptPwd(password) {
+    var md5 = crypto.createHash('md5');
+    return md5.update(password).digest('hex');
+}
+
 //所有参数在调用sql之前检查。 api淘汰，改用连接池
 function connectServer() {
     var client = mysql.createConnection({
@@ -59,16 +66,16 @@ function xdsFun(year, province, callback) {
 
     var sqlstr = '';
     if (year == '' && province == '') {
-        sqlstr = 'select  student_id,name from xds_student order by student_id';
+        sqlstr = 'select  student_id,name ,year,province_id  from xds_student order by student_id';
     }
     else if (year == '') {
-        sqlstr = util.format('select student_id ,name from xds_student where province_id=%d order by student_id', province);
+        sqlstr = util.format('select student_id ,name,year,province_id from xds_student where province_id=%d order by student_id', province);
     }
     else if (province == '') {
-        sqlstr = util.format('select student_id ,name from xds_student where year=%d order by student_id', year);
+        sqlstr = util.format('select student_id ,name,year,province_id from xds_student where year=%d order by student_id', year);
     }
     else {
-        sqlstr = util.format('select student_id ,name from xds_student where year=%d and province_id=%d order by student_id', year, province);
+        sqlstr = util.format('select student_id ,name,year,province_id from xds_student where year=%d and province_id=%d order by student_id', year, province);
     }
 
     pool.query(sqlstr, function (err, results, fields) {
@@ -80,10 +87,35 @@ function xdsFun(year, province, callback) {
 
 }
 
+
+// like查找id
+function studentidlikeFun(student_id, callback) {
+
+    pool.query('select student_id ,name,year,province_id from xds_student where student_id like ? ', ['%' + student_id + '%'], function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+
+// like查找name
+function studentnamelikeFun(name, callback) {
+
+    pool.query('select student_id ,name,year,province_id from xds_student where name like ? ', ['%' + name + '%'], function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+
 // 求所有的选调生毕业年份，做为select的选项
 function xdsyearsFun(callback) {
 
-    var sqlstr = 'select distinct year from xds_student order by year; ';
+    var sqlstr = 'select distinct year from xds_student order by year desc ';
     results = null;
     pool.query(sqlstr, function (err, results, fields) {
         if (err) {
@@ -108,12 +140,12 @@ function student_idFun(callback) {
 }
 
 // 为学生注册账号，用户名密码同学号
-function regstudentFun(student_id, callback) {
-    pool.query('insert into xds_users (id,username,password) value(?,?,?)', [student_id, student_id, student_id], function (err, results, fields) {
+function regstudentFun(student_id, index, callback) {
+    pool.query('insert into xds_users (id,username,password) value(?,?,?)', [student_id, student_id, cryptPwd(student_id)], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
-        callback(results);
+        callback(index, results);
     });
 }
 
@@ -122,6 +154,8 @@ function regstudentFun(student_id, callback) {
 function sqlqueryFun(sqlstr, sqlparm, callback) {
     pool.query(sqlstr, sqlparm, function (err, results, fields) {
         if (err) {
+            // console.log(sqlstr);
+            // console.log(sqlparm);
             console.log("error:" + err.message);
         }
         callback(results);
@@ -174,7 +208,7 @@ function updatestudentFun(student_id, body, callback) {
 
 
     pool.query('update xds_student set name =? ,year=? where student_id=?',
-        [body.info_name, body.info_year, student_id], function (err, results, fields) {
+        [body.name, body.year, student_id], function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
             }
@@ -477,6 +511,10 @@ exports.updatepasswordFun = updatepasswordFun;
 
 exports.xdsFun = xdsFun;
 exports.xdsyearsFun = xdsyearsFun;
+
+exports.studentidlikeFun = studentidlikeFun;
+
+exports.studentnamelikeFun = studentnamelikeFun;
 
 exports.studentFun = studentFun;
 exports.delstudentFun = delstudentFun;

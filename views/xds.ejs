@@ -8,7 +8,7 @@
 <div>
     <form method="get" id="xdsform">
         <div class="form-group controls">
-            <label for="year">年份</label>
+            <label for="year">就业年份</label>
 
             <% //如果有years就做成下拉框，没有就input %>
             <% if (locals.years && years!=null) { %>
@@ -31,7 +31,7 @@
             <% } %>
             <% } %>
 
-            <label for="province">省份</label>
+            <label for="province">就业省市</label>
             <select name="province" id="province">
                 <option value="">全选</option>
                 <% for( i = 0;i<provinces.length;i++) {%>
@@ -64,7 +64,11 @@
                     <% for(j = i;j<students.length && (j<i+6);j++) { %>
                     <td>
                         <a href="/student?student_id=<%= students[j].student_id %>">
-                            <input type="button" value="<%= students[j].student_id +' '+ students[j].name %>">
+                            <h5> <%= students[j].student_id +' '+ students[j].name %>
+                                <br>
+                                <%= students[j].year +'年 '+ provinces [students[j].province_id] %>
+                            </h5>
+
                         </a>
                     </td>
                     <% } %>
