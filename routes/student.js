@@ -269,7 +269,7 @@ router.get('/student_stu', function (req, res) {
     }
     else {
         usr.studentFun(req.cookies.user_id, function (result) {
-            if (result !== undefined && result.length != 0 ) {
+            if (result !== undefined && result.length != 0) {
                 result[0].province = myutil.getprovincename(result[0].province_id);
 
                 //继续读取career信息
@@ -293,6 +293,35 @@ router.get('/student_stu', function (req, res) {
     }
 
 });
+
+
+//添加
+router.get('/addstudent', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    return res.render('addstudent', {
+        title: global.systemtitle,
+        navbar_active: 'student',
+        provinces: global.provinces
+    });
+});
+
+//添加学生
+router.post('/addstudent', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    if (isNaN(req.body.student_id) || req.body.student_id == '') {
+        return res.redirect('/addstudent');
+    }
+
+    // result = null;
+    // usr.updatestudentFun(req.body.student_id, req.body, function (result) {
+    //     return res.redirect('/student?student_id=' + req.body.student_id);
+    // });
+});
+
 
 
 module.exports = router
