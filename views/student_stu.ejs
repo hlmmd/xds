@@ -1,0 +1,380 @@
+<% include header %>
+
+<div class="page-header">
+    <h3>我的信息</h3>
+</div>
+
+<% if ( locals.stu_info) { %>
+
+<% if (stu_info.photofile !='' ){ %>
+
+<div class="">
+    <div class="form-group controls">
+        <div class="row col-md-2">
+            <a href="<%= stu_info.photofile %>" target="_blank"> <img src="<%= stu_info.photofile %>"
+                    class="img-responsive"></a>
+        </div>
+    </div>
+</div>
+<% }  %>
+
+
+<div>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <h5><strong>学号</strong></h5>
+            </td>
+            <td><input type="text" name="student_id" id="student_id" value="<%= stu_info.student_id %>" readonly>
+            </td>
+            <td>
+                <h5><strong>姓名</strong></h5>
+            </td>
+            <td><input type="text" name="name" id="name" value="<%= stu_info.name %>" readonly> </td>
+
+            <td>
+                <h5><strong>性别</strong></h5>
+            </td>
+            <td><input type="text" name="xingbie" id="xingbie" value="<%= stu_info.xingbie %>" readonly> </td>
+
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>就业年份</strong></h5>
+            </td>
+            <td><input type="text" name="year" id="year" value="<%= stu_info.year %>" readonly> </td>
+            <td>
+                <h5><strong>就业省市</strong></h5>
+            </td>
+            <td><input type="text" name="province" id="province" readonly value="<%= stu_info.province %>"> </td>
+
+            <td>
+                <h5><strong>民族</strong></h5>
+            </td>
+            <td><input type="text" name="minzu" id="minzu" readonly value="<%= stu_info.minzu %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>政治面貌</strong></h5>
+            </td>
+            <td><input type="text" name="zzmm" id="zzmm" value="<%= stu_info.zzmm %>" readonly> </td>
+            <td>
+                <h5><strong>出生日期</strong></h5>
+            </td>
+            <td><input type="text" name="csrq" id="csrq" readonly value="<%= stu_info.csrq %>"> </td>
+
+            <td>
+                <h5><strong>身份证件号</strong></h5>
+            </td>
+            <td><input type="text" name="sfzjh" id="sfzjh" readonly value="<%= stu_info.sfzjh %>"> </td>
+        </tr>
+
+
+        <tr>
+            <td colspan="6"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>学生类型</strong></h5>
+            </td>
+            <td><input type="text" name="xslx" id="xslx" value="<%= stu_info.xslx %>" readonly> </td>
+            <td>
+                <h5><strong>学历</strong></h5>
+            </td>
+            <td><input type="text" name="xueli" id="xueli" readonly value="<%= stu_info.xueli %>"> </td>
+
+            <td>
+                <h5><strong>学位</strong></h5>
+            </td>
+            <td><input type="text" name="xuewei" id="xuewei" readonly value="<%= stu_info.xuewei %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>学院</strong></h5>
+            </td>
+            <td><input type="text" name="xueyuan" id="xueyuan" value="<%= stu_info.xueyuan %>" readonly> </td>
+            <td>
+                <h5><strong>系所</strong></h5>
+            </td>
+            <td><input type="text" name="xisuo" id="xisuo" readonly value="<%= stu_info.xisuo %>"> </td>
+
+            <td>
+                <h5><strong>专业</strong></h5>
+            </td>
+            <td><input type="text" name="zhuanye" id="zhuanye" readonly value="<%= stu_info.zhuanye %>"> </td>
+        </tr>
+
+
+        <tr>
+            <td>
+                <h5><strong>学籍状态</strong></h5>
+            </td>
+            <td><input type="text" name="xjzt" id="xjzt" value="<%= stu_info.xjzt %>" readonly> </td>
+            <td>
+                <h5><strong>学制</strong></h5>
+            </td>
+            <td><input type="text" name="xuezhi" id="xuezhi" readonly value="<%= stu_info.xuezhi %>"> </td>
+
+            <td>
+                <h5><strong>入学年月</strong></h5>
+            </td>
+            <td><input type="text" name="rxny" id="rxny" readonly value="<%= stu_info.rxny %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>入学方式</strong></h5>
+            </td>
+            <td><input type="text" name="rxfs" id="rxfs" value="<%= stu_info.rxfs %>" readonly> </td>
+            <td>
+                <h5><strong>培养方式</strong></h5>
+            </td>
+            <td><input type="text" name="pyfs" id="pyfs" readonly value="<%= stu_info.pyfs %>"> </td>
+
+            <td>
+                <h5><strong>生源地</strong></h5>
+            </td>
+            <td><input type="text" name="syd" id="syd" readonly value="<%= stu_info.syd %>"> </td>
+        </tr>
+
+        <tr>
+            <td colspan="6"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>手机号</strong></h5>
+            </td>
+            <td><input type="text" name="shoujihao" id="shoujihao" value="<%= stu_info.shoujihao %>" readonly> </td>
+            <td>
+                <h5><strong>联系电话</strong></h5>
+            </td>
+            <td><input type="text" name="lxdh" id="lxdh" readonly value="<%= stu_info.lxdh %>"> </td>
+
+            <td>
+                <h5><strong>家庭地址</strong></h5>
+            </td>
+            <td><input type="text" name="jtdz" id="jtdz" readonly value="<%= stu_info.jtdz %>"> </td>
+        </tr>
+
+
+        <tr>
+            <td>
+                <h5><strong>家庭电话</strong></h5>
+            </td>
+            <td><input type="text" name="jtdh" id="jtdh" value="<%= stu_info.jtdh %>" readonly> </td>
+            <td>
+                <h5><strong>电子信箱</strong></h5>
+            </td>
+            <td><input type="text" name="dzxx" id="dzxx" readonly value="<%= stu_info.dzxx %>"> </td>
+
+            <td>
+                <h5><strong>QQ号</strong></h5>
+            </td>
+            <td><input type="text" name="qqhao" id="qqhao" readonly value="<%= stu_info.qqhao %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>微信号</strong></h5>
+            </td>
+            <td><input type="text" name="weixinhao" id="weixinhao" value="<%= stu_info.weixinhao %>" readonly> </td>
+            <td>
+                <h5><strong>联系地址</strong></h5>
+            </td>
+            <td><input type="text" name="lxdz" id="lxdz" readonly value="<%= stu_info.lxdz %>"> </td>
+
+            <td>
+                <h5><strong>邮政编号</strong></h5>
+            </td>
+            <td><input type="text" name="yzbh" id="yzbh" readonly value="<%= stu_info.yzbh %>"> </td>
+        </tr>
+
+        <tr>
+            <td colspan="6"></td>
+        </tr>
+
+
+        <tr>
+            <td>
+                <h5><strong>协议书编号</strong></h5>
+            </td>
+            <td><input type="text" name="xysbh" id="xysbh" value="<%= stu_info.xysbh %>" readonly> </td>
+            <td>
+                <h5><strong>去向类型</strong></h5>
+            </td>
+            <td><input type="text" name="qxlx" id="qxlx" readonly value="<%= stu_info.qxlx %>"> </td>
+
+
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>单位名称</strong></h5>
+            </td>
+            <td><input type="text" name="dwmc" id="dwmc" readonly value="<%= stu_info.dwmc %>"> </td>
+            <td>
+                <h5><strong>组织机构代码</strong></h5>
+            </td>
+            <td><input type="text" name="zzjgdm" id="zzjgdm" value="<%= stu_info.zzjgdm %>" readonly> </td>
+            <td>
+                <h5><strong>统一社会信用代码</strong></h5>
+            </td>
+            <td><input type="text" name="tyshxydm" id="tyshxydm" readonly value="<%= stu_info.tyshxydm %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>申请类型</strong></h5>
+            </td>
+            <td><input type="text" name="sqlx" id="sqlx" readonly value="<%= stu_info.sqlx %>"> </td>
+            <td>
+                <h5><strong>信息登记号</strong></h5>
+            </td>
+            <td><input type="text" name="xxdjh" id="xxdjh" value="<%= stu_info.xxdjh %>" readonly> </td>
+            <td>
+                <h5><strong>单位性质</strong></h5>
+            </td>
+            <td><input type="text" name="dwxz" id="dwxz" readonly value="<%= stu_info.dwxz %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>单位行业</strong></h5>
+            </td>
+            <td><input type="text" name="dwhy" id="dwhy" value="<%= stu_info.dwhy %>" readonly> </td>
+            <td>
+                <h5><strong>职位类别</strong></h5>
+            </td>
+            <td><input type="text" name="zwlb" id="zwlb" readonly value="<%= stu_info.zwlb %>"> </td>
+
+
+            <td>
+                <h5><strong>单位所在地区</strong></h5>
+            </td>
+            <td><input type="text" name="dwszdq" id="dwszdq" readonly value="<%= stu_info.dwszdq %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>单位通讯地址</strong></h5>
+            </td>
+            <td><input type="text" name="dwtxdz" id="dwtxdz" value="<%= stu_info.dwtxdz %>" readonly> </td>
+            <td>
+                <h5><strong>联系人电话</strong></h5>
+            </td>
+            <td><input type="text" name="lxrdh" id="lxrdh" readonly value="<%= stu_info.lxrdh %>"> </td>
+        </tr>
+
+        <tr>
+            <td colspan="6"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>报到证单位名称</strong></h5>
+            </td>
+            <td><input type="text" name="bdzdwmc" id="bdzdwmc" readonly value="<%= stu_info.bdzdwmc %>"> </td>
+            <td>
+                <h5><strong>报到证编号</strong></h5>
+            </td>
+            <td><input type="text" name="bdzbh" id="bdzbh" value="<%= stu_info.bdzbh %>" readonly> </td>
+            <td>
+                <h5><strong>报到证单位地区</strong></h5>
+            </td>
+            <td><input type="text" name="bdzdwdq" id="bdzdwdq" readonly value="<%= stu_info.bdzdwdq %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>档案接收单位</strong></h5>
+            </td>
+            <td><input type="text" name="dajsdw" id="dajsdw" readonly value="<%= stu_info.dajsdw %>"> </td>
+            <td>
+                <h5><strong>档案接收邮编</strong></h5>
+            </td>
+            <td><input type="text" name="dajsyb" id="dajsyb" value="<%= stu_info.dajsyb %>" readonly> </td>
+            <td>
+                <h5><strong>档案接收地址</strong></h5>
+            </td>
+            <td><input type="text" name="dajsdz" id="dajsdz" readonly value="<%= stu_info.dajsdz %>"> </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h5><strong>档案接收联系电话</strong></h5>
+            </td>
+            <td><input type="text" name="dajslxdh" id="dajslxdh" readonly value="<%= stu_info.dajslxdh %>"> </td>
+            <td colspan="4"> </td>
+
+        </tr>
+
+    </table>
+</div>
+
+
+
+<% if ( locals.careers) { %>
+<div class="page-header">
+    <h3>工作经历</h3>
+</div>
+
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th hidden> id </th>
+                <th>序号</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>单位名称</th>
+                <th>职位名称</th>
+                <th>职级</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (i =0 ;i<careers.length;i++) { %>
+            <tr class="bg-success">
+                <form action="/updatecareer?student_id=<%= stu_info.student_id %>" method="POST">
+                    <td hidden><input type="text" name="career_id" id="career_id" value="<%= careers[i].career_id %>">
+                    </td>
+                    <td>
+                        <h5><%= i+1 %></h5>
+                    </td>
+                    <td><input type="date" name="career_start_time" id="career_start_time"
+                            value="<%=  careers[i].start_time %>" readonly></td>
+                    <td><input type="date" name="career_end_time" id="career_end_time"
+                            value="<%= careers[i].end_time %>" readonly> </td>
+                    <td><input type="text" name="career_unit" id="career_unit" value="<%= careers[i].unit %>" readonly>
+                    </td>
+                    <td><input type="text" name="career_position" id="career_position"
+                            value="<%= careers[i].position %>" readonly> </td>
+
+                    <td>
+                        <input type="text" name="career_level" id="career_level" value="<%= careers[i].level %>"
+                            readonly>
+
+                    </td>
+                </form>
+            </tr>
+
+            <% } %>
+
+
+
+        </tbody>
+    </table>
+
+</div>
+
+<% }  %>
+
+
+<% }  %>
+
+<% include footer %>
