@@ -1,0 +1,318 @@
+<% include header %>
+
+<style type="text/css">
+    tr.change:hover {
+        background-color: yellowgreen
+    }
+</style>
+
+<div class="page-header">
+    <h3>添加学生</h3>
+</div>
+
+<div>
+    <form method="post" id="studentinfo">
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <h5><strong>学号</strong></h5>
+                </td>
+                <td><input type="text" name="student_id" id="student_id" value="" required>
+                </td>
+                <td>
+                    <h5><strong>姓名</strong></h5>
+                </td>
+                <td><input type="text" name="name" id="name" value="" required> </td>
+
+                <td>
+                    <h5><strong>性别</strong></h5>
+                </td>
+                <td><input type="text" name="xingbie" id="xingbie" value=""> </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>就业年份</strong></h5>
+                </td>
+                <td><input type="text" name="year" id="year" value="" required> </td>
+                <td>
+                    <h5><strong>就业省市</strong></h5>
+                </td>
+                <td><input type="text" name="province" id="province" value="" required> </td>
+
+                <td>
+                    <h5><strong>民族</strong></h5>
+                </td>
+                <td><input type="text" name="minzu" id="minzu" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>政治面貌</strong></h5>
+                </td>
+                <td><input type="text" name="zzmm" id="zzmm" value=""> </td>
+                <td>
+                    <h5><strong>出生日期</strong></h5>
+                </td>
+                <td><input type="text" name="csrq" id="csrq" value=""> </td>
+
+                <td>
+                    <h5><strong>身份证件号</strong></h5>
+                </td>
+                <td><input type="text" name="sfzjh" id="sfzjh" value=""> </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="6"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>学生类型</strong></h5>
+                </td>
+                <td><input type="text" name="xslx" id="xslx" value=""> </td>
+                <td>
+                    <h5><strong>学历</strong></h5>
+                </td>
+                <td><input type="text" name="xueli" id="xueli" value=""> </td>
+
+                <td>
+                    <h5><strong>学位</strong></h5>
+                </td>
+                <td><input type="text" name="xuewei" id="xuewei" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>学院</strong></h5>
+                </td>
+                <td><input type="text" name="xueyuan" id="xueyuan" value=""> </td>
+                <td>
+                    <h5><strong>系所</strong></h5>
+                </td>
+                <td><input type="text" name="xisuo" id="xisuo" value=""> </td>
+
+                <td>
+                    <h5><strong>专业</strong></h5>
+                </td>
+                <td><input type="text" name="zhuanye" id="zhuanye" value=""> </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <h5><strong>学籍状态</strong></h5>
+                </td>
+                <td><input type="text" name="xjzt" id="xjzt" value=""> </td>
+                <td>
+                    <h5><strong>学制</strong></h5>
+                </td>
+                <td><input type="text" name="xuezhi" id="xuezhi" value=""> </td>
+
+                <td>
+                    <h5><strong>入学年月</strong></h5>
+                </td>
+                <td><input type="text" name="rxny" id="rxny" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>入学方式</strong></h5>
+                </td>
+                <td><input type="text" name="rxfs" id="rxfs" value=""> </td>
+                <td>
+                    <h5><strong>培养方式</strong></h5>
+                </td>
+                <td><input type="text" name="pyfs" id="pyfs" value=""> </td>
+
+                <td>
+                    <h5><strong>生源地</strong></h5>
+                </td>
+                <td><input type="text" name="syd" id="syd" value=""> </td>
+            </tr>
+
+            <tr>
+                <td colspan="6"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>手机号</strong></h5>
+                </td>
+                <td><input type="text" name="shoujihao" id="shoujihao" value=""> </td>
+                <td>
+                    <h5><strong>联系电话</strong></h5>
+                </td>
+                <td><input type="text" name="lxdh" id="lxdh" value=""> </td>
+
+                <td>
+                    <h5><strong>家庭地址</strong></h5>
+                </td>
+                <td><input type="text" name="jtdz" id="jtdz" value=""> </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <h5><strong>家庭电话</strong></h5>
+                </td>
+                <td><input type="text" name="jtdh" id="jtdh" value=""> </td>
+                <td>
+                    <h5><strong>电子信箱</strong></h5>
+                </td>
+                <td><input type="text" name="dzxx" id="dzxx" value=""> </td>
+
+                <td>
+                    <h5><strong>QQ号</strong></h5>
+                </td>
+                <td><input type="text" name="qqhao" id="qqhao" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>微信号</strong></h5>
+                </td>
+                <td><input type="text" name="weixinhao" id="weixinhao" value=""> </td>
+                <td>
+                    <h5><strong>联系地址</strong></h5>
+                </td>
+                <td><input type="text" name="lxdz" id="lxdz" value=""> </td>
+
+                <td>
+                    <h5><strong>邮政编号</strong></h5>
+                </td>
+                <td><input type="text" name="yzbh" id="yzbh" value=""> </td>
+            </tr>
+
+            <tr>
+                <td colspan="6"></td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <h5><strong>协议书编号</strong></h5>
+                </td>
+                <td><input type="text" name="xysbh" id="xysbh" value=""> </td>
+                <td>
+                    <h5><strong>去向类型</strong></h5>
+                </td>
+                <td><input type="text" name="qxlx" id="qxlx" value=""> </td>
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>单位名称</strong></h5>
+                </td>
+                <td><input type="text" name="dwmc" id="dwmc" value=""> </td>
+                <td>
+                    <h5><strong>组织机构代码</strong></h5>
+                </td>
+                <td><input type="text" name="zzjgdm" id="zzjgdm" value=""> </td>
+                <td>
+                    <h5><strong>统一社会信用代码</strong></h5>
+                </td>
+                <td><input type="text" name="tyshxydm" id="tyshxydm" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>申请类型</strong></h5>
+                </td>
+                <td><input type="text" name="sqlx" id="sqlx" value=""> </td>
+                <td>
+                    <h5><strong>信息登记号</strong></h5>
+                </td>
+                <td><input type="text" name="xxdjh" id="xxdjh" value=""> </td>
+                <td>
+                    <h5><strong>单位性质</strong></h5>
+                </td>
+                <td><input type="text" name="dwxz" id="dwxz" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>单位行业</strong></h5>
+                </td>
+                <td><input type="text" name="dwhy" id="dwhy" value=""> </td>
+                <td>
+                    <h5><strong>职位类别</strong></h5>
+                </td>
+                <td><input type="text" name="zwlb" id="zwlb" value=""> </td>
+
+
+                <td>
+                    <h5><strong>单位所在地区</strong></h5>
+                </td>
+                <td><input type="text" name="dwszdq" id="dwszdq" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>单位通讯地址</strong></h5>
+                </td>
+                <td><input type="text" name="dwtxdz" id="dwtxdz" value=""> </td>
+                <td>
+                    <h5><strong>联系人电话</strong></h5>
+                </td>
+                <td><input type="text" name="lxrdh" id="lxrdh" value=""> </td>
+            </tr>
+
+            <tr>
+                <td colspan="6"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>报到证单位名称</strong></h5>
+                </td>
+                <td><input type="text" name="bdzdwmc" id="bdzdwmc" value=""> </td>
+                <td>
+                    <h5><strong>报到证编号</strong></h5>
+                </td>
+                <td><input type="text" name="bdzbh" id="bdzbh" value=""> </td>
+                <td>
+                    <h5><strong>报到证单位地区</strong></h5>
+                </td>
+                <td><input type="text" name="bdzdwdq" id="bdzdwdq" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>档案接收单位</strong></h5>
+                </td>
+                <td><input type="text" name="dajsdw" id="dajsdw" value=""> </td>
+                <td>
+                    <h5><strong>档案接收邮编</strong></h5>
+                </td>
+                <td><input type="text" name="dajsyb" id="dajsyb" value=""> </td>
+                <td>
+                    <h5><strong>档案接收地址</strong></h5>
+                </td>
+                <td><input type="text" name="dajsdz" id="dajsdz" value=""> </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5><strong>档案接收联系电话</strong></h5>
+                </td>
+                <td><input type="text" name="dajslxdh" id="dajslxdh" value=""> </td>
+                <td colspan="4"> </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="6" class="text-center"> <input type="submit" value="保存"></td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+
+
+
+<% include footer %>
