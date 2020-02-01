@@ -3,10 +3,15 @@ var myutil = require('./myutil');
 var util = require('util');
 
 var crypto = require('crypto');
+var bcrypt = require('bcrypt');
 
 function cryptPwd(password) {
-    var md5 = crypto.createHash('md5');
-    return md5.update(password).digest('hex');
+    const saltRounds = 10; //随机生成salt
+    const salt = bcrypt.genSaltSync(saltRounds); //获取hash值
+    var hash = bcrypt.hashSync(password, salt);
+    return hash;
+    // var md5 = crypto.createHash('md5');
+    // return md5.update(password).digest('hex');
 }
 
 //所有参数在调用sql之前检查。 api淘汰，改用连接池

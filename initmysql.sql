@@ -11,11 +11,11 @@ CREATE TABLE xds_users
   id        bigint NOT NULL unique,
   type     smallint DEFAULT '2' NOT NULL,  
   username      varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci unique not NULL, 
-  password  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci not NULL,
+  password  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci not NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- 0 admin ,1 assist ,2 student
-INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'tj91', 'e0de3c61693cfeeb39da703c657be46c');
+INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'tj91', '$2b$10$d3jYmq3jYuH2uYhiWOEF4OZy3fEZqtk7t.JjRqn9zPQ.t5TuCQVqW');
 
 
 

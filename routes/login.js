@@ -5,9 +5,16 @@ var usr = require('../common/dbConnect');
 var myutil = require('../common/myutil');
 var crypto = require('crypto');
 
+var bcrypt = require('bcrypt');
+
+
 function cryptPwd(password) {
-    var md5 = crypto.createHash('md5');
-    return md5.update(password).digest('hex');
+    const saltRounds = 10; //随机生成salt
+    const salt = bcrypt.genSaltSync(saltRounds); //获取hash值
+    var hash = bcrypt.hashSync(password, salt);
+    return hash;
+    // var md5 = crypto.createHash('md5');
+    // return md5.update(password).digest('hex');
 }
 
 //TODO
@@ -53,9 +60,8 @@ router.route('/')
         }
         result = null;
         usr.loginFun(req.body.username, function (result) {
-
             if (result !== undefined && result.length == 1
-                && result[0].password === cryptPwd(req.body.password)) {
+                && bcrypt.compareSync(req.body.password, result[0].password)) {
                 req.session.islogin = req.body.username;
                 res.locals.islogin = req.session.islogin;
                 //100分钟后cookie清空,maxAge单位ms
@@ -219,7 +225,7 @@ router.post('/password', function (req, res) {
         //先检查原密码
         result = null;
         usr.loginFun(req.cookies.islogin, function (result) {
-            if (result !== undefined && result[0].password === cryptPwd(req.body.oldpassword)) {
+            if (result !== undefined && bcrypt.compareSync(req.body.oldpassword, result[0].password)) {
                 usr.updatepasswordFun(req.cookies.islogin, cryptPwd(req.body.password2), function (err) {
                     return res.redirect('/logout');
                 });
