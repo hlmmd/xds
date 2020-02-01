@@ -144,14 +144,15 @@ function student_idFun(callback) {
     });
 }
 
-// 为学生注册账号，用户名密码同学号
+// 为学生注册账号，用户名同学号,密码tongji
 function regstudentFun(student_id, index, callback) {
-    pool.query('insert into xds_users (id,username,password) value(?,?,?)', [student_id, student_id, cryptPwd(student_id)], function (err, results, fields) {
-        if (err) {
-            console.log("error:" + err.message);
-        }
-        callback(index, err);
-    });
+    pool.query('insert into xds_users (id,username,password) value(?,?,?)',
+        [student_id, student_id, '$2b$10$Lr1h/LcKXQ2JFcgIjSfvTeSRdNKsEvo3gTGQ9sjAe8EyPIjXKNW8m'], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(index, err);
+        });
 }
 
 
@@ -183,9 +184,7 @@ function eventyearsFun(callback) {
 //按学号查询选调生信息
 function studentFun(student_id, callback) {
 
-    var sqlstr = util.format(' select * from xds_student where student_id = "%d"', student_id);
-
-    pool.query(sqlstr, function (err, results, fields) {
+    pool.query('select * from xds_student where student_id =?', [student_id], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
@@ -196,9 +195,9 @@ function studentFun(student_id, callback) {
 
 //按学号删除选调生
 function delstudentFun(student_id, callback) {
-    //var sqlstr = util.format('delete from xds_student where student_id = "%d"', student_id);
+  
     //改为直接删除学生用户账号，利用外键级联删除特性直接删除学生
-    var sqlstr = util.format('delete from xds_users where id = "%d"', student_id);
+    var sqlstr = util.format('delete from xds_users where id = "%s"', student_id);
     pool.query(sqlstr, function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
@@ -240,7 +239,7 @@ function updatephotoFun(student_id, photofile, callback) {
 //删除选调生照片
 function deletephotoFun(student_id, callback) {
 
-    var sqlstr = util.format('update xds_student set photofile ="" where student_id="%d"',
+    var sqlstr = util.format('update xds_student set photofile ="" where student_id="%s"',
         student_id);
 
     pool.query(sqlstr, function (err, results, fields) {
@@ -256,7 +255,7 @@ function deletephotoFun(student_id, callback) {
 //按学号查询选调生职位信息
 function careerFun(student_id, callback) {
 
-    var sqlstr = util.format('select * from xds_career where student_id = "%d" order by start_time', student_id);
+    var sqlstr = util.format('select * from xds_career where student_id = "%s" order by start_time', student_id);
     pool.query(sqlstr, function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);

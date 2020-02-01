@@ -8,7 +8,7 @@ drop table if exists xds_users;
 
 CREATE TABLE xds_users
 (
-  id        bigint NOT NULL unique,
+  id         varchar(20) NOT NULL unique,
   type     smallint DEFAULT '2' NOT NULL,  
   username      varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci unique not NULL, 
   password  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci not NULL,
@@ -22,7 +22,7 @@ INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'tj91', '$2b
 drop table if exists xds_student;
 CREATE TABLE xds_student
 (
-  student_id bigint NOT NULL unique,
+  student_id varchar(15) NOT NULL unique,
   name  varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   year	int NOT NULL DEFAULT '2000',
   province_id 	int NOT NULL DEFAULT '34',
@@ -92,7 +92,7 @@ drop table if exists xds_career;
 CREATE TABLE xds_career
 (
   career_id        bigint NOT NULL auto_increment,
-  student_id  bigint DEFAULT '0' NOT NULL,
+  student_id  varchar(15) DEFAULT '0' NOT NULL,
   start_time     DATE DEFAULT '2000-01-01' NOT NULL,
   end_time       DATE DEFAULT '2000-01-01' NOT NULL,
   unit varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
@@ -108,7 +108,7 @@ CREATE TABLE xds_career
 drop table if exists xds_comment;
 CREATE TABLE xds_comment
 (
-  user_id bigint NOT NULL,
+  user_id varchar(15) NOT NULL,
   comment_id        bigint NOT NULL auto_increment,
   content      varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci , 
 -- 0: 待处理 1:已处理 2:删除
