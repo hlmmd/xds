@@ -1,14 +1,15 @@
 <% include header %>
 
-<style type="text/css">
-    tr.change:hover {
-        background-color: yellowgreen
-    }
-</style>
-
 <div class="page-header">
     <h3>添加学生</h3>
 </div>
+
+
+<% if(locals.errmsg) { %>
+
+    <div class="alert alert-warning form-group"><%= errmsg %> </div>
+
+<% } %>
 
 <div>
     <form method="post" id="studentinfo">
@@ -39,7 +40,15 @@
                 <td>
                     <h5><strong>就业省市</strong></h5>
                 </td>
-                <td><input type="text" name="province" id="province" value="" required> </td>
+
+
+                <td>
+                    <select name="province_id" id="province_id">
+                        <% for( i = 0;i<provinces.length;i++) {%>
+                        <option value="<%= i %>"> <%= provinces[i] %> </option>
+                        <% } %>
+                    </select>
+                </td>
 
                 <td>
                     <h5><strong>民族</strong></h5>
@@ -306,7 +315,7 @@
             </tr>
 
             <tr>
-                <td colspan="6" class="text-center"> <input type="submit" value="保存"></td>
+                <td colspan="6" class="text-center"> <input type="submit" value="添加"></td>
             </tr>
 
         </table>

@@ -145,7 +145,7 @@ function regstudentFun(student_id, index, callback) {
         if (err) {
             console.log("error:" + err.message);
         }
-        callback(index, results);
+        callback(index, err);
     });
 }
 

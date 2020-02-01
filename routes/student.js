@@ -42,7 +42,8 @@ router.get('/student', function (req, res) {
                         navbar_active: 'student',
                         stu_info: result[0],
                         careers: cresult,
-                        career_levels: global.career_levels
+                        career_levels: global.career_levels,
+                        provinces: global.provinces
                     });
                 });
             }
@@ -117,13 +118,24 @@ router.post('/student', function (req, res) {
         return res.redirect('/');
     }
 
-    if (isNaN(req.query.student_id) || req.query.student_id == '') {
+    if (isNaN(req.body.student_id) || req.body.student_id == '') {
         return res.redirect('/student');
     }
 
-    result = null;
-    usr.updatestudentFun(req.query.student_id, req.body, function (result) {
-        return res.redirect('/student?student_id=' + req.query.student_id);
+    var sqlstr = "update xds_student set name=? "
+    sqlparm = [req.body.name];
+    for (member in req.body) {
+        if (member != 'student_id' && member != 'name') {
+            sqlstr += ',' + member + '=?';
+            sqlparm.push(req.body[member]);
+        }
+    }
+    sqlparm.push(req.body.student_id);
+
+    sqlstr += ' where student_id = ?';
+
+    usr.sqlqueryFun(sqlstr, sqlparm, function (result) {
+        return res.redirect('/student?student_id=' + req.body.student_id);
     });
 });
 
@@ -312,14 +324,47 @@ router.post('/addstudent', function (req, res) {
     if (myutil.checklogin_admin(req, res) == false) {
         return res.redirect('/');
     }
-    if (isNaN(req.body.student_id) || req.body.student_id == '') {
+    if (isNaN(req.body.student_id) || req.body.student_id == '' || req.body.student_id == 0) {
         return res.redirect('/addstudent');
     }
+    if (isNaN(req.body.year) || req.body.year == '' || req.body.name == '' || req.body.province_id == '') {
+        return res.redirect('/addstudent');
+    }
+    usr.regstudentFun(req.body.student_id, 0, function (notused, err) {
+        if (err) {
+            return res.render('addstudent', {
+                title: global.systemtitle,
+                navbar_active: 'student',
+                provinces: global.provinces,
+                errmsg: '学号已存在'
+            });
+        }
+        else {
+            var sqlstr = "insert into xds_student (student_id";
+            var sqlparm = [req.body.student_id];
 
-    // result = null;
-    // usr.updatestudentFun(req.body.student_id, req.body, function (result) {
-    //     return res.redirect('/student?student_id=' + req.body.student_id);
-    // });
+            //获取所有对象
+            for (member in req.body) {
+                if (req.body[member] != '' && member != 'student_id') {
+                    sqlstr += ',' + member;
+                    sqlparm.push(req.body[member]);
+                }
+            }
+
+            sqlstr += ') values(?';
+
+            for (i = 1; i < sqlparm.length; i++) {
+                sqlstr += ',?';
+            }
+
+            sqlstr += ')';
+
+            usr.sqlqueryFun(sqlstr, sqlparm, function (result) {
+                return res.redirect('/student?student_id=' + req.body.student_id);
+            });
+        }
+
+    });
 });
 
 
