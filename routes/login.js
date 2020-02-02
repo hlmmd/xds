@@ -51,8 +51,6 @@ router.route('/')
     })
     .post(function (req, res) {
 
-        console.log(cryptPwd('tongji'));
-
         if (myutil.checklogin(req, res) == true) {
             return res.redirect('/home');
         }
