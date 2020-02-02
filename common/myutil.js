@@ -18,10 +18,10 @@ function user_type_string(type) {
 
 function checklogin(req, res) {
     //  return true;
-    if (req.session.islogin) {
+    if (req.session.islogin &&req.cookies.islogin) {
         res.locals.islogin = req.session.islogin;
     }
-    else {
+    else  {
         return false;
     }
     return true;

@@ -67,9 +67,10 @@ router.route('/')
                 req.session.islogin = req.body.username;
                 res.locals.islogin = req.session.islogin;
                 //100分钟后cookie清空,maxAge单位ms
-                res.cookie('islogin', res.locals.islogin, { maxAge: 6000000 });
-                res.cookie('type', result[0].type, { maxAge: 6000000 });
-                res.cookie('user_id', result[0].id, { maxAge: 6000000 });
+                var maxage = 600000;
+                res.cookie('islogin', res.locals.islogin, { maxAge: maxage });
+                res.cookie('type', result[0].type, { maxAge: maxage });
+                res.cookie('user_id', result[0].id, { maxAge: maxage });
                 res.redirect('/home');
             }
             else { //用户名不存在或者密码错误      
