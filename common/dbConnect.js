@@ -308,7 +308,7 @@ function updatecareerFun(student_id, body, callback) {
 function commentFun(user_id, callback) {
 
     if (user_id == 0) {
-        pool.query('select * from xds_comment where state!=2 order by state asc, timestamp desc', function (err, results, fields) {
+        pool.query('select * from xds_comment where state!=2 order by state asc, timestamp desc limit 500', function (err, results, fields) {
             if (err) {
                 console.log("error:" + err.message);
             }
