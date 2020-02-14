@@ -16,7 +16,7 @@ CREATE TABLE xds_users
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- 0 admin ,1 assist ,2 student
 INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'tj91', '$2b$10$d3jYmq3jYuH2uYhiWOEF4OZy3fEZqtk7t.JjRqn9zPQ.t5TuCQVqW');
-
+INSERT INTO xds_users (id, type, username, password ) VALUES (0, 0, 'hlmmd', '$2b$10$d3jYmq3jYuH2uYhiWOEF4OZy3fEZqtk7t.JjRqn9zPQ.t5TuCQVqW');
 
 
 drop table if exists xds_student;

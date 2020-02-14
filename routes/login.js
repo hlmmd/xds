@@ -219,7 +219,7 @@ router.post('/password', function (req, res) {
         return res.redirect('/');
     }
     else {
-        if (req.body.password1 != req.body.password2 || req.body.password2.length < 6) {
+        if (req.body.password1 != req.body.password2 || req.body.password2.length < 8) {
             return res.redirect('/password');
         }
 
