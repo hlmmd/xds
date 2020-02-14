@@ -44,7 +44,7 @@
                 <td> <%= comments[i].user_id %> </td>
                 <td> <%= comments[i].timestamp %> </td>
                 <td>
-                    <textarea rows="3" cols="80"><%= comments[i].content %></textarea>
+                    <textarea rows="3" cols="80" readonly><%= comments[i].content %></textarea>
                 </td>
 
                 <% if(comments[i].state==0) { %>
@@ -97,7 +97,7 @@
 </div>
 
 <div>
-    <form action="/addcomment?user_id=<%= user_id %>" id="addcomment" method="POST">
+    <form action="/addcomment?user_id=<%= user_id %>" id="addcomment" method="POST" autocomplete="off">
 
         <div class="form-group">
             <textarea rows="3" cols="60" id="content" name="content" maxlength="10000"></textarea>

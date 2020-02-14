@@ -29,7 +29,7 @@
 
     <div class="row col-md-5">
 
-        <form action="updateevent?event_id=<%= detail.event_id %>" method="post" id="eventform">
+        <form action="updateevent?event_id=<%= detail.event_id %>" method="post" id="eventform" autocomplete="off">
             <h4><%= detail.start_date %> <%= provinces[detail.province_id] %></h4>
             <div class="form-group controls">
                 <input type="text" name="title" id="title" value="<%= detail.title %>" maxlength="100" size="40"

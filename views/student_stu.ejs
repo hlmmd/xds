@@ -340,7 +340,7 @@
         <tbody>
             <% for (i =0 ;i<careers.length;i++) { %>
             <tr class="bg-success">
-                <form action="/updatecareer?student_id=<%= stu_info.student_id %>" method="POST">
+                <form action="/updatecareer?student_id=<%= stu_info.student_id %>" method="POST" >
                     <td hidden><input type="text" name="career_id" id="career_id" value="<%= careers[i].career_id %>">
                     </td>
                     <td>
