@@ -195,7 +195,7 @@ function studentFun(student_id, callback) {
 
 //按学号删除选调生
 function delstudentFun(student_id, callback) {
-  
+
     //改为直接删除学生用户账号，利用外键级联删除特性直接删除学生
     var sqlstr = util.format('delete from xds_users where id = "%s"', student_id);
     pool.query(sqlstr, function (err, results, fields) {
@@ -505,6 +505,18 @@ function deleventfile(file_id, callback) {
         });
 }
 
+//导出学生 
+function exportstudentFun(callback) {
+
+    pool.query('select * from xds_student',
+        function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
+
 
 
 
@@ -552,3 +564,5 @@ exports.deleventfile = deleventfile;
 exports.student_idFun = student_idFun;
 exports.regstudentFun = regstudentFun;
 exports.sqlqueryFun = sqlqueryFun;
+
+exports.exportstudentFun = exportstudentFun;
