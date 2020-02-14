@@ -505,6 +505,20 @@ function deleventfile(file_id, callback) {
         });
 }
 
+//重命名文件 
+function updatefilenameFun(file_id, newname, callback) {
+
+    pool.query('update xds_eventfile set filename=? where file_id=?',
+        [newname, file_id], function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
+
+
+
 //导出学生 
 function exportstudentFun(callback) {
 
@@ -517,7 +531,31 @@ function exportstudentFun(callback) {
         });
 }
 
+//导出学career
+function exportcareerFun(callback) {
 
+    pool.query('select S.student_id ,S.name,S.year,S.province_id,C.start_time,C.end_time,C.unit,C.position,C.level from xds_career as C  left join xds_student as S on C.student_id = S.student_id order by S.student_id;',
+        function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
+
+
+
+//导出event
+function exporteventFun(callback) {
+
+    pool.query('select e.year,e.province_id,e.start_date,e.title,e.content,f.filename from xds_event as e left join xds_eventfile as f on e.event_id=f.event_id',
+        function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+}
 
 
 exports.connect = connectServer;
@@ -560,9 +598,12 @@ exports.eventFun = eventFun;
 exports.addfileFun = addfileFun;
 exports.eventfileFun = eventfileFun;
 exports.deleventfile = deleventfile;
+exports.updatefilenameFun = updatefilenameFun;
 
 exports.student_idFun = student_idFun;
 exports.regstudentFun = regstudentFun;
 exports.sqlqueryFun = sqlqueryFun;
 
 exports.exportstudentFun = exportstudentFun;
+exports.exportcareerFun = exportcareerFun;
+exports.exporteventFun = exporteventFun;

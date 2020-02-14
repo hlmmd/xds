@@ -301,9 +301,27 @@ router.post('/downloadfile', function (req, res) {
         return res.redirect('/');
     }
     else {
-        res.download(req.body.filepath, req.body.filename);
-        return;
+        return res.download(req.body.filepath, req.body.filename);
     }
 });
+
+
+//重命名文件
+
+router.post('/updatefilename', function (req, res) {
+    if (myutil.checklogin_admin(req, res) == false) {
+        return res.redirect('/');
+    }
+    else {
+        if (req.body.filename == '')
+            return res.redirect('/event_detail?event_id=' + req.body.event_id);
+        usr.updatefilenameFun(req.body.file_id, req.body.filename, function (result) {
+            return res.redirect('/event_detail?event_id=' + req.body.event_id);
+        });
+    }
+});
+
+
+
 
 module.exports = router;

@@ -6,6 +6,14 @@
 
 <% if(locals.detail) { %>
 
+
+<script type="text/javascript">
+
+    function enable() {
+        window.event.srcElement.readOnly = false;
+    }
+</script>
+
 <div class="row col-md-12 container ">
 
     <div class="row col-md-3">
@@ -42,26 +50,37 @@
         <table class="table table-bordered ">
             <% if(locals.eventfiles) {  for(i = 0 ;i<eventfiles.length;i++) { %>
             <tr>
+
+                <form method="POST" action="/updatefilename" autocomplete="off" >
+                    <td>
+                        <input hidden id="event_id" name="event_id" value="<%= eventfiles[i].event_id %>">
+                        <input hidden id="file_id" name="file_id" value="<%= eventfiles[i].file_id %>">
+                        <input readonly onclick="enable()" id="filename" name="filename" type="text"
+                            value="<%= eventfiles[i].filename %>">
+                    </td>
+                    <td>
+                        <input class="btn btn-sm btn-success" type="submit" value="重命名">
+                    </td>
+                </form>
+
                 <td>
                     <form method="POST" action="/downloadfile">
                         <input id="filename" name="filename" type="text" hidden value="<%= eventfiles[i].filename %>">
                         <input id="filepath" name="filepath" type="text" hidden value="<%= eventfiles[i].filepath %>">
-                        <input class="btn btn-sm btn-primary" type="submit" value="<%= eventfiles[i].filename %>">
+                        <input class="btn btn-sm btn-primary" type="submit" value="下载"">
                     </form>
-
-
                 </td>
                 <td>
-                    <a class="btn  btn-sm btn-danger" onclick="deleventfile(<%= eventfiles[i].file_id %>)">删除文件</a>
+                    <a class=" btn btn-sm btn-danger" onclick="deleventfile(<%= eventfiles[i].file_id %>)">删除</a>
                 </td>
             </tr>
             <% } } %>
             <tr>
                 <form method="POST" action="/addfile?event_id=<%= detail.event_id %>" enctype="multipart/form-data">
-                    <td>
+                    <td colspan="2">
                         <input type="file" name="newfile" id="newfile">
                     </td>
-                    <td>
+                    <td colspan="2" class="text-center">
                         <input type="submit" value="上传文件">
                     </td>
                 </form>

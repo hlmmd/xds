@@ -8,7 +8,6 @@ var util = require('util');
 //读取excel
 var excel = require('xlsx');
 
-
 var fs = require('fs');
 //上传文件使用
 var multer = require('multer');
@@ -162,7 +161,6 @@ router.post('/databackup', function (req, res) {
             console.log(stderr);
             return res.redirect('/');
         } else {
-            //res.download(stdout);
             return res.download(filename);
         }
     });
@@ -528,10 +526,22 @@ router.post('/exportstudent', function (req, res) {
 
         excel.writeFile(workBook, filename);
 
-        res.download(filename, "学生数据.xlsx");
+        return res.download(filename, "学生数据.xlsx");
     });
 });
 
+
+var excareer = {
+    'student_id': '学号',
+    'name': '姓名',
+    'year': '就业年份',
+    'province_id': '就业省份',
+    'start_time': '开始时间',
+    'end_time': '结束时间',
+    'unit': '单位名称',
+    'position': '职位名称',
+    'level': '职级'
+}
 
 
 //导出工作经历
@@ -540,7 +550,7 @@ router.post('/exportcareer', function (req, res) {
         return res.redirect('/');
     }
 
-    usr.exportstudentFun(function (result) {
+    usr.exportcareerFun(function (result) {
 
         if (result === undefined || result.length == 0) {
             return res.render('export', {
@@ -551,15 +561,15 @@ router.post('/exportcareer', function (req, res) {
         var dataoutput = [];
         var _headers = [];
         for (var key in result[0]) {
-            if (exstudent[key] !== undefined)
-                _headers.push(exstudent[key]);
+            if (excareer[key] !== undefined)
+                _headers.push(excareer[key]);
         }
         dataoutput.push(_headers);
 
         for (i = 0; i < result.length; i++) {
             var datatemp = [];
             for (var key in result[i]) {
-                if (exstudent[key] !== undefined) {
+                if (excareer[key] !== undefined) {
                     if (key == 'province_id') {
                         datatemp.push(global.provinces[result[i][key]]);
                     }
@@ -574,17 +584,17 @@ router.post('/exportcareer', function (req, res) {
         var arrayWorkSheet = excel.utils.aoa_to_sheet(dataoutput);
         // 构造workBook
         workBook = {
-            SheetNames: ['学生数据'],
+            SheetNames: ['学生工作经历'],
             Sheets: {
-                '学生数据': arrayWorkSheet,
+                '学生工作经历': arrayWorkSheet,
             }
         };
         var timestr = moment().format('YYYY-MM-DD');
-        filename = "./backup/student/" + timestr + ".xlsx";
+        filename = "./backup/career/" + timestr + ".xlsx";
 
         excel.writeFile(workBook, filename);
 
-        res.download(filename, "学生数据.xlsx");
+        return res.download(filename, "学生工作经历.xlsx");
     });
 });
 
@@ -595,7 +605,7 @@ router.post('/exportevent', function (req, res) {
         return res.redirect('/');
     }
 
-    usr.exportstudentFun(function (result) {
+    usr.exporteventFun(function (result) {
 
         if (result === undefined || result.length == 0) {
             return res.render('export', {
@@ -603,18 +613,28 @@ router.post('/exportevent', function (req, res) {
                 navbar_active: 'backup'
             });
         }
+
+        var colmun = {
+            'year': '年份',
+            'province_id': '省份',
+            'start_date': '开始时间',
+            'title': '标题',
+            'content': '详细内容',
+            'filename': '附件名称'
+        }
+
         var dataoutput = [];
         var _headers = [];
         for (var key in result[0]) {
-            if (exstudent[key] !== undefined)
-                _headers.push(exstudent[key]);
+            if (colmun[key] !== undefined)
+                _headers.push(colmun[key]);
         }
         dataoutput.push(_headers);
 
         for (i = 0; i < result.length; i++) {
             var datatemp = [];
             for (var key in result[i]) {
-                if (exstudent[key] !== undefined) {
+                if (colmun[key] !== undefined) {
                     if (key == 'province_id') {
                         datatemp.push(global.provinces[result[i][key]]);
                     }
@@ -629,17 +649,17 @@ router.post('/exportevent', function (req, res) {
         var arrayWorkSheet = excel.utils.aoa_to_sheet(dataoutput);
         // 构造workBook
         workBook = {
-            SheetNames: ['学生数据'],
+            SheetNames: ['选调生工作数据'],
             Sheets: {
-                '学生数据': arrayWorkSheet,
+                '选调生工作数据': arrayWorkSheet,
             }
         };
         var timestr = moment().format('YYYY-MM-DD');
-        filename = "./backup/student/" + timestr + ".xlsx";
+        filename = "./backup/event/" + timestr + ".xlsx";
 
         excel.writeFile(workBook, filename);
 
-        res.download(filename, "学生数据.xlsx");
+        return res.download(filename, "选调生工作数据.xlsx");
     });
 });
 
