@@ -1,14 +1,14 @@
 -- mysql -uroot -ptj91database < initmysql.sql
 
-drop database if exists tj91;
-create  database tj91;
-use tj91;
+drop database if exists xds;
+create  database xds;
+use xds;
 
 drop table if exists xds_users;
 
 CREATE TABLE xds_users
 (
-  id         varchar(20) NOT NULL unique,
+  id         varchar(20)  NOT NULL unique,
   type     smallint DEFAULT '2' NOT NULL,  
   username      varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci unique not NULL, 
   password  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci not NULL,

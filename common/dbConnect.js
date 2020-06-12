@@ -31,7 +31,7 @@ var pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'tj91database',
-    database: 'tj91'
+    database: 'xds'
 });
 
 //sql query  ? 占位符，可以避免sql注入问题
