@@ -34,6 +34,7 @@ var pool = mysql.createPool({
     database: global.databaseName
 });
 
+
 //sql query  ? 占位符，可以避免sql注入问题
 
 function loginFun(username, callback) {
