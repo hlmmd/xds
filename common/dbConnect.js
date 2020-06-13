@@ -29,9 +29,9 @@ function connectServer() {
 var pool = mysql.createPool({
 
     host: 'localhost',
-    user: 'root',
-    password: 'tj91database',
-    database: 'xds'
+    user: global.databaseuser,
+    password: global.databasepassword,
+    database: global.databaseName
 });
 
 //sql query  ? 占位符，可以避免sql注入问题

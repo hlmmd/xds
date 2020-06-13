@@ -151,9 +151,10 @@ router.post('/databackup', function (req, res) {
 
     var timestr = moment().format('YYYY-MM-DD');
     var filename = util.format('./backup/xds_%s.sql', timestr);
-    var cmdStr = util.format('mysqldump -u%s -p%s tj91 > %s ',
+    var cmdStr = util.format('mysqldump -u%s -p%s %s > %s ',
         global.databaseuser,
         global.databasepassword,
+        global.databaseName,
         filename);
 
     exec(cmdStr, function (err, stdout, stderr) {

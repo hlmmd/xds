@@ -71,6 +71,7 @@ app.use(function (err, req, res, next) {
 //数据库用户名密码
 global.databaseuser = 'root';
 global.databasepassword = 'tj91database';
+global.databaseName = 'xds';
 
 
 global.systemtitle = '选调生管理系统';
