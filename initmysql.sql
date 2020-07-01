@@ -24,11 +24,9 @@ CREATE TABLE xds_student
 (
   student_id varchar(15) NOT NULL unique,
   name  varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  year	int NOT NULL DEFAULT '2000',
+  year int   NOT NULL  DEFAULT '2000',
   province_id 	int NOT NULL DEFAULT '34',
   photofile   varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
-
-
 xingbie varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 minzu varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 zzmm varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
@@ -78,8 +76,11 @@ dajsyb varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 dajsdz varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 dajslxdh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
 
-
   PRIMARY KEY (student_id),
+
+   key `name`(`name`),
+    key `province_id`(`province_id`),
+    key `year`(`year`,`province_id`),
 
  -- student_id 是外键，想要删除学生时直接删除学生在xds_users表中的项即可。 
 
@@ -129,7 +130,9 @@ CREATE TABLE xds_event
   content varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci,
   photofile  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci,
   timestamp timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (event_id)
+  PRIMARY KEY (event_id),
+  key `province_id`(`province_id`),
+  key `year` (`year`,`province_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists xds_eventfile;
