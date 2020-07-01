@@ -65,7 +65,7 @@ router.route('/')
                 req.session.islogin = req.body.username;
                 res.locals.islogin = req.session.islogin;
                 //100分钟后cookie清空,maxAge单位ms
-                var maxage = 600000;
+                var maxage = 6000000;
                 res.cookie('islogin', res.locals.islogin, { maxAge: maxage });
                 res.cookie('type', result[0].type, { maxAge: maxage });
                 res.cookie('user_id', result[0].id, { maxAge: maxage });
