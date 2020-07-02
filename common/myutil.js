@@ -1,9 +1,11 @@
+const code = require("svg-captcha");
 
 var user_type = {
     admin: 0,
     assist: 1,
     student: 2
 };
+
 
 function user_type_string(type) {
     if (type == user_type.admin)
@@ -18,10 +20,10 @@ function user_type_string(type) {
 
 function checklogin(req, res) {
     //  return true;
-    if (req.session.islogin &&req.cookies.islogin) {
+    if (req.session.islogin && req.cookies.islogin) {
         res.locals.islogin = req.session.islogin;
     }
-    else  {
+    else {
         return false;
     }
     return true;
@@ -115,6 +117,20 @@ function endgestart(start_time, end_time) {
     return date1.getTime() <= date2.getTime();
 }
 
+function createCode() {
+
+    return code.create({
+        size: 4,
+        ignoreChars: "0o1iIl",
+        noise: 2,
+        color: true,
+        background: "#fff",
+        fontSize: 60,
+        height: 50,
+    });
+
+}
+
 exports.checklogin = checklogin
 exports.checklogin_student = checklogin_student
 exports.checklogin_assist = checklogin_assist
@@ -124,3 +140,5 @@ exports.getprovincename = getprovincename
 exports.stripscript = stripscript
 exports.Datetoyyyymmdd = Datetoyyyymmdd
 exports.endgestart = endgestart;
+
+exports.createCode = createCode;

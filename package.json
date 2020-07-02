@@ -17,6 +17,7 @@
     "moment":"*",
     "xlsx":"*",
     "mysql": "*",
-    "bcrypt":"*"
+    "bcrypt":"*",
+    "svg-captcha": "*"
   }
 }

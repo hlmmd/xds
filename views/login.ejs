@@ -47,6 +47,17 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">验证码</label>
+                        <div class="col-md-3">
+                            <input maxlength="4" class="form-control" id="captcha" name="captcha" required>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="/captcha" id="cap_pic" onclick="change_capacha()">
+                        </div>
+                    </div>
+
+
                     <% //如果有错误消息，则用alert框显示 %>
                     <% if (locals.errmsg) { %>
                     <div class="alert alert-warning err-login"><%= errmsg %> </div>
@@ -69,4 +80,11 @@
     </div>
 
 </body>
+
+<script>
+    function change_capacha() {
+        document.getElementById('cap_pic').src = '/captcha?' + Math.random();
+    }
+</script>
+
 <% include footer %>
