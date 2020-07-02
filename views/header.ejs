@@ -79,6 +79,12 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
+                <% if(locals.navbar_active && navbar_active=='resetpassword') { %>
+                <li class="active"><a href="/resetpassword">重置密码</a></li>
+                <% } else { %>
+                <li><a href="/resetpassword">重置密码</a></li>
+                <% } %>
+
                 <% if(locals.navbar_active && navbar_active=='password') { %>
                 <li class="active"><a href="/password">修改密码</a></li>
                 <% } else { %>

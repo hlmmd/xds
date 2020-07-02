@@ -199,6 +199,42 @@ router.post('/delcomment', function (req, res) {
     }
 });
 
+//重置密码
+router.get('/resetpassword', function (req, res) {
+
+    if (myutil.checklogin(req, res) == false) {
+        return res.redirect('/');
+    }
+    else
+        res.render('resetpassword', {
+            title: global.systemtitle,
+            user: res.locals.islogin,
+            type: req.cookies.type,
+            navbar_active: 'resetpassword'
+        });
+});
+
+
+//重置密码
+router.post('/resetpassword', function (req, res) {
+
+    if (myutil.checklogin(req, res) == false) {
+        return res.redirect('/');
+    }
+    else {
+        if (req.body.student_id.length == 0) {
+            return res.redirect('/resetpassword');
+        }
+
+        //先检查原密码
+        result = null;
+        usr.resetPasswordFun(req.body.student_id, function (result) {
+            return res.redirect('/');
+        });
+    }
+});
+
+
 //修改密码
 router.get('/password', function (req, res) {
 
