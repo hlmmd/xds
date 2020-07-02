@@ -87,23 +87,35 @@
 <div>
     <table class="table table-bordered">
         <tr style="background-color:wheat;">
+
             <th>
                 <h4>序号</h4>
             </th>
+
             <th>
-                <h4>学号</h4>
+                <a href="/xds?year=<%= year %>&province=<%= province_id %>&xueyuan=<%= xueyuan %>&sort=student_id">
+                    <h4>学号</h4>
+                </a>
             </th>
             <th>
-                <h4>姓名</h4>
+                <a href="/xds?year=<%= year %>&province=<%= province_id %>&xueyuan=<%= xueyuan %>&sort=name">
+                    <h4>姓名</h4>
+                </a>
             </th>
             <th>
+                <a href="/xds?year=<%= year %>&province=<%= province_id %>&xueyuan=<%= xueyuan %>&sort=year">
                 <h4>就业年份</h4>
+                </a>
             </th>
             <th>
+                <a href="/xds?year=<%= year %>&province=<%= province_id %>&xueyuan=<%= xueyuan %>&sort=province">
                 <h4>就业省市</h4>
+                </a>
             </th>
             <th>
+                <a href="/xds?year=<%= year %>&province=<%= province_id %>&xueyuan=<%= xueyuan %>&sort=xueyuan">
                 <h4>学院</h4>
+                </a>
             </th>
         </tr>
         <% for( i= 0;i<students.length;i++) { %>
