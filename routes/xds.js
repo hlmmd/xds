@@ -13,7 +13,7 @@ router.get('/xds', function (req, res) {
     usr.xdsyearsFun(function (years) {
         usr.xdsXueyuanFun(function (xueyuans) {
             //req.query未定义，说明是尚未查询，直接渲染
-            if (req.query.year === undefined && req.query.province === undefined && req.query.xueyuan === undefined) {
+            if (req.query.year === undefined && req.query.province === undefined && req.query.xueyuan === undefined && req.query.sort === undefined) {
                 return res.render('xds', {
                     title: global.systemtitle,
                     navbar_active: 'xds',
@@ -29,10 +29,8 @@ router.get('/xds', function (req, res) {
             else {
                 //合法查询
                 result = null;
-                usr.xdsFun(req.query.year, req.query.province, req.query.xueyuan, function (result) {
-                    console.log(req.url);
+                usr.xdsFun(req.query.year, req.query.province, req.query.xueyuan,req.query.sort, function (result) {
                     return res.render('xds', {
-                        url: req.url,
                         title: global.systemtitle,
                         years: years,
                         navbar_active: 'xds',
