@@ -55,8 +55,15 @@ router.route('/')
             return res.redirect('/home');
         }
         //检查用户名是否为空，或者是否可能发生sql注入
-        if (req.body.username == '' || req.body.username != myutil.stripscript(req.body.username)) {
+        if (req.body.captcha == undefined || req.body.username == '' || req.body.username != myutil.stripscript(req.body.username)) {
             return res.render('login', { title: global.systemtitle, errmsg: '用户名或密码错误!' });
+        }
+        capt = req.body.captcha.toLowerCase();
+        if (capt != req.cookies.captcha) {
+            return res.render('login', {
+                title: global.system_title,
+                errmsg: '验证码错误'
+            });
         }
         result = null;
         usr.loginFun(req.body.username, function (result) {
@@ -284,9 +291,9 @@ router.post('/password', function (req, res) {
 router.get('/captcha', function (req, res, next) {
 
     let captcha = myutil.createCode();
-    req.session = captcha.text.toLowerCase();
+    req.session.captcha = captcha.text.toLowerCase();
     //保存到cookie 方便前端调用验证
-    res.cookie('captcha', req.session);
+    res.cookie('captcha', req.session.captcha);
     res.setHeader('Content-Type', 'image/svg+xml');
     res.write(String(captcha.data));
     res.end();
