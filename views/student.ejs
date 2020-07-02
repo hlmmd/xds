@@ -42,6 +42,9 @@
 <table class="table table-bordered">
     <tr style="background-color:wheat;">
         <th>
+            <h4>序号</h4>
+        </th>
+        <th>
             <h4>学号</h4>
         </th>
         <th>
@@ -58,6 +61,10 @@
 
     <a href="/student?student_id=<%= query[i].student_id %>">
         <tr class="change" onclick="location.href='/student?student_id=<%= query[i].student_id %>';">
+            <td>
+                <h4> <%= i+1 %> </h4>
+            </td>
+          
             <td>
                 <h4> <%= query[i].student_id %> </h4>
             </td>

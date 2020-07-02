@@ -1,5 +1,11 @@
 <% include header %>
 
+<style type="text/css">
+    tr.change:hover {
+        background-color: yellowgreen
+    }
+</style>
+
 
 <div class="page-header">
     <h3>选调生查询</h3>
@@ -54,31 +60,52 @@
 </div>
 
 <div>
-    <table class="table table-bordered table-striped " style="table-layout: fixed;">
-        <tbody>
-            <% // 表格每行6列  %>
-            <% for (i=0;i<students.length;i+=6){ %>
+    <table class="table table-bordered">
+        <tr style="background-color:wheat;">
+            <th>
+                <h4>序号</h4>
+            </th>
+            <th>
+                <h4>学号</h4>
+            </th>
+            <th>
+                <h4>姓名</h4>
+            </th>
+            <th>
+                <h4>就业年份</h4>
+            </th>
+            <th>
+                <h4>就业省市</h4>
+            </th>
+        </tr>
+        <% for( i= 0;i<students.length;i++) { %>
 
-            <div class="row col-md-2">
-                <tr>
-                    <% for(j = i;j<students.length && (j<i+6);j++) { %>
-                    <td>
-                        <a href="/student?student_id=<%= students[j].student_id %>">
-                            <h5> <%= students[j].student_id +' '+ students[j].name %>
-                                <br>
-                                <%= students[j].year +'年 '+ provinces [students[j].province_id] %>
-                            </h5>
+        <a href="/student?student_id=<%= students[i].student_id %>">
+            <tr class="change" onclick="location.href='/student?student_id=<%= students[i].student_id %>';">
+                <td>
+                    <h4><%= i+1 %></h4>
+                </td>
+                <td>
+                    <h4> <%= students[i].student_id %> </h4>
+                </td>
 
-                        </a>
-                    </td>
-                    <% } %>
-                </tr>
-            </div>
+                <td>
+                    <h4> <%= students[i].name%> </h4>
+                </td>
 
-            <% } %>
+                <td>
+                    <h4> <%=  students[i].year  %> </h4>
+                </td>
+                <td>
+                    <h4> <%=  provinces [students[i].province_id] %> </h4>
+                </td>
+            </tr>
+        </a>
+        <% }  %>
 
-        </tbody>
     </table>
+
+
 </div>
 
 <% } else if( locals.students && students.length==0){ %>
