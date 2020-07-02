@@ -9,33 +9,46 @@ router.get('/xds', function (req, res) {
         return res.redirect('/');
     }
     years = null;
+    xueyuans = null;
     usr.xdsyearsFun(function (years) {
-        //req.query未定义，说明是尚未查询，直接渲染
-        if (req.query.year === undefined && req.query.province === undefined) {
-            return res.render('xds', {
-                title: global.systemtitle,
-                navbar_active: 'xds',
-                years: years, provinces: global.provinces
-            });
-        }
-        else if (isNaN(req.query.year) || isNaN(req.query.province)) {
-            //已经查询，Url不合法，跳转到/xds页面
-            return res.redirect('/xds');
-        }
-        else {
-            //合法查询
-            result = null;
-            usr.xdsFun(req.query.year, req.query.province, function (result) {                
+        usr.xdsXueyuanFun(function (xueyuans) {
+
+            console.log(years);
+            console.log(xueyuans);
+
+            //req.query未定义，说明是尚未查询，直接渲染
+            if (req.query.year === undefined && req.query.province === undefined && req.query.xueyuan === undefined) {
                 return res.render('xds', {
-                    title: global.systemtitle, years: years,
+                    title: global.systemtitle,
                     navbar_active: 'xds',
-                    provinces: global.provinces,
-                    students: result,
-                    year: req.query.year,
-                    province_id: req.query.province
+                    years: years, 
+                    xueyuans: xueyuans,
+                    provinces: global.provinces
                 });
-            });
-        }
+            }
+            else if (isNaN(req.query.year) || isNaN(req.query.province)) {
+                //已经查询，Url不合法，跳转到/xds页面
+                return res.redirect('/xds');
+            }
+            else {
+                //合法查询
+                result = null;
+                usr.xdsFun(req.query.year, req.query.province, req.query.xueyuan, function (result) {
+                    console.log(result.length);
+                    return res.render('xds', {
+                        title: global.systemtitle,
+                        years: years,
+                        navbar_active: 'xds',
+                        provinces: global.provinces,
+                        students: result,
+                        year: req.query.year,
+                        xueyuan: req.query.xueyuan,
+                        xueyuans: xueyuans,
+                        province_id: req.query.province
+                    });
+                });
+            }
+        });
     });
 
 });

@@ -48,7 +48,7 @@ function loginFun(username, callback) {
 }
 
 function resetPasswordFun(student_id, callback) {
-    pool.query('update  xds_users set password =? where username=?', [ '$2b$10$Lr1h/LcKXQ2JFcgIjSfvTeSRdNKsEvo3gTGQ9sjAe8EyPIjXKNW8m', student_id], function (err, results, fields) {
+    pool.query('update  xds_users set password =? where username=?', ['$2b$10$Lr1h/LcKXQ2JFcgIjSfvTeSRdNKsEvo3gTGQ9sjAe8EyPIjXKNW8m', student_id], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
@@ -77,29 +77,68 @@ function regFun(username, password, callback) {
 }
 
 //按年份和省份查询选调生信息
-function xdsFun(year, province, callback) {
+function xdsFun(year, province, xueyuan, callback) {
 
     var sqlstr = '';
-    if (year == '' && province == '') {
-        sqlstr = 'select  student_id,name ,year,province_id  from xds_student order by student_id';
-    }
-    else if (year == '') {
-        sqlstr = util.format('select student_id ,name,year,province_id from xds_student where province_id=%d order by student_id', province);
-    }
-    else if (province == '') {
-        sqlstr = util.format('select student_id ,name,year,province_id from xds_student where year=%d order by student_id', year);
+
+    if (xueyuan == '') {
+        if (year == '' && province == '') {
+            sqlstr = 'select  student_id,name ,year,province_id ,xueyuan from xds_student order by student_id';
+        }
+        else if (year == '') {
+            sqlstr = util.format('select student_id ,name,year,province_id ,xueyuan from xds_student where province_id=%d order by student_id', province);
+        }
+        else if (province == '') {
+            sqlstr = util.format('select student_id ,name,year,province_id,xueyuan from xds_student where year=%d order by student_id', year);
+        }
+        else {
+            sqlstr = util.format('select student_id ,name,year,province_id,xueyuan from xds_student where year=%d and province_id=%d order by student_id', year, province);
+        }
+
+        pool.query(sqlstr, function (err, results, fields) {
+            if (err) {
+                console.log("error:" + err.message);
+            }
+            callback(results);
+        });
+
     }
     else {
-        sqlstr = util.format('select student_id ,name,year,province_id from xds_student where year=%d and province_id=%d order by student_id', year, province);
-    }
-
-    pool.query(sqlstr, function (err, results, fields) {
-        if (err) {
-            console.log("error:" + err.message);
+        if (year == '' && province == '') {
+            pool.query('select  student_id,name ,year,province_id ,xueyuan from xds_student where xueyuan=? order by student_id', [xueyuan], function (err, results, fields) {
+                if (err) {
+                    console.log("error:" + err.message);
+                }
+                callback(results);
+            });
         }
-        callback(results);
-    });
+        else if (year == '') {
+            pool.query('select  student_id,name ,year,province_id ,xueyuan from xds_student where province_id=? and xueyuan=? order by student_id', [province, xueyuan], function (err, results, fields) {
+                if (err) {
+                    console.log("error:" + err.message);
+                }
+                callback(results);
+            });
+        }
+        else if (province == '') {
 
+            pool.query('select  student_id,name ,year,province_id ,xueyuan from xds_student where year=? and xueyuan=? order by student_id', [year, xueyuan], function (err, results, fields) {
+                if (err) {
+                    console.log("error:" + err.message);
+                }
+                callback(results);
+            });
+
+        }
+        else {
+            pool.query('select  student_id,name ,year,province_id ,xueyuan from xds_student where year=? and province_id=? and xueyuan=? order by student_id', [year, province, xueyuan], function (err, results, fields) {
+                if (err) {
+                    console.log("error:" + err.message);
+                }
+                callback(results);
+            });
+        }
+    }
 }
 
 
@@ -119,6 +158,19 @@ function studentidlikeFun(student_id, callback) {
 function studentnamelikeFun(name, callback) {
 
     pool.query('select student_id ,name,year,province_id from xds_student where name like ? ', ['%' + name + '%'], function (err, results, fields) {
+        if (err) {
+            console.log("error:" + err.message);
+        }
+        callback(results);
+    });
+}
+
+// 求所有的选调生学院，做为select的选项
+function xdsXueyuanFun(callback) {
+
+    var sqlstr = 'select distinct xueyuan from xds_student order by xueyuan desc ';
+    results = null;
+    pool.query(sqlstr, function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
@@ -577,6 +629,7 @@ exports.updatepasswordFun = updatepasswordFun;
 
 exports.xdsFun = xdsFun;
 exports.xdsyearsFun = xdsyearsFun;
+exports.xdsXueyuanFun = xdsXueyuanFun;
 
 exports.studentidlikeFun = studentidlikeFun;
 

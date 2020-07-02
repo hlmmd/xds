@@ -81,6 +81,7 @@ dajslxdh varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  DEFAULT '' ,
    key `name`(`name`),
     key `province_id`(`province_id`),
     key `year`(`year`,`province_id`),
+    key `xueyuan`(`xueyuan`),
 
  -- student_id 是外键，想要删除学生时直接删除学生在xds_users表中的项即可。 
 

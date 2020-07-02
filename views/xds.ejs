@@ -48,6 +48,31 @@
                 <% } %>
                 <% } %>
             </select>
+
+
+            <label for="xueyuan">学院</label>
+            <% if (locals.xueyuans && xueyuans!=null) { %>
+            <select name="xueyuan" id="xueyuan">
+                <option value="">全选</option>
+                <% for(i=0;i<xueyuans.length;i++) { %>
+                <% if (locals.xueyuan && xueyuan==xueyuans[i].xueyuan) { %>
+                <option value="<%= xueyuan %>" selected><%= xueyuan %></option>
+                <% } else { %>
+                <option value="<%= xueyuans[i].xueyuan %>"><%= xueyuans[i].xueyuan %></option>
+                <% } %>
+                <% } %>
+
+            </select>
+            <% } else { %>
+            <% if (locals.xueyuan) { %>
+            <input type="text" name="xueyuan" id="xueyuan" value="<%= xueyuan %>">
+            <%  } else  { %>
+            <input type="text" name="xueyuan" id="xueyuan">
+            <% } %>
+            <% } %>
+
+
+
             <input type="submit" value="查询">
         </div>
     </form>
@@ -77,6 +102,9 @@
             <th>
                 <h4>就业省市</h4>
             </th>
+            <th>
+                <h4>学院</h4>
+            </th>
         </tr>
         <% for( i= 0;i<students.length;i++) { %>
 
@@ -98,6 +126,9 @@
                 </td>
                 <td>
                     <h4> <%=  provinces [students[i].province_id] %> </h4>
+                </td>
+                <td>
+                    <h4> <%=  students[i].xueyuan  %> </h4>
                 </td>
             </tr>
         </a>
