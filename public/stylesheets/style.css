@@ -1,8 +1,42 @@
 body {
-  padding: 50px;
+  padding: 40px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /* background-image:url(./images/logo.jpg); */
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+.login {
+  margin-top: 4rem;
+  float: left;
+}
+
+.login-pic {
+  width: 75%;
+  float: left;
+}
+
+.login-form {
+  width: 25%;
+  float: right;
+  margin-top:10%;
+}
+
+.login-page-header {
+  padding-bottom: 9px;
+  margin: 4rem 0 4rem 4rem;
+  border-bottom: 1px solid #eee;
+}
+
+.err-login{
+  text-align: center;
+  margin-left: 4rem;
+};
+
+.login-btn{
+  background-repeat: repeat-x;
+  border-color: #245580;
+  width: 100%;
 }

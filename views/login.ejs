@@ -1,53 +1,72 @@
-<% include link %>
+<!DOCTYPE html>
+<html>
 
-<div class="container">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post">
+    <title> <%= title %> </title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-theme.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+    <div class="login">
 
         <% //显示logo图片和表格标题。居中img-responsive表示自适应大小 %>
-        <div>
-            <img src="images/logo.jpg" class="img-responsive center-block" width="200" height="200">
+        <div class="login-pic">
+            <img src="images/logo.jpg" class="img-responsive center-block">
         </div>
+        <div class="login-form">
 
-        <div class="page-header text-center">
-            <h1> <%= title %> </h1>
+            <form class="form-horizontal" role="form" method="post">
+
+                <div class="login-page-header text-center">
+                    <h1> <%= title %> </h1>
+                </div>
+                <fieldset>
+
+                    <% if(locals.islogin) { %>
+                    <meta http-equiv="refresh" content="0;url=/logout">
+                    <% } else{ %>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="username">用户名</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="用户名"
+                                maxlength="32" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="password">密码</label>
+                        <div class="col-sm-9">
+                            <input type="password" maxlength="32" class="form-control" id="password" name="password"
+                                placeholder="密码" required>
+                        </div>
+                    </div>
+
+                    <% //如果有错误消息，则用alert框显示 %>
+                    <% if (locals.errmsg) { %>
+                    <div class="alert alert-warning err-login"><%= errmsg %> </div>
+                    <% } %>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="login-btn btn btn-primary" style="width:100%"
+                                autofocus>登录</button>
+                            <% //pull-right让button居右 %>
+                            <% // <a class="btn btn-danger pull-right" href="/reg">注册</a> %>
+                        </div>
+                    </div>
+
+                    <% } %>
+                </fieldset>
+            </form>
+
         </div>
-        <fieldset>
+    </div>
 
-            <% if(locals.islogin) { %>
-            <meta http-equiv="refresh" content="0;url=/logout">
-            <% } else{ %>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="username">用户名</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="用户名"
-                        maxlength="32" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="password">密码</label>
-                <div class="col-sm-9">
-                    <input type="password" maxlength="32" class="form-control" id="password" name="password"
-                        placeholder="密码" required>
-                </div>
-            </div>
-
-            <% //如果有错误消息，则用alert框显示 %>
-            <% if (locals.errmsg) { %>
-            <div class="alert alert-warning form-group"><%= errmsg %> </div>
-            <% } %>
-
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <button type="submit" class="btn btn-primary" autofocus>登录</button>
-                    <% //pull-right让button居右 %>
-                    <% // <a class="btn btn-danger pull-right" href="/reg">注册</a> %>
-                </div>
-            </div>
-
-            <% } %>
-        </fieldset>
-    </form>
-</div>
-
+</body>
 <% include footer %>
