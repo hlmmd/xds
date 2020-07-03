@@ -48,7 +48,7 @@ function loginFun(username, callback) {
 }
 
 function resetPasswordFun(student_id, callback) {
-    pool.query('update  xds_users set password =? where username=?', ['$2b$10$Lr1h/LcKXQ2JFcgIjSfvTeSRdNKsEvo3gTGQ9sjAe8EyPIjXKNW8m', student_id], function (err, results, fields) {
+    pool.query('update  xds_users set password =? where username=?  and type!=0', ['$2b$10$Lr1h/LcKXQ2JFcgIjSfvTeSRdNKsEvo3gTGQ9sjAe8EyPIjXKNW8m', student_id], function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }
