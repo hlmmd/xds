@@ -122,11 +122,11 @@ function createCode() {
     return code.create({
         size: 4,
         ignoreChars: "0o1iIl",
-        noise: 2,
+        noise: 1,
         color: true,
-        background: "#fff",
-        fontSize: 60,
-        height: 50,
+        background: "#f0e68c",
+        fontSize: 40,
+        height: 40,
     });
 
 }
