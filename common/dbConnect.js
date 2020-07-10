@@ -317,10 +317,7 @@ function updatephotoFun(student_id, photofile, callback) {
 //删除选调生照片
 function deletephotoFun(student_id, callback) {
 
-    var sqlstr = util.format('update xds_student set photofile ="" where student_id="%s"',
-        student_id);
-
-    pool.query(sqlstr, function (err, results, fields) {
+    pool.query('update xds_student set photofile ="" where student_id=?', [student_id],function (err, results, fields) {
         if (err) {
             console.log("error:" + err.message);
         }

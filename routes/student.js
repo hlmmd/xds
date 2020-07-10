@@ -187,7 +187,6 @@ router.post('/delcareer', function (req, res) {
     }
     else {
         result = null;
-        console.log(req.body);
         usr.delcareerFun(req.body.career_id, function (result) {
             return res.redirect('/');
             //javascript会自动刷新
